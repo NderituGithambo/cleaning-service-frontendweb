@@ -1,6 +1,6 @@
 <template>
   <main>
-    <h1>{{ msg }}</h1>
+    <h1 v-for="index in 10">{{ msg }}</h1>
   </main>
 </template>
 

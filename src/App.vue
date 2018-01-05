@@ -27,5 +27,15 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin: 0;
+
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+}
+
+main {
+  /* For sticky footer */
+  padding-bottom: 60px;
 }
 </style>
