@@ -49,7 +49,7 @@
       required
     ></v-text-field>
     <v-text-field
-      label="Description of work"
+      label="Description of work, location information, etc."
       v-model="workDescription"
       :error-messages="workDescriptionErrors"
       @input="$v.workDescription.$touch()"
