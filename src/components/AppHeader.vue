@@ -1,29 +1,34 @@
 <template>
-  <header class="pa-0 green darken-2">
+  <header class="pa-0 green darken-1">
     <h1 class="my-1">{{ logo }}</h1>
 
     <div class="header-aside">
-      <h2>Clean house, happy life</h2>
-
-      <div class="header-menu">
-        <div class="info-buttons">
-          <router-link to="/">
-            <v-btn class="ma-0" flat>Home</v-btn>
-          </router-link>
-          <router-link to="/about">
-            <v-btn class="ma-0" flat>About Us</v-btn>
-          </router-link>
-        </div>
-
-        <div class="action-buttons">
-          <router-link to="/request">
-            <v-btn class="ma-0" flat>Request Service</v-btn>
-          </router-link>
-          <router-link to="/login">
-            <v-btn class="ma-0" flat>Log in</v-btn>
-          </router-link>
+      <div class="headlines">
+        <h2>Clean house, happy life</h2>
+        <div class="call-to-action">
+          <h3>Call 604.899.8955</h3>
+          <h4>Or click below to request online!</h4>
         </div>
       </div>
+
+      <nav>
+        <div class="info-buttons">
+          <router-link to="/">
+            <v-btn class="ma-0" flat :ripple="false">Home</v-btn>
+          </router-link>
+          <router-link to="/about">
+            <v-btn class="ma-0" flat :ripple="false">About Us</v-btn>
+          </router-link>
+        </div>
+        <div class="action-buttons">
+          <router-link to="/request">
+            <v-btn class="ma-0" flat :ripple="false">Request Service</v-btn>
+          </router-link>
+          <router-link to="/login">
+            <v-btn class="ma-0" flat :ripple="false">Log in</v-btn>
+          </router-link>
+        </div>
+      </nav>
     </div>
 
   </header>
@@ -45,31 +50,47 @@ header {
   display: flex;
   align-items: center;
   color: white;
+  height: 12vh;
   h1 {
-    font-family: 'Great Vibes', Helvetica, Arial, sans-serif;
+    font-family: 'Noticia Text', Helvetica, Arial, sans-serif;
     font-size: 3em;
   }
   .header-aside {
     width: 100%;
-    align-self: flex-end;
+    height: inherit;
     display: flex;
+    position: relative;
     flex-direction: column;
-    h2 {
-      font-family: 'Great Vibes', Helvetica, Arial, sans-serif;
-      font-size: 2.4em;
-      font-weight: normal;
-      align-self: flex-start;
-      margin-bottom: 2vh;
-      margin-left: 2vw;
+    // border: 1px dashed pink;
+    .headlines {
+      // border: 1px dashed pink;
+      height: 100%;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      h2 {
+        font-family: 'Noticia Text', Helvetica, Arial, sans-serif;
+        font-size: 2.25em;
+        font-style: italic;
+        font-weight: normal;
+      }
+      .call-to-action {
+        h3 {
+          font-size: 1.5em;
+        }
+        h4 {
+          font-size: 1em;
+        }
+      }
     }
-    .header-menu {
+    nav {
       display: flex;
       width: 100%;
-      align-self: flex-end;
+      padding-bottom: 1vh;
       a {
         text-decoration: none;
       }
-      .btn {
+      button {
         color: white;
       }
       .action-buttons {
