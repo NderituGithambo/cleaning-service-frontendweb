@@ -1,6 +1,6 @@
 <template>
   <footer>
-    <h1>{{ msg }}</h1>
+    <span>{{ msg }}</span>
   </footer>
 </template>
 
@@ -8,8 +8,8 @@
 export default {
   data() {
     return {
-      msg: 'This is the footer',
-    };
+      msg: 'Copyright 2018 JG Development',
+    }
   },
 };
 </script>
@@ -17,15 +17,19 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 footer {
-    background-color: #F8F8F8;
+    background-color: #212121;
     text-align: center;
     padding: 20px;
+    color: #9e9e9e;
 
     position: absolute;
     left: 0;
     bottom: 0;
     height: 60px;
     width: 100%;
+}
+span {
+  font-size: 0.8em;
 }
 h1 {
   font-weight: normal;

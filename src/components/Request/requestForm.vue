@@ -1,78 +1,277 @@
 <template>
   <form>
     <v-text-field
-      v-model="name"
-      label="Name"
-      :counter="10"
-      :error-messages="errors.collect('name')"
-      v-validate="'required|max:10'"
-      data-vv-name="name"
+      label="First name"
+      v-model="firstName"
+      :error-messages="firstNameErrors"
+      @input="$v.firstName.$touch()"
+      @blur="$v.firstName.$touch()"
       required
     ></v-text-field>
     <v-text-field
-      v-model="email"
-      label="E-mail"
-      :error-messages="errors.collect('email')"
-      v-validate="'required|email'"
-      data-vv-name="email"
+      label="Last name"
+      v-model="lastName"
+      :error-messages="lastNameErrors"
+      @input="$v.lastName.$touch()"
+      @blur="$v.lastName.$touch()"
       required
     ></v-text-field>
-    <v-select
-      v-bind:items="items"
-      v-model="select"
-      label="Select"
-      :error-messages="errors.collect('select')"
-      v-validate="'required'"
-      data-vv-name="select"
+    <v-text-field
+      label="E-mail"
+      v-model="email"
+      :error-messages="emailErrors"
+      @input="$v.email.$touch()"
+      @blur="$v.email.$touch()"
       required
-    ></v-select>
-    <v-checkbox
-      v-model="checkbox"
-      value="1"
-      label="Option"
-      :error-messages="errors.collect('checkbox')"
-      v-validate="'required'"
-      data-vv-name="checkbox"
-      type="checkbox"
+    ></v-text-field>
+    <v-text-field
+      label="Phone number"
+      v-model="phoneNumber"
+      :error-messages="phoneNumberErrors"
+      @input="$v.phoneNumber.$touch()"
+      @blur="$v.phoneNumber.$touch()"
       required
-    ></v-checkbox>
+    ></v-text-field>
+    <v-text-field
+      label="Address of location to be cleaned"
+      v-model="address"
+      :error-messages="addressErrors"
+      @input="$v.address.$touch()"
+      @blur="$v.address.$touch()"
+      required
+    ></v-text-field>
+    <v-text-field
+      label="Available cleaning times"
+      v-model="availableTimes"
+      :error-messages="availableTimesErrors"
+      @input="$v.availableTimes.$touch()"
+      @blur="$v.availableTimes.$touch()"
+      required
+    ></v-text-field>
+    <v-text-field
+      label="Description of work"
+      v-model="workDescription"
+      :error-messages="workDescriptionErrors"
+      @input="$v.workDescription.$touch()"
+      @blur="$v.workDescription.$touch()"
+      required
+    ></v-text-field>
+    <v-text-field
+      label="Hours of cleaning requested"
+      v-model="quantityHours"
+      :error-messages="quantityHoursErrors"
+      @input="$v.quantityHours.$touch()"
+      @blur="$v.quantityHours.$touch()"
+    ></v-text-field>
 
+    <br/><br/><v-divider></v-divider><br/>
+    <v-checkbox
+      label="Would you like to book an interview for regular service?"
+      v-model="checkbox"
+      @change="$v.checkbox.$touch()"
+      @blur="$v.checkbox.$touch()"
+    ></v-checkbox>
+    <v-text-field
+      label="When are you available for the interview?"
+      v-model="availableInterviewTimes"
+      :error-messages="availableInterviewTimesErrors"
+      @input="$v.availableInterviewTimes.$touch()"
+      @blur="$v.availableInterviewTimes.$touch()"
+      :disabled="isInterviewDisabled()"
+    ></v-text-field>
+    <v-text-field
+      label="Anything else we should know for the interview?"
+      v-model="interviewNotes"
+      :error-messages="interviewNotesErrors"
+      @input="$v.interviewNotes.$touch()"
+      @blur="$v.interviewNotes.$touch()"
+      :disabled="isInterviewDisabled()"
+    ></v-text-field>
+
+    <br/><br/>
     <v-btn @click="submit">submit</v-btn>
     <v-btn @click="clear">clear</v-btn>
   </form>
 </template>
 
+
+
 <script>
+  import { validationMixin } from 'vuelidate'
+  import { required, maxLength, email, numeric } from 'vuelidate/lib/validators'
+  import axios from 'axios'
+
   export default {
-    // $validates: true,
-    $_veeValidate: {
-      validator: 'new'
+    mixins: [validationMixin],
+    validations: {
+      firstName: {
+        required,
+        maxLength: maxLength(255),
+      },
+      lastName: {
+        required,
+        maxLength: maxLength(255),
+      },
+      email: {
+        required,
+        email,
+        maxLength: maxLength(1000),
+      },
+      phoneNumber: {
+        required,
+        maxLength: maxLength(16),
+      },
+      address: {
+        required,
+        maxLength: maxLength(1000),
+      },
+      availableTimes: {
+        required,
+        maxLength: maxLength(1000),
+      },
+      workDescription: {
+        required,
+        maxLength: maxLength(1000),
+      },
+      quantityHours: {
+        numeric,
+        maxLength: maxLength(2),
+      },
+      checkbox: {
+        required: false,
+      },
+      availableInterviewTimes: {
+        maxLength: maxLength(1000),
+      },
+      interviewNotes: {
+        maxLength: maxLength(1000),
+      },
+
     },
     data () {
       return {
-        name: '',
+        firstName: '',
+        lastName: '',
         email: '',
-        select: null,
-        items: [
-          'Item 1',
-          'Item 2',
-          'Item 3',
-          'Item 4'
-        ],
-        checkbox: null,
+        phoneNumber: '',
+        address: '',
+        availableTimes: '',
+        workDescription: '',
+        quantityHours: '',
+        checkbox: false,
+        availableInterviewTimes: '',
+        interviewNotes: '',
       }
     },
     methods: {
-      submit () {
-        this.$validator.validateAll()
+      async submit() {
+        this.$v.$touch()
+        try {
+          const request = axios.post(`http://localhost:3000/guest/job_requests`, {
+            address: this.address,
+            possible_times: this.availableTimes,
+            work_description: this.workDescription,
+            quantity_hours: this.quantityHours,
+            interview_requested: this.checkbox,
+            possible_interview_times: this.availableInterviewTimes,
+            interview_notes: this.interviewNotes,
+            guest_first_name: this.firstName,
+            guest_last_name: this.lastName,
+            guest_email: this.email,
+            guest_phone_number: this.phoneNumber,
+          })
+          const response = await request
+          console.log('response:', response);
+        } catch (e) {
+          console.log(e)
+        }
       },
-      clear () {
-        this.name = ''
+      clear() {
+        this.$v.$reset()
+        this.firstName = ''
+        this.lastName = ''
         this.email = ''
-        this.select = null
-        this.checkbox = null
-        this.$validator.clean()
+        this.phoneNumber = ''
+        this.address = ''
+        this.availableTimes = ''
+        this.workDescription = ''
+        this.quantityHours = ''
+        this.checkbox = false
+        this.availableInterviewTimes = ''
+        this.interviewNotes = ''
+      },
+      isInterviewDisabled() {
+        return !this.checkbox
       }
+    },
+    computed: {
+      firstNameErrors () {
+        const errors = []
+        if (!this.$v.firstName.$dirty) return errors
+        !this.$v.firstName.maxLength && errors.push('First name must be at most 255 characters long')
+        !this.$v.firstName.required && errors.push('First name is required.')
+        return errors
+      },
+      lastNameErrors () {
+        const errors = []
+        if (!this.$v.lastName.$dirty) return errors
+        !this.$v.lastName.maxLength && errors.push('Last name must be at most 255 characters long')
+        !this.$v.lastName.required && errors.push('Last name is required.')
+        return errors
+      },
+      emailErrors () {
+        const errors = []
+        if (!this.$v.email.$dirty) return errors
+        !this.$v.email.email && errors.push('Must be valid e-mail')
+        !this.$v.email.required && errors.push('E-mail is required')
+        return errors
+      },
+      phoneNumberErrors () {
+        const errors = []
+        if (!this.$v.phoneNumber.$dirty) return errors
+        !this.$v.phoneNumber.required && errors.push('Phone number is required')
+        return errors
+      },
+      addressErrors () {
+        const errors = []
+        if (!this.$v.address.$dirty) return errors
+        !this.$v.address.maxLength && errors.push('Address must be at most 1000 characters long')
+        !this.$v.address.required && errors.push('Address is required')
+        return errors
+      },
+      availableTimesErrors () {
+        const errors = []
+        if (!this.$v.availableTimes.$dirty) return errors
+        !this.$v.availableTimes.maxLength && errors.push('Available times must be at most 1000 characters long')
+        !this.$v.availableTimes.required && errors.push('Available times is required')
+        return errors
+      },
+      workDescriptionErrors () {
+        const errors = []
+        if (!this.$v.workDescription.$dirty) return errors
+        !this.$v.workDescription.maxLength && errors.push('Work description must be at most 1000 characters long')
+        !this.$v.workDescription.required && errors.push('Work description is required')
+        return errors
+      },
+      quantityHoursErrors () {
+        const errors = []
+        if (!this.$v.quantityHours.$dirty) return errors
+        !this.$v.quantityHours.maxLength && errors.push('Quantity of hours must be at most 2 characters long')
+        !this.$v.quantityHours.numeric && errors.push('Quantity of hours must be a number')
+        return errors
+      },
+      availableInterviewTimesErrors () {
+        const errors = []
+        if (!this.$v.availableInterviewTimes.$dirty) return errors
+        !this.$v.availableInterviewTimes.maxLength && errors.push('Available interview times must be at most 1000 characters long')
+        return errors
+      },
+      interviewNotesErrors () {
+        const errors = []
+        if (!this.$v.interviewNotes.$dirty) return errors
+        !this.$v.interviewNotes.maxLength && errors.push('Interview notes must be at most 1000 characters long')
+        return errors
+      },
     }
   }
 </script>

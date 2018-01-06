@@ -8,9 +8,6 @@ import Vuetify from 'vuetify'
 import('../node_modules/vuetify/dist/vuetify.min.css')
 Vue.use(Vuetify)
 
-import VeeValidate from 'vee-validate';
-Vue.use(VeeValidate);
-
 
 Vue.config.productionTip = false;
 
