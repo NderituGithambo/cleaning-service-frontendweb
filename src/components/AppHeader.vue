@@ -29,7 +29,7 @@
 export default {
   data() {
     return {
-      logo: `Maria's Cleaning`,
+      logo: 'MAXIMUM CLEANING',
     };
   },
 };
@@ -54,6 +54,7 @@ header {
 
 h1 {
  font-weight: normal;
+ font-family: 'Bowlby One SC', Helvetica, Arial, sans-serif;
 }
 
 a {

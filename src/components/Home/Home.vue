@@ -1,6 +1,6 @@
 <template>
   <main>
-    <h1>{{ msg }}</h1>
+    <h1 v-for="index in 1">{{ msg }}</h1>
   </main>
 </template>
 
@@ -9,7 +9,7 @@ export default {
   name: 'Home',
   data() {
     return {
-      msg: 'This is the about page',
+      msg: 'This is the home page',
     };
   },
 };

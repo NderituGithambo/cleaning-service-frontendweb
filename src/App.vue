@@ -1,9 +1,11 @@
 <template>
-  <div id="app">
-    <app-header></app-header>
-    <router-view/>
-    <app-footer></app-footer>
-  </div>
+  <v-app>
+    <div id="app">
+      <app-header></app-header>
+      <router-view/>
+      <app-footer></app-footer>
+    </div>
+  </v-app>
 </template>
 
 <script>
@@ -21,7 +23,7 @@ export default {
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: 'Roboto', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -37,5 +39,7 @@ export default {
 main {
   /* For sticky footer */
   padding-bottom: 60px;
+
+  margin: 4vh 4vw;
 }
 </style>

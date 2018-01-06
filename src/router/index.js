@@ -1,9 +1,9 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Home from '@/components/Home';
-import About from '@/components/About';
-import Request from '@/components/Request';
-import Login from '@/components/Login';
+import Home from '@/components/Home/Home';
+import About from '@/components/About/About';
+import Request from '@/components/Request/Request';
+import Login from '@/components/Login/Login';
 
 Vue.use(Router);
 
