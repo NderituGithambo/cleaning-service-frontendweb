@@ -60,6 +60,7 @@ header {
   align-items: center;
   height: 160px;
   background-color: $lighter-green;
+  border-bottom: 1px solid $light-green;
   h1 {
     font-family: 'Great Vibes', Helvetica, Arial, sans-serif;
     font-size: 3.5em;
@@ -79,10 +80,13 @@ header {
       align-items: center;
       h2 {
         font-family: 'Noticia Text', Helvetica, Arial, sans-serif;
-        font-size: 1.8em;
+        font-size: 2.5em;
         font-style: italic;
         font-weight: normal;
         color: $light-green;
+
+        // color: transparent;
+        text-shadow: 0 0 1px $light-green;
       }
       .call-to-action {
         color: $green;
@@ -112,7 +116,5 @@ header {
     }
   }
 }
-
-
 
 </style>
