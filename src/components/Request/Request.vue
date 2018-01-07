@@ -34,9 +34,6 @@ export default {
 
 
 <style lang="scss" scoped>
-a {
-  color: #000;
-}
 h1 {
   font-weight: normal;
 }

@@ -95,7 +95,7 @@
         :error-messages="availableInterviewTimesErrors"
         @input="$v.availableInterviewTimes.$touch()"
         @blur="$v.availableInterviewTimes.$touch()"
-        :disabled="isInterviewDisabled()"
+        :disabled="!checkbox"
         box
       ></v-text-field>
       <v-text-field
@@ -104,14 +104,27 @@
         :error-messages="interviewNotesErrors"
         @input="$v.interviewNotes.$touch()"
         @blur="$v.interviewNotes.$touch()"
-        :disabled="isInterviewDisabled()"
+        :disabled="!checkbox"
         multi-line
         box
       ></v-text-field>
 
       <br/><br/>
-      <v-btn @click="submit" :disabled="isSubmitDisabled">submit</v-btn>
-      <v-btn @click="clear">clear</v-btn>
+
+      <v-btn
+        @click="submit"
+        :loading="isLoading"
+        :disabled="isSubmitDisabled"
+      >
+        submit
+      </v-btn>
+
+      <v-btn
+        @click="clear"
+      >
+        clear
+      </v-btn>
+
     </form>
   </div>
 </template>
@@ -176,43 +189,51 @@
         phoneNumber: '1234567890',
         address: '123 Fake St.',
         availableTimes: '',
-        workDescription: 'Clean my house',
+        workDescription: '',
         quantityHours: '',
         checkbox: false,
         availableInterviewTimes: '',
         interviewNotes: '',
         maskPhone: 'phone',
+
+        isLoading: false,
         isSubmitDisabled: false,
       }
     },
     props: ['indicateRequestReceived'],
     methods: {
       async submit() {
-        this.isSubmitDisabled = true
         this.$v.$touch()
-        try {
-          const request = axios.post('http://localhost:3000/guest/job_requests', {
-            address: this.address,
-            possible_times: this.availableTimes,
-            work_description: this.workDescription,
-            quantity_hours: this.quantityHours,
-            interview_requested: this.checkbox,
-            possible_interview_times: this.availableInterviewTimes,
-            interview_notes: this.interviewNotes,
-            guest_first_name: this.firstName,
-            guest_last_name: this.lastName,
-            guest_email: this.email,
-            guest_phone_number: this.phoneNumber,
-          })
-          const response = await request
-          if (response.status === 200) {
-            console.log("Post successful")
-            this.isSubmitDisabled = false
-            this.clear()
-            this.indicateRequestReceived()
+        if (!this.$v.$invalid) {
+          this.isSubmitDisabled = true
+          this.isLoading = true
+          try {
+            const request = axios.post('http://localhost:3000/guest/job_requests', {
+              address: this.address,
+              possible_times: this.availableTimes,
+              work_description: this.workDescription,
+              quantity_hours: this.quantityHours,
+              interview_requested: this.checkbox,
+              possible_interview_times: this.availableInterviewTimes,
+              interview_notes: this.interviewNotes,
+              guest_first_name: this.firstName,
+              guest_last_name: this.lastName,
+              guest_email: this.email,
+              guest_phone_number: this.phoneNumber,
+            })
+            const response = await request
+            if (response.status === 200) {
+              console.log("Post successful")
+              setTimeout(() => {
+                this.clear()
+                this.isLoading = false
+                this.isSubmitDisabled = false
+                this.indicateRequestReceived()
+              }, 2000)
+            }
+          } catch (e) {
+            console.log(e)
           }
-        } catch (e) {
-          console.log(e)
         }
       },
       clear() {
@@ -229,9 +250,12 @@
         this.availableInterviewTimes = ''
         this.interviewNotes = ''
       },
-      isInterviewDisabled() {
-        return !this.checkbox
-      }
+      areThereValidationErrors() {
+        console.log('this.computed', this.computed);
+        for (method in this.computed) {
+          console.log('method', method);
+        }
+      },
     },
     computed: {
       firstNameErrors () {
@@ -305,6 +329,9 @@
 </script>
 
 <style lang="scss" scoped>
+a {
+  color: #000;
+}
 form {
   max-width: 600px;
   margin: 0 auto;
