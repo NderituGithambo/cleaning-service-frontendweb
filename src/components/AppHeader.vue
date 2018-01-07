@@ -78,9 +78,8 @@ header {
       display: flex;
       justify-content: space-around;
       align-items: center;
-      font-family: 'Noticia Text', Helvetica, Arial, sans-serif;
       h2 {
-        font-size: 2.5em;
+        font-size: 2em;
         font-style: italic;
         font-weight: normal;
         color: $light-green;

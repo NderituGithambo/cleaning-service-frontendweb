@@ -1,109 +1,119 @@
 <template>
-  <form>
-    <v-text-field
-      label="First name"
-      v-model="firstName"
-      :error-messages="firstNameErrors"
-      @input="$v.firstName.$touch()"
-      @blur="$v.firstName.$touch()"
-      required
-      box
-    ></v-text-field>
-    <v-text-field
-      label="Last name"
-      v-model="lastName"
-      :error-messages="lastNameErrors"
-      @input="$v.lastName.$touch()"
-      @blur="$v.lastName.$touch()"
-      required
-      box
-    ></v-text-field>
-    <v-text-field
-      label="E-mail"
-      v-model="email"
-      :error-messages="emailErrors"
-      @input="$v.email.$touch()"
-      @blur="$v.email.$touch()"
-      required
-      box
-    ></v-text-field>
-    <v-text-field
-      label="Phone number"
-      v-model="phoneNumber"
-      :error-messages="phoneNumberErrors"
-      @input="$v.phoneNumber.$touch()"
-      @blur="$v.phoneNumber.$touch()"
-      required
-      :mask="maskPhone"
-      box
-    ></v-text-field>
-    <v-text-field
-      label="Address of location to be cleaned"
-      v-model="address"
-      :error-messages="addressErrors"
-      @input="$v.address.$touch()"
-      @blur="$v.address.$touch()"
-      required
-      box
-    ></v-text-field>
-    <v-text-field
-      label="Description of work, location information, etc."
-      v-model="workDescription"
-      :error-messages="workDescriptionErrors"
-      @input="$v.workDescription.$touch()"
-      @blur="$v.workDescription.$touch()"
-      required
-      multi-line
-      box
-    ></v-text-field>
-    <v-text-field
-      label="Best cleaning times (Example: 6-8pm Monday Nov. 16th)"
-      v-model="availableTimes"
-      :error-messages="availableTimesErrors"
-      @input="$v.availableTimes.$touch()"
-      @blur="$v.availableTimes.$touch()"
-      box
-    ></v-text-field>
-    <v-text-field
-      label="Hours of cleaning requested"
-      v-model="quantityHours"
-      :error-messages="quantityHoursErrors"
-      @input="$v.quantityHours.$touch()"
-      @blur="$v.quantityHours.$touch()"
-      box
-    ></v-text-field>
+  <div>
+    <h1>Request Service</h1>
 
-    <br/><br/><v-divider></v-divider><br/>
-    <v-checkbox
-      label="Would you like to book an interview for regular service?"
-      v-model="checkbox"
-      @change="$v.checkbox.$touch()"
-      @blur="$v.checkbox.$touch()"
-    ></v-checkbox>
-    <v-text-field
-      label="When are you available for the interview?"
-      v-model="availableInterviewTimes"
-      :error-messages="availableInterviewTimesErrors"
-      @input="$v.availableInterviewTimes.$touch()"
-      @blur="$v.availableInterviewTimes.$touch()"
-      :disabled="isInterviewDisabled()"
-      box
-    ></v-text-field>
-    <v-text-field
-      label="Anything else we should know for the interview?"
-      v-model="interviewNotes"
-      :error-messages="interviewNotesErrors"
-      @input="$v.interviewNotes.$touch()"
-      @blur="$v.interviewNotes.$touch()"
-      :disabled="isInterviewDisabled()"
-      multi-line
-      box
-    ></v-text-field>
+    <br/>
+    <h2>Please fill out the form below and we will respond to you as soon as possible.</h2>
+    <br/>
+    <h3>Or if you would like to become a regular customer, <router-link to="/register">please register here.</router-link></h3>
+    <br/>
 
-    <br/><br/>
-    <v-btn @click="submit">submit</v-btn>
-    <v-btn @click="clear">clear</v-btn>
-  </form>
+    <form>
+      <v-text-field
+        label="First name"
+        v-model="firstName"
+        :error-messages="firstNameErrors"
+        @input="$v.firstName.$touch()"
+        @blur="$v.firstName.$touch()"
+        required
+        box
+      ></v-text-field>
+      <v-text-field
+        label="Last name"
+        v-model="lastName"
+        :error-messages="lastNameErrors"
+        @input="$v.lastName.$touch()"
+        @blur="$v.lastName.$touch()"
+        required
+        box
+      ></v-text-field>
+      <v-text-field
+        label="E-mail"
+        v-model="email"
+        :error-messages="emailErrors"
+        @input="$v.email.$touch()"
+        @blur="$v.email.$touch()"
+        required
+        box
+      ></v-text-field>
+      <v-text-field
+        label="Phone number"
+        v-model="phoneNumber"
+        :error-messages="phoneNumberErrors"
+        @input="$v.phoneNumber.$touch()"
+        @blur="$v.phoneNumber.$touch()"
+        required
+        :mask="maskPhone"
+        box
+      ></v-text-field>
+      <v-text-field
+        label="Address of location to be cleaned"
+        v-model="address"
+        :error-messages="addressErrors"
+        @input="$v.address.$touch()"
+        @blur="$v.address.$touch()"
+        required
+        box
+      ></v-text-field>
+      <v-text-field
+        label="Description of work, location information, etc."
+        v-model="workDescription"
+        :error-messages="workDescriptionErrors"
+        @input="$v.workDescription.$touch()"
+        @blur="$v.workDescription.$touch()"
+        required
+        multi-line
+        box
+      ></v-text-field>
+      <v-text-field
+        label="Best cleaning times (Example: 6-8pm Monday Nov. 16th)"
+        v-model="availableTimes"
+        :error-messages="availableTimesErrors"
+        @input="$v.availableTimes.$touch()"
+        @blur="$v.availableTimes.$touch()"
+        box
+      ></v-text-field>
+      <v-text-field
+        label="Hours of cleaning requested"
+        v-model="quantityHours"
+        :error-messages="quantityHoursErrors"
+        @input="$v.quantityHours.$touch()"
+        @blur="$v.quantityHours.$touch()"
+        box
+      ></v-text-field>
+
+      <br/><br/><v-divider></v-divider><br/>
+      <v-checkbox
+        label="Would you like to book an interview for regular service?"
+        v-model="checkbox"
+        @change="$v.checkbox.$touch()"
+        @blur="$v.checkbox.$touch()"
+      ></v-checkbox>
+      <v-text-field
+        label="When are you available for the interview?"
+        v-model="availableInterviewTimes"
+        :error-messages="availableInterviewTimesErrors"
+        @input="$v.availableInterviewTimes.$touch()"
+        @blur="$v.availableInterviewTimes.$touch()"
+        :disabled="isInterviewDisabled()"
+        box
+      ></v-text-field>
+      <v-text-field
+        label="Anything else we should know for the interview?"
+        v-model="interviewNotes"
+        :error-messages="interviewNotesErrors"
+        @input="$v.interviewNotes.$touch()"
+        @blur="$v.interviewNotes.$touch()"
+        :disabled="isInterviewDisabled()"
+        multi-line
+        box
+      ></v-text-field>
+
+      <br/><br/>
+      <v-btn @click="submit" :disabled="isSubmitDisabled">submit</v-btn>
+      <v-btn @click="clear">clear</v-btn>
+    </form>
+  </div>
 </template>
 
 
@@ -157,29 +167,31 @@
       interviewNotes: {
         maxLength: maxLength(1000),
       },
-
     },
     data () {
       return {
-        firstName: '',
-        lastName: '',
-        email: '',
-        phoneNumber: '',
-        address: '',
+        firstName: 'Fake',
+        lastName: 'Person',
+        email: 'fake@person.com',
+        phoneNumber: '1234567890',
+        address: '123 Fake St.',
         availableTimes: '',
-        workDescription: '',
+        workDescription: 'Clean my house',
         quantityHours: '',
         checkbox: false,
         availableInterviewTimes: '',
         interviewNotes: '',
         maskPhone: 'phone',
+        isSubmitDisabled: false,
       }
     },
+    props: ['indicateRequestReceived'],
     methods: {
       async submit() {
+        this.isSubmitDisabled = true
         this.$v.$touch()
         try {
-          const request = axios.post(`http://localhost:3000/guest/job_requests`, {
+          const request = axios.post('http://localhost:3000/guest/job_requests', {
             address: this.address,
             possible_times: this.availableTimes,
             work_description: this.workDescription,
@@ -193,7 +205,12 @@
             guest_phone_number: this.phoneNumber,
           })
           const response = await request
-          console.log('response:', response);
+          if (response.status === 200) {
+            console.log("Post successful")
+            this.isSubmitDisabled = false
+            this.clear()
+            this.indicateRequestReceived()
+          }
         } catch (e) {
           console.log(e)
         }
@@ -286,3 +303,10 @@
     }
   }
 </script>
+
+<style lang="scss" scoped>
+form {
+  max-width: 600px;
+  margin: 0 auto;
+}
+</style>

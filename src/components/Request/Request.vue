@@ -1,15 +1,9 @@
 <template>
   <main>
 
-    <h1>Request Service</h1>
+    <request-form v-if="!isRequestSent" :indicateRequestReceived="indicateRequestReceived"/>
 
-    <br/>
-    <h2>Please fill out the form below and we will respond to you as soon as possible.</h2>
-    <br/>
-    <h3>Or if you would like to become a regular customer, <router-link to="/register">please register here.</router-link></h3>
-    <br/>
-
-    <request-form/>
+    <request-received v-if="isRequestSent"/>
 
   </main>
 </template>
@@ -17,17 +11,29 @@
 
 <script>
 import requestForm from './requestForm.vue'
+import requestReceived from './requestReceived.vue'
 
 export default {
   name: 'Request',
   components: {
     'request-form': requestForm,
+    'request-received': requestReceived
   },
+  data() {
+    return {
+      isRequestSent: false,
+    }
+  },
+  methods: {
+    indicateRequestReceived: function() {
+      this.isRequestSent = true
+    }
+  }
 };
 </script>
 
 
-<style scoped>
+<style lang="scss" scoped>
 a {
   color: #000;
 }
@@ -39,9 +45,5 @@ h2 {
 }
 h3 {
   font-size: 1em;
-}
-form {
-  max-width: 600px;
-  margin: 0 auto;
 }
 </style>
