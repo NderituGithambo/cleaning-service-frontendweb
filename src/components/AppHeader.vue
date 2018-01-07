@@ -59,13 +59,12 @@ header {
   display: flex;
   align-items: center;
   height: 160px;
-  color: $font-color;
-  background-color: $dark-green;
+  background-color: $lighter-green;
   h1 {
     font-family: 'Great Vibes', Helvetica, Arial, sans-serif;
     font-size: 3.5em;
     font-weight: normal;
-    color: $beige;
+    color: $dark-green;
   }
   .header-aside {
     width: 100%;
@@ -83,9 +82,10 @@ header {
         font-size: 1.8em;
         font-style: italic;
         font-weight: normal;
-        color: $green;
+        color: $light-green;
       }
       .call-to-action {
+        color: $green;
         h3 {
           font-size: 1.5em;
         }
@@ -102,7 +102,7 @@ header {
       a {
         text-decoration: none;
         button {
-          color: $lighter-green;
+          color: $green;
           height: 100%;
         }
       }
