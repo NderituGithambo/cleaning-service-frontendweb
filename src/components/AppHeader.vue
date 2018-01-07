@@ -1,6 +1,6 @@
 <template>
-  <header class="pa-0 green darken-1">
-    <h1 class="my-1">{{ logo }}</h1>
+  <header class="pa-0 noselect">
+    <h1>{{ logo }}</h1>
 
     <div class="header-aside">
       <div class="headlines">
@@ -14,18 +14,18 @@
       <nav>
         <div class="info-buttons">
           <router-link to="/">
-            <v-btn class="ma-0" flat :ripple="false">Home</v-btn>
+            <v-btn large class="ma-0" flat :ripple="false">Home</v-btn>
           </router-link>
           <router-link to="/about">
-            <v-btn class="ma-0" flat :ripple="false">About Us</v-btn>
+            <v-btn large class="ma-0" flat :ripple="false">About Us</v-btn>
           </router-link>
         </div>
         <div class="action-buttons">
           <router-link to="/request">
-            <v-btn class="ma-0" flat :ripple="false">Request Service</v-btn>
+            <v-btn large class="ma-0" flat :ripple="false">Request Service</v-btn>
           </router-link>
           <router-link to="/login">
-            <v-btn class="ma-0" flat :ripple="false">Log in</v-btn>
+            <v-btn large class="ma-0" flat :ripple="false">Log in</v-btn>
           </router-link>
         </div>
       </nav>
@@ -46,33 +46,44 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+$pearl: #EDEEEA;
+$beige: #D9DDC5;
+$dark-green: #426151;
+$green: #82A684;
+$light-green: #B8CCAF;
+$lighter-green: #DDE5D9;
+
+$font-color: $light-green;
+
 header {
   display: flex;
   align-items: center;
-  color: white;
-  height: 12vh;
+  height: 160px;
+  color: $font-color;
+  background-color: $dark-green;
   h1 {
-    font-family: 'Noticia Text', Helvetica, Arial, sans-serif;
-    font-size: 3em;
+    font-family: 'Great Vibes', Helvetica, Arial, sans-serif;
+    font-size: 3.5em;
+    font-weight: normal;
+    color: $beige;
   }
   .header-aside {
     width: 100%;
-    height: inherit;
+    height: 100%;
     display: flex;
     position: relative;
     flex-direction: column;
-    // border: 1px dashed pink;
     .headlines {
-      // border: 1px dashed pink;
-      height: 100%;
+      height: 75%;
       display: flex;
       justify-content: space-around;
       align-items: center;
       h2 {
         font-family: 'Noticia Text', Helvetica, Arial, sans-serif;
-        font-size: 2.25em;
+        font-size: 1.8em;
         font-style: italic;
         font-weight: normal;
+        color: $green;
       }
       .call-to-action {
         h3 {
@@ -84,14 +95,16 @@ header {
       }
     }
     nav {
+      font-family: 'Francois One', Helvetica, Arial, sans-serif;
       display: flex;
       width: 100%;
-      padding-bottom: 1vh;
+      height: 25%;
       a {
         text-decoration: none;
-      }
-      button {
-        color: white;
+        button {
+          color: $lighter-green;
+          height: 100%;
+        }
       }
       .action-buttons {
         margin-left: auto;
