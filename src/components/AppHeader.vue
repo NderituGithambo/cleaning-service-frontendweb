@@ -78,8 +78,8 @@ header {
       display: flex;
       justify-content: space-around;
       align-items: center;
+      font-family: 'Noticia Text', Helvetica, Arial, sans-serif;
       h2 {
-        font-family: 'Noticia Text', Helvetica, Arial, sans-serif;
         font-size: 2.5em;
         font-style: italic;
         font-weight: normal;

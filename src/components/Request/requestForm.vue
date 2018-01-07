@@ -47,15 +47,6 @@
       box
     ></v-text-field>
     <v-text-field
-      label="Available cleaning times"
-      v-model="availableTimes"
-      :error-messages="availableTimesErrors"
-      @input="$v.availableTimes.$touch()"
-      @blur="$v.availableTimes.$touch()"
-      required
-      box
-    ></v-text-field>
-    <v-text-field
       label="Description of work, location information, etc."
       v-model="workDescription"
       :error-messages="workDescriptionErrors"
@@ -63,6 +54,14 @@
       @blur="$v.workDescription.$touch()"
       required
       multi-line
+      box
+    ></v-text-field>
+    <v-text-field
+      label="Best cleaning times (Example: 6-8pm Monday Nov. 16th)"
+      v-model="availableTimes"
+      :error-messages="availableTimesErrors"
+      @input="$v.availableTimes.$touch()"
+      @blur="$v.availableTimes.$touch()"
       box
     ></v-text-field>
     <v-text-field
@@ -138,12 +137,11 @@
         required,
         maxLength: maxLength(1000),
       },
-      availableTimes: {
+      workDescription: {
         required,
         maxLength: maxLength(1000),
       },
-      workDescription: {
-        required,
+      availableTimes: {
         maxLength: maxLength(1000),
       },
       quantityHours: {
@@ -253,18 +251,17 @@
         !this.$v.address.required && errors.push('Address is required')
         return errors
       },
-      availableTimesErrors () {
-        const errors = []
-        if (!this.$v.availableTimes.$dirty) return errors
-        !this.$v.availableTimes.maxLength && errors.push('Available times must be at most 1000 characters long')
-        !this.$v.availableTimes.required && errors.push('Available times is required')
-        return errors
-      },
       workDescriptionErrors () {
         const errors = []
         if (!this.$v.workDescription.$dirty) return errors
         !this.$v.workDescription.maxLength && errors.push('Work description must be at most 1000 characters long')
         !this.$v.workDescription.required && errors.push('Work description is required')
+        return errors
+      },
+      availableTimesErrors () {
+        const errors = []
+        if (!this.$v.availableTimes.$dirty) return errors
+        !this.$v.availableTimes.maxLength && errors.push('Available times must be at most 1000 characters long')
         return errors
       },
       quantityHoursErrors () {
