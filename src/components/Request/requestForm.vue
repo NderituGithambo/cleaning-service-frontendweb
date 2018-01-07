@@ -7,6 +7,7 @@
       @input="$v.firstName.$touch()"
       @blur="$v.firstName.$touch()"
       required
+      box
     ></v-text-field>
     <v-text-field
       label="Last name"
@@ -15,6 +16,7 @@
       @input="$v.lastName.$touch()"
       @blur="$v.lastName.$touch()"
       required
+      box
     ></v-text-field>
     <v-text-field
       label="E-mail"
@@ -23,6 +25,7 @@
       @input="$v.email.$touch()"
       @blur="$v.email.$touch()"
       required
+      box
     ></v-text-field>
     <v-text-field
       label="Phone number"
@@ -31,6 +34,8 @@
       @input="$v.phoneNumber.$touch()"
       @blur="$v.phoneNumber.$touch()"
       required
+      :mask="maskPhone"
+      box
     ></v-text-field>
     <v-text-field
       label="Address of location to be cleaned"
@@ -39,6 +44,7 @@
       @input="$v.address.$touch()"
       @blur="$v.address.$touch()"
       required
+      box
     ></v-text-field>
     <v-text-field
       label="Available cleaning times"
@@ -47,6 +53,7 @@
       @input="$v.availableTimes.$touch()"
       @blur="$v.availableTimes.$touch()"
       required
+      box
     ></v-text-field>
     <v-text-field
       label="Description of work, location information, etc."
@@ -55,6 +62,8 @@
       @input="$v.workDescription.$touch()"
       @blur="$v.workDescription.$touch()"
       required
+      multi-line
+      box
     ></v-text-field>
     <v-text-field
       label="Hours of cleaning requested"
@@ -62,6 +71,7 @@
       :error-messages="quantityHoursErrors"
       @input="$v.quantityHours.$touch()"
       @blur="$v.quantityHours.$touch()"
+      box
     ></v-text-field>
 
     <br/><br/><v-divider></v-divider><br/>
@@ -78,6 +88,7 @@
       @input="$v.availableInterviewTimes.$touch()"
       @blur="$v.availableInterviewTimes.$touch()"
       :disabled="isInterviewDisabled()"
+      box
     ></v-text-field>
     <v-text-field
       label="Anything else we should know for the interview?"
@@ -86,6 +97,8 @@
       @input="$v.interviewNotes.$touch()"
       @blur="$v.interviewNotes.$touch()"
       :disabled="isInterviewDisabled()"
+      multi-line
+      box
     ></v-text-field>
 
     <br/><br/>
@@ -161,6 +174,7 @@
         checkbox: false,
         availableInterviewTimes: '',
         interviewNotes: '',
+        maskPhone: 'phone',
       }
     },
     methods: {

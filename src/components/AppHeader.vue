@@ -84,12 +84,9 @@ header {
         font-style: italic;
         font-weight: normal;
         color: $light-green;
-
-        // color: transparent;
-        text-shadow: 0 0 1px $light-green;
       }
       .call-to-action {
-        color: $green;
+        color: $dark-green;
         h3 {
           font-size: 1.5em;
         }
