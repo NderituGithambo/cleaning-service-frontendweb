@@ -59,7 +59,7 @@ header {
   display: flex;
   align-items: center;
   height: 160px;
-  background-color: $lighter-green;
+  background-color: white;
   border-bottom: 1px solid $light-green;
   h1 {
     font-family: 'Great Vibes', Helvetica, Arial, sans-serif;

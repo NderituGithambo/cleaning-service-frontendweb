@@ -1,10 +1,7 @@
 <template>
   <main>
-
     <request-form v-if="!isRequestSent" :indicateRequestReceived="indicateRequestReceived"/>
-
     <request-received v-if="isRequestSent"/>
-
   </main>
 </template>
 

@@ -70,6 +70,7 @@
         box
       ></v-text-field>
       <v-text-field
+        class="work-description"
         label="Description of work, location information, etc."
         v-model="workDescription"
         :error-messages="workDescriptionErrors"
@@ -152,6 +153,7 @@
 
   export default {
     mixins: [validationMixin],
+
     validations: {
       firstName: {
         required,
@@ -198,6 +200,7 @@
         maxLength: maxLength(255),
       },
     },
+
     data () {
       return {
         firstName: 'Fake',
@@ -212,18 +215,19 @@
         checkbox: false,
         availableInterviewTimes: '',
         interviewNotes: '',
-        maskPhone: 'phone',
 
+        maskPhone: 'phone',
         isLoading: false,
         isSubmitDisabled: false,
       }
     },
+
     props: ['indicateRequestReceived'],
+
     methods: {
+
       async submit() {
         this.$v.$touch()
-        console.log('this.$v.$invalid', this.$v.$invalid);
-        console.log('this.preferredContact', this.preferredContact);
         if (!this.$v.$invalid) {
           this.isSubmitDisabled = true
           this.isLoading = true
@@ -244,7 +248,6 @@
             })
             const response = await request
             if (response.status === 200) {
-              console.log("Post successful")
               setTimeout(() => {
                 this.clear()
                 this.isLoading = false
@@ -257,6 +260,7 @@
           }
         }
       },
+
       clear() {
         this.$v.$reset()
         this.firstName = ''
@@ -272,13 +276,8 @@
         this.availableInterviewTimes = ''
         this.interviewNotes = ''
       },
-      areThereValidationErrors() {
-        console.log('this.computed', this.computed);
-        for (method in this.computed) {
-          console.log('method', method);
-        }
-      },
     },
+
     computed: {
       firstNameErrors () {
         const errors = []

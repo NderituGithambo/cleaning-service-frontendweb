@@ -21,14 +21,22 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
+$pearl: #EDEEEA;
+$beige: #D9DDC5;
+$dark-green: #426151;
+$green: #82A684;
+$light-green: #B8CCAF;
+$lighter-green: #DDE5D9;
+
+
 #app {
   font-family: 'Noticia Text', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  background-color: #EDEEEA;
+  background-color: $pearl;
   margin: 0;
 
   display: flex;
