@@ -46,6 +46,20 @@
         :mask="maskPhone"
         box
       ></v-text-field>
+      <br/>
+      <v-card flat class="preferred-contact-card">
+        <v-card-text class="text-card-radio">
+          <v-radio-group
+            label="Preferred method of contact"
+            v-model="preferredContact"
+            row
+          >
+            <v-radio label="E-mail" value="email"></v-radio>
+            <v-radio label="Phone" value="phone"></v-radio>
+          </v-radio-group>
+        </v-card-text>
+      </v-card>
+      <br/>
       <v-text-field
         label="Address of location to be cleaned"
         v-model="address"
@@ -154,7 +168,10 @@
       },
       phoneNumber: {
         required,
-        maxLength: maxLength(7),
+        maxLength: maxLength(16),
+      },
+      preferredContact: {
+        required: false,
       },
       address: {
         required,
@@ -187,9 +204,10 @@
         lastName: 'Person',
         email: 'fake@person.com',
         phoneNumber: '1234567890',
+        preferredContact: null,
         address: '123 Fake St.',
         availableTimes: '',
-        workDescription: '',
+        workDescription: 'sadasdasdsadasd',
         quantityHours: '',
         checkbox: false,
         availableInterviewTimes: '',
@@ -204,6 +222,8 @@
     methods: {
       async submit() {
         this.$v.$touch()
+        console.log('this.$v.$invalid', this.$v.$invalid);
+        console.log('this.preferredContact', this.preferredContact);
         if (!this.$v.$invalid) {
           this.isSubmitDisabled = true
           this.isLoading = true
@@ -220,6 +240,7 @@
               guest_last_name: this.lastName,
               guest_email: this.email,
               guest_phone_number: this.phoneNumber,
+              guest_preferred_contact: this.preferredContact,
             })
             const response = await request
             if (response.status === 200) {
@@ -242,6 +263,7 @@
         this.lastName = ''
         this.email = ''
         this.phoneNumber = ''
+        this.preferredContact = null
         this.address = ''
         this.availableTimes = ''
         this.workDescription = ''
@@ -333,6 +355,18 @@
 <style lang="scss" scoped>
 a {
   color: #000;
+}
+.preferred-contact-card {
+  background-color: rgb(248, 248, 247) !important;
+  border-bottom: 2px solid rgb(138, 138, 137);
+  .radio-group {
+    padding: 0;
+  }
+  .text-card-radio {
+    height: 6em;
+    padding-top: 1em;
+    padding-bottom: 0;
+  }
 }
 form {
   max-width: 600px;
