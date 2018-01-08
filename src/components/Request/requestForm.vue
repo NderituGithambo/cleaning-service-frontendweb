@@ -150,22 +150,22 @@
       email: {
         required,
         email,
-        maxLength: maxLength(1000),
+        maxLength: maxLength(255),
       },
       phoneNumber: {
         required,
-        maxLength: maxLength(16),
+        maxLength: maxLength(7),
       },
       address: {
         required,
-        maxLength: maxLength(1000),
+        maxLength: maxLength(255),
       },
       workDescription: {
         required,
-        maxLength: maxLength(1000),
+        maxLength: maxLength(65536),
       },
       availableTimes: {
-        maxLength: maxLength(1000),
+        maxLength: maxLength(255),
       },
       quantityHours: {
         numeric,
@@ -175,10 +175,10 @@
         required: false,
       },
       availableInterviewTimes: {
-        maxLength: maxLength(1000),
+        maxLength: maxLength(255),
       },
       interviewNotes: {
-        maxLength: maxLength(1000),
+        maxLength: maxLength(255),
       },
     },
     data () {
@@ -288,21 +288,21 @@
       addressErrors () {
         const errors = []
         if (!this.$v.address.$dirty) return errors
-        !this.$v.address.maxLength && errors.push('Address must be at most 1000 characters long')
+        !this.$v.address.maxLength && errors.push('Address must be at most 255 characters long')
         !this.$v.address.required && errors.push('Address is required')
         return errors
       },
       workDescriptionErrors () {
         const errors = []
         if (!this.$v.workDescription.$dirty) return errors
-        !this.$v.workDescription.maxLength && errors.push('Work description must be at most 1000 characters long')
+        !this.$v.workDescription.maxLength && errors.push('Work description must be at most 65536 characters long')
         !this.$v.workDescription.required && errors.push('Work description is required')
         return errors
       },
       availableTimesErrors () {
         const errors = []
         if (!this.$v.availableTimes.$dirty) return errors
-        !this.$v.availableTimes.maxLength && errors.push('Available times must be at most 1000 characters long')
+        !this.$v.availableTimes.maxLength && errors.push('Available times must be at most 255 characters long')
         return errors
       },
       quantityHoursErrors () {
@@ -315,18 +315,20 @@
       availableInterviewTimesErrors () {
         const errors = []
         if (!this.$v.availableInterviewTimes.$dirty) return errors
-        !this.$v.availableInterviewTimes.maxLength && errors.push('Available interview times must be at most 1000 characters long')
+        !this.$v.availableInterviewTimes.maxLength && errors.push('Available interview times must be at most 255 characters long')
         return errors
       },
       interviewNotesErrors () {
         const errors = []
         if (!this.$v.interviewNotes.$dirty) return errors
-        !this.$v.interviewNotes.maxLength && errors.push('Interview notes must be at most 1000 characters long')
+        !this.$v.interviewNotes.maxLength && errors.push('Interview notes must be at most 255 characters long')
         return errors
       },
     }
   }
 </script>
+
+
 
 <style lang="scss" scoped>
 a {
