@@ -37,30 +37,6 @@
         box
       ></v-text-field>
       <v-text-field
-        label="Phone number"
-        v-model="phoneNumber"
-        :error-messages="phoneNumberErrors"
-        @input="$v.phoneNumber.$touch()"
-        @blur="$v.phoneNumber.$touch()"
-        required
-        :mask="maskPhone"
-        box
-      ></v-text-field>
-      <br/>
-      <v-card flat class="preferred-contact-card">
-        <v-card-text class="text-card-radio">
-          <v-radio-group
-            label="Preferred method of contact"
-            v-model="preferredContact"
-            row
-          >
-            <v-radio label="E-mail" value="email"></v-radio>
-            <v-radio label="Phone" value="phone"></v-radio>
-          </v-radio-group>
-        </v-card-text>
-      </v-card>
-      <br/>
-      <v-text-field
         label="Address of location to be cleaned"
         v-model="address"
         :error-messages="addressErrors"
@@ -78,22 +54,6 @@
         @blur="$v.workDescription.$touch()"
         required
         multi-line
-        box
-      ></v-text-field>
-      <v-text-field
-        label="Best cleaning times (Example: 6-8pm Monday Nov. 16th)"
-        v-model="availableTimes"
-        :error-messages="availableTimesErrors"
-        @input="$v.availableTimes.$touch()"
-        @blur="$v.availableTimes.$touch()"
-        box
-      ></v-text-field>
-      <v-text-field
-        label="Hours of cleaning requested"
-        v-model="quantityHours"
-        :error-messages="quantityHoursErrors"
-        @input="$v.quantityHours.$touch()"
-        @blur="$v.quantityHours.$touch()"
         box
       ></v-text-field>
 

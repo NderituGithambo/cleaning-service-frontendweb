@@ -38,7 +38,7 @@
 export default {
   data() {
     return {
-      logo: `Maria's Cleaning`,
+      logo: `Keep Clean`,
     };
   },
 };
@@ -62,7 +62,7 @@ header {
   background-color: white;
   border-bottom: 1px solid $light-green;
   h1 {
-    font-family: 'Great Vibes', Helvetica, Arial, sans-serif;
+    font-family: 'Open Sans', Helvetica, Arial, sans-serif;
     font-size: 3.5em;
     font-weight: normal;
     color: $dark-green;
