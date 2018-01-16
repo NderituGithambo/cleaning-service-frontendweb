@@ -1,12 +1,8 @@
 <template>
-  <div>
+  <div class="wrapper">
     <h1>Request Service</h1>
-
     <br/>
-    <h2>Please fill out the form below and we will respond to you as soon as possible.</h2>
-    <br/>
-    <h3>Or if you would like to become a regular customer, <router-link to="/register">please register here.</router-link></h3>
-    <br/>
+    <h2>Fill out the form below and we will respond to you as soon as possible.</h2>
 
     <form>
       <v-text-field
@@ -56,21 +52,22 @@
         multi-line
         box
       ></v-text-field>
-      <br/><br/>
 
-      <v-btn
-        @click="submit"
-        :loading="isLoading"
-        :disabled="isSubmitDisabled"
-      >
-        submit
-      </v-btn>
+      <div class="button-container">
+        <v-btn
+          @click="clear"
+        >
+          clear
+        </v-btn>
 
-      <v-btn
-        @click="clear"
-      >
-        clear
-      </v-btn>
+        <v-btn
+          @click="submit"
+          :loading="isLoading"
+          :disabled="isSubmitDisabled"
+        >
+          submit
+        </v-btn>
+      </div>
 
     </form>
   </div>
@@ -284,23 +281,41 @@
 
 
 <style lang="scss" scoped>
-a {
-  color: #000;
-}
-.preferred-contact-card {
-  background-color: rgb(248, 248, 247) !important;
-  border-bottom: 2px solid rgb(138, 138, 137);
-  .radio-group {
-    padding: 0;
+@import "../../colors.scss";
+
+.wrapper {
+  padding: 1em;
+  background-color: $transparent;
+  width: 100%;
+
+  h2 {
+    text-align: left;
+    font-size: 1em;
+    word-break: keep-all;
+    padding: 0.5em;
   }
-  .text-card-radio {
-    height: 6em;
-    padding-top: 1em;
-    padding-bottom: 0;
+
+  a {
+    color: #000;
   }
-}
-form {
-  max-width: 600px;
-  margin: 0 auto;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .input-group {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    .button-container {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
 }
 </style>

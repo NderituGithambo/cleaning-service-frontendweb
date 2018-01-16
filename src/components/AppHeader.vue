@@ -16,14 +16,8 @@
           <router-link to="/">
             <v-btn large class="ma-0" flat :ripple="false">Home</v-btn>
           </router-link>
-          <router-link to="/about">
-            <v-btn large class="ma-0" flat :ripple="false">About Us</v-btn>
-          </router-link>
         </div>
         <div class="action-buttons">
-          <router-link to="/request">
-            <v-btn large class="ma-0" flat :ripple="false">Request Service</v-btn>
-          </router-link>
           <router-link to="/signup">
             <v-btn large class="ma-0" flat :ripple="false">Sign up</v-btn>
           </router-link>
@@ -41,7 +35,7 @@
 export default {
   data() {
     return {
-      logo: `Keep Clean`,
+      logo: `Pacific Cleaning`,
     };
   },
 };
@@ -55,12 +49,15 @@ header {
   display: flex;
   align-items: center;
   height: 160px;
-  background-color: rgba(0, 0, 0, 0);
+  background-color: rgba(255, 255, 255, 0);
+
   h1 {
     font-family: 'Open Sans', Helvetica, Arial, sans-serif;
     font-size: 3.5em;
     font-weight: normal;
     color: $dark-green;
+    text-align: left;
+    margin-left: 0.5em;
   }
   .header-aside {
     width: 100%;
@@ -94,6 +91,7 @@ header {
       display: flex;
       width: 100%;
       height: 25%;
+
       a {
         text-decoration: none;
         button {

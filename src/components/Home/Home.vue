@@ -1,23 +1,70 @@
 <template>
   <main>
-    <h1 v-for="index in 1">{{ msg }}</h1>
+    <section>
+      <article>
+        this is stuff
+      </article>
+      <aside>
+        <request-form v-if="!isRequestSent" :indicateRequestReceived="indicateRequestReceived"/>
+        <request-received v-if="isRequestSent"/>
+      </aside>
+    </section>
   </main>
 </template>
 
+
 <script>
+import requestForm from './requestForm.vue'
+import requestReceived from './requestReceived.vue'
+
 export default {
   name: 'Home',
+  components: {
+    'request-form': requestForm,
+    'request-received': requestReceived
+  },
   data() {
     return {
-      msg: 'This is the home page',
-    };
+      isRequestSent: false,
+    }
   },
+  methods: {
+    indicateRequestReceived: function() {
+      this.isRequestSent = true
+    }
+  }
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h1 {
-  font-weight: normal;
+
+<style lang="scss" scoped>
+@import "../../colors.scss";
+
+section {
+  display: grid;
+  grid-template-columns: [col] 25% [col] 25% [col] 25% [col] 25%;
+  grid-template-rows: [row] auto [row] auto [row];
+
 }
+
+article {
+  grid-column: col / span 2;
+  grid-row: row;
+
+  display: flex;
+  align-items: flex-start;
+
+  // border: 1px dashed red;
+}
+
+aside {
+  grid-column: col 3 / span 2;
+  grid-row: row;
+
+  display: flex;
+  align-items: flex-start;
+
+  // border: 1px dashed green;
+}
+
 </style>

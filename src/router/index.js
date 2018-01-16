@@ -1,8 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Home from '@/components/Home/Home';
-import About from '@/components/About/About';
-import Request from '@/components/Request/Request';
 import Login from '@/components/Login/Login';
 import Register from '@/components/Register/Register';
 import Admin from '@/components/Admin/Admin';
@@ -16,16 +14,6 @@ export default new Router({
       path: '/',
       name: 'Home',
       component: Home,
-    },
-    {
-      path: '/about',
-      name: 'About',
-      component: About,
-    },
-    {
-      path: '/request',
-      name: 'Request',
-      component: Request,
     },
     {
       path: '/login',
