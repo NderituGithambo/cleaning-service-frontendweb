@@ -17,15 +17,16 @@ export default {
     }
 
     try {
+      // This route only allows admin-type users.
       const request = axios.get('http://localhost:3000/admin/job_requests', config)
       const response = await request
-      if (response.status === 200) {
-        console.log("auth was a success.")
-        next()
-      }
-    } catch (e) {
-      console.log(e)
-      console.log("got here")
+      console.log(response);
+      next()
+    } catch (error) {
+      console.log(error)
+
+      // Clear token even if user logged in as employee or client
+      localStorage.removeItem('token');
     }
 
   },

@@ -88,19 +88,16 @@
               password: this.password,
             })
             const response = await request
-            if (response.status === 200) {
-              setTimeout(() => {
-                this.clear()
-                this.isLoading = false
-                this.isSubmitDisabled = false
-                const token = response.data.auth_token
-                localStorage.setItem("token", token)
-                this.$router.push({ path: '/admin/dashboard' })
-              }, 1000)
-            }
-          } catch (e) {
-            console.log(e)
-            console.log("Could not log in.")
+            setTimeout(() => {
+              this.clear()
+              this.isLoading = false
+              this.isSubmitDisabled = false
+              const token = response.data.auth_token
+              localStorage.setItem("token", token)
+              this.$router.push({ path: '/admin/dashboard' })
+            }, 1000)
+          } catch (error) {
+            console.log(error)
             setTimeout(() => {
               this.isLoading = false
               this.isSubmitDisabled = false
