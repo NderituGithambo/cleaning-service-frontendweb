@@ -9,6 +9,26 @@
 import axios from 'axios'
 
 export default {
+  async beforeRouteEnter(to, from, next) {
+    console.log("before route entered")
+
+    const config = {
+      headers: { Authorization: localStorage.getItem("token") }
+    }
+
+    try {
+      const request = axios.get('http://localhost:3000/admin/job_requests', config)
+      const response = await request
+      if (response.status === 200) {
+        console.log("auth was a success.")
+        next()
+      }
+    } catch (e) {
+      console.log(e)
+      console.log("got here")
+    }
+
+  },
   data() {
     return {
       msg: 'This is the admin dashboard page',

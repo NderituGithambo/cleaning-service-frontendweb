@@ -53,7 +53,6 @@
 
   export default {
     mixins: [validationMixin],
-
     validations: {
       username: {
         required,
@@ -78,7 +77,6 @@
     props: ['indicateRequestReceived'],
 
     methods: {
-
       async submit() {
         this.$v.$touch()
         if (!this.$v.$invalid) {
@@ -97,10 +95,16 @@
                 this.isSubmitDisabled = false
                 const token = response.data.auth_token
                 localStorage.setItem("token", token)
+                this.$router.push({ path: '/admin/dashboard' })
               }, 1000)
             }
           } catch (e) {
             console.log(e)
+            console.log("Could not log in.")
+            setTimeout(() => {
+              this.isLoading = false
+              this.isSubmitDisabled = false
+            }, 1000)
           }
         }
       },
