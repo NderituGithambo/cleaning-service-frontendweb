@@ -22,13 +22,7 @@ export default {
 </script>
 
 <style lang="scss">
-$pearl: #EDEEEA;
-$beige: #D9DDC5;
-$dark-green: #426151;
-$green: #82A684;
-$light-green: #B8CCAF;
-$lighter-green: #DDE5D9;
-
+@import "./colors.scss";
 
 #app {
   font-family: 'Assistant', Helvetica, Arial, sans-serif;
@@ -36,7 +30,8 @@ $lighter-green: #DDE5D9;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  background-color: $pearl;
+  // background-color: $pearl;
+  background: linear-gradient(to bottom right, $pearl, $green);
   margin: 0;
 
   display: flex;

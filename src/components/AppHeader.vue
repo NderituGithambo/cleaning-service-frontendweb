@@ -24,6 +24,9 @@
           <router-link to="/request">
             <v-btn large class="ma-0" flat :ripple="false">Request Service</v-btn>
           </router-link>
+          <router-link to="/signup">
+            <v-btn large class="ma-0" flat :ripple="false">Sign up</v-btn>
+          </router-link>
           <router-link to="/login">
             <v-btn large class="ma-0" flat :ripple="false">Log in</v-btn>
           </router-link>
@@ -46,21 +49,13 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-$pearl: #EDEEEA;
-$beige: #D9DDC5;
-$dark-green: #426151;
-$green: #82A684;
-$light-green: #B8CCAF;
-$lighter-green: #DDE5D9;
-
-$font-color: $light-green;
+@import "../colors.scss";
 
 header {
   display: flex;
   align-items: center;
   height: 160px;
-  background-color: white;
-  border-bottom: 1px solid $light-green;
+  background-color: rgba(0, 0, 0, 0);
   h1 {
     font-family: 'Open Sans', Helvetica, Arial, sans-serif;
     font-size: 3.5em;

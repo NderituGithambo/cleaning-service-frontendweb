@@ -16,20 +16,12 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-$pearl: #EDEEEA;
-$beige: #D9DDC5;
-$dark-green: #426151;
-$green: #82A684;
-$light-green: #B8CCAF;
-$lighter-green: #DDE5D9;
-
-$font-color: $light-green;
-
+@import "../colors.scss";
 
 footer {
-  background-color: $dark-green;
+  background-color: rgba(0, 0, 0, 0);
   padding: 20px;
-  color: $font-color;
+  color: $light-green;
   position: absolute;
   left: 0;
   bottom: 0;

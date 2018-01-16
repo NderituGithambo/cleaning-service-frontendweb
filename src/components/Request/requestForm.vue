@@ -56,34 +56,6 @@
         multi-line
         box
       ></v-text-field>
-
-      <br/><br/><v-divider></v-divider><br/>
-      <v-checkbox
-        label="Would you like to book an interview for regular service?"
-        v-model="checkbox"
-        @change="$v.checkbox.$touch()"
-        @blur="$v.checkbox.$touch()"
-      ></v-checkbox>
-      <v-text-field
-        label="When are you available for the interview?"
-        v-model="availableInterviewTimes"
-        :error-messages="availableInterviewTimesErrors"
-        @input="$v.availableInterviewTimes.$touch()"
-        @blur="$v.availableInterviewTimes.$touch()"
-        :disabled="!checkbox"
-        box
-      ></v-text-field>
-      <v-text-field
-        label="Anything else we should know for the interview?"
-        v-model="interviewNotes"
-        :error-messages="interviewNotesErrors"
-        @input="$v.interviewNotes.$touch()"
-        @blur="$v.interviewNotes.$touch()"
-        :disabled="!checkbox"
-        multi-line
-        box
-      ></v-text-field>
-
       <br/><br/>
 
       <v-btn
@@ -213,7 +185,7 @@
                 this.isLoading = false
                 this.isSubmitDisabled = false
                 this.indicateRequestReceived()
-              }, 2000)
+              }, 1000)
             }
           } catch (e) {
             console.log(e)
