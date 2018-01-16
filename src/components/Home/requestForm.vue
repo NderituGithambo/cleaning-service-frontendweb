@@ -285,7 +285,7 @@
 
 .wrapper {
   padding: 1em;
-  background-color: $transparent;
+  background-color: $zero-opacity;
   width: 100%;
 
   h2 {

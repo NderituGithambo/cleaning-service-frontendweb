@@ -30,7 +30,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  background: linear-gradient(to bottom right, $lighter-blue, $blue);
+  background: linear-gradient(to bottom right, white, $blue);
   margin: 0;
 
   display: flex;

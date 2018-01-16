@@ -64,6 +64,8 @@ aside {
   display: flex;
   align-items: flex-start;
 
+  background-color: $transparent;
+
   // border: 1px dashed green;
 }
 

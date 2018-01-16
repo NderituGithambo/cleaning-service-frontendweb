@@ -19,7 +19,7 @@ export default {
 @import "../colors.scss";
 
 footer {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: $zero-opacity;
   padding: 20px;
   color: $light-blue;
   position: absolute;

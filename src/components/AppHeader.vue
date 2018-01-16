@@ -1,5 +1,5 @@
 <template>
-  <header class="pa-0 noselect">
+  <header class="pa-0">
     <h1>{{ logo }}</h1>
 
     <div class="header-aside">

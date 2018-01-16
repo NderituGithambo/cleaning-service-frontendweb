@@ -3,7 +3,9 @@ import Router from 'vue-router';
 import Home from '@/components/Home/Home';
 import Login from '@/components/Login/Login';
 import Register from '@/components/Register/Register';
-import Admin from '@/components/Admin/Admin';
+
+import AdminLogin from '@/components/Admin/AdminLogin';
+import AdminDashboard from '@/components/Admin/AdminDashboard';
 
 Vue.use(Router);
 
@@ -12,23 +14,23 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Home',
       component: Home,
     },
     {
       path: '/login',
-      name: 'Login',
       component: Login,
     },
     {
       path: '/register',
-      name: 'Register',
       component: Register,
     },
     {
       path: '/admin',
-      name: 'Admin',
-      component: Admin,
+      component: AdminLogin,
+    },
+    {
+      path: '/admin/dashboard',
+      component: AdminDashboard,
     },
   ],
 });
