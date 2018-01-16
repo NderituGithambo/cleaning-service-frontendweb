@@ -30,8 +30,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  // background-color: $pearl;
-  background: linear-gradient(to bottom right, $pearl, $green);
+  background: linear-gradient(to bottom right, $lighter-blue, $blue);
   margin: 0;
 
   display: flex;
@@ -41,19 +40,8 @@ export default {
 }
 
 main {
-  /* For sticky footer */
+  // For sticky footer
   padding-bottom: 60px;
-
   margin: 4vh 4vw;
-}
-
-.noselect {
-  -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently
-                                  supported by Chrome and Opera */
 }
 </style>

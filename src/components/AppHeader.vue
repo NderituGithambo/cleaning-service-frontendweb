@@ -49,15 +49,15 @@ header {
   display: flex;
   align-items: center;
   height: 160px;
-  background-color: rgba(255, 255, 255, 0);
+  background-color: $zero-opacity;
 
   h1 {
     font-family: 'Open Sans', Helvetica, Arial, sans-serif;
     font-size: 3.5em;
     font-weight: normal;
-    color: $dark-green;
+    color: $dark-blue;
     text-align: left;
-    margin-left: 0.5em;
+    margin-left: 1em;
   }
   .header-aside {
     width: 100%;
@@ -74,10 +74,10 @@ header {
         font-size: 2em;
         font-style: italic;
         font-weight: normal;
-        color: $light-green;
+        color: $light-blue;
       }
       .call-to-action {
-        color: $dark-green;
+        color: $dark-blue;
         h3 {
           font-size: 1.5em;
         }
@@ -95,7 +95,7 @@ header {
       a {
         text-decoration: none;
         button {
-          color: $green;
+          color: $blue;
           height: 100%;
         }
       }

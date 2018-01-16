@@ -21,7 +21,7 @@ export default {
 footer {
   background-color: rgba(255, 255, 255, 0.1);
   padding: 20px;
-  color: $light-green;
+  color: $light-blue;
   position: absolute;
   left: 0;
   bottom: 0;
