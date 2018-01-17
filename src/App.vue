@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <div id="app">
-      <app-header></app-header>
+      <app-header v-if="showHeader()"></app-header>
       <router-view/>
       <app-footer></app-footer>
     </div>
@@ -13,6 +13,18 @@ import AppHeader from './components/AppHeader.vue'
 import AppFooter from './components/AppFooter.vue'
 
 export default {
+  data() {
+    return {
+      showHeader: () => {
+        return (
+          this.$route.name === "admin" ||
+          this.$route.name === "adminDashboard" ||
+          this.$route.name === "adminJobRequests"
+        ) ? false : true
+      }
+    }
+  },
+
   components: {
     'app-header': AppHeader,
     'app-footer': AppFooter,

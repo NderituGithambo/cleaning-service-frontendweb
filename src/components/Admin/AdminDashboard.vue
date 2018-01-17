@@ -1,7 +1,12 @@
 <template>
   <main>
-    <h1>{{ msg }}sdsadsa</h1>
+    <h1>Admin Dashboard</h1>
     <br/>
+      <router-link to="/admin/dashboard/job_requests">
+        <v-btn large class="ma-0" flat :ripple="false">Job Requests</v-btn>
+      </router-link>
+    <br/>
+    <router-view/>
   </main>
 </template>
 
@@ -10,40 +15,37 @@ import axios from 'axios'
 
 export default {
   async beforeRouteEnter(to, from, next) {
-    console.log("before route entered")
-
     const config = {
       headers: { Authorization: localStorage.getItem("token") }
     }
 
     try {
-      // This route only allows admin-type users.
-      const request = axios.get('http://localhost:3000/admin/job_requests', config)
+      // This route only allows admin-type users
+      const request = axios.get('http://localhost:3000/admin/dashboard', config)
       const response = await request
-      console.log(response);
       next()
     } catch (error) {
       console.log(error)
-
       // Clear token even if user logged in as employee or client
       localStorage.removeItem('token');
+      next('/')
     }
-
   },
+
   data() {
     return {
-      msg: 'This is the admin dashboard page',
       loading: false,
       error: null,
       jobRequests: null,
     };
   },
+
   mounted() {
-    console.log("hi")
-    // this.fetchJobRequests();
+    return
   },
+
   methods: {
-    async fetchJobRequests() {
+    async fetchJobRequests() { // Not using this
       try {
         const request = axios.get('http://localhost:3000/admin/job_requests')
         const response = await request

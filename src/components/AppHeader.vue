@@ -36,6 +36,7 @@ export default {
   data() {
     return {
       logo: `Pacific Cleaning`,
+      showHeader: true,
     };
   },
 };
