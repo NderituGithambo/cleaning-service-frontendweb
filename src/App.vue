@@ -22,7 +22,9 @@ export default {
           this.$route.name === "admin" ||
           this.$route.name === "adminDashboard" ||
           this.$route.name === "adminJobRequests" ||
-          this.$route.name === "adminJobRequestSingle"
+          this.$route.name === "adminJobRequest" ||
+          this.$route.name === "adminJobs" ||
+          this.$route.name === "adminJob"
         ) ? false : true
       }
     }

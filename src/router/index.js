@@ -7,7 +7,8 @@ import Register from '@/components/Register/Register';
 import AdminLogin from '@/components/Admin/AdminLogin';
 import AdminDashboard from '@/components/Admin/AdminDashboard';
 import AdminJobRequests from '@/components/Admin/AdminJobRequests';
-import AdminJobRequestSingle from '@/components/Admin/AdminJobRequestSingle';
+import AdminJobRequest from '@/components/Admin/AdminJobRequest';
+import AdminJobs from '@/components/Admin/AdminJobs';
 
 Vue.use(Router);
 
@@ -43,9 +44,14 @@ export default new Router({
         },
         {
           path: 'job_requests/:id',
-          component: AdminJobRequestSingle,
-          name: 'adminJobRequestSingle'
-        }
+          component: AdminJobRequest,
+          name: 'adminJobRequest'
+        },
+        {
+          path: 'jobs',
+          component: AdminJobs,
+          name: 'adminJobs',
+        },
       ]
     },
   ],
