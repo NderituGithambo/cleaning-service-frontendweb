@@ -12,6 +12,11 @@ import router from './router';
 Vue.config.productionTip = false;
 
 
+
+//
+// Global filters
+//
+
 import moment from 'moment'
 Vue.filter('moment', function(date) {
   return moment(date).format('MMMM Do YYYY, h:mm:ss a');
@@ -23,6 +28,8 @@ Vue.filter('phone', function(phone) {
     .replace(/[^0-9]/g, '')
     .replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
 });
+
+
 
 
 /* eslint-disable no-new */

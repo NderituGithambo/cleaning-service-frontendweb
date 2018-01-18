@@ -2,11 +2,13 @@
   <main>
     <section>
       <article>
-        this is stuff
+        Photos here
       </article>
       <aside>
         <request-form v-if="!isRequestSent" :indicateRequestReceived="indicateRequestReceived"/>
-        <request-received v-if="isRequestSent"/>
+        <transition name="fade">
+          <request-received v-if="isRequestSent"/>
+        </transition>
       </aside>
     </section>
   </main>
@@ -42,7 +44,7 @@ export default {
 
 section {
   display: grid;
-  grid-template-columns: [col] 25% [col] 25% [col] 25% [col] 25%;
+  grid-template-columns: [col] 33% [col] 33% [col] 33%;
   grid-template-rows: [row] auto [row] auto [row];
 
 }
@@ -65,8 +67,13 @@ aside {
   align-items: flex-start;
 
   background-color: $transparent;
+}
 
-  // border: 1px dashed green;
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 
 </style>

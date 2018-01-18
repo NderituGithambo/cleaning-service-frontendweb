@@ -26,18 +26,18 @@
           </router-link>
           <td class="text-xs-right">{{ props.item.client_id || "guest" }}</td>
           <td class="text-xs-right">{{ props.item.address }}</td>
-          <td class="text-xs-right">{{ props.item.work_description }}</td>
+          <!-- <td class="text-xs-right">{{ props.item.work_description }}</td> -->
           <!-- <td class="text-xs-right">{{ props.item.quantity_hours }}</td> -->
           <!-- <td class="text-xs-right">{{ props.item.interview_requested }}</td> -->
           <!-- <td class="text-xs-right">{{ props.item.possible_interview_times }}</td> -->
           <!-- <td class="text-xs-right">{{ props.item.interview_notes }}</td> -->
           <td class="text-xs-right">{{ `${props.item.guest_first_name} ${props.item.guest_last_name}` }}</td>
           <!-- <td class="text-xs-right">{{ props.item.guest_last_name }}</td> -->
-          <td class="text-xs-right">{{ props.item.guest_phone_number | phone }}</td>
-          <td class="text-xs-right">{{ props.item.guest_email }}</td>
-          <td class="text-xs-right">{{ props.item.guest_preferred_contact }}</td>
+          <!-- <td class="text-xs-right">{{ props.item.guest_phone_number | phone }}</td> -->
+          <!-- <td class="text-xs-right">{{ props.item.guest_email }}</td> -->
+          <!-- <td class="text-xs-right">{{ props.item.guest_preferred_contact }}</td> -->
           <td class="text-xs-right">{{ props.item.created_at | moment }}</td>
-          <td class="text-xs-right">{{ props.item.updated_at | moment }}</td>
+          <!-- <td class="text-xs-right">{{ props.item.updated_at | moment }}</td> -->
         </template>
     </v-data-table>
     <v-card>
@@ -87,18 +87,18 @@ export default {
         { text: 'ID', value: 'id', sortable: false },
         { text: 'Client ID', value: 'client_id', sortable: false },
         { text: 'Address', value: 'address', sortable: false },
-        { text: 'Description', value: 'work_description', sortable: false },
+        // { text: 'Description', value: 'work_description', sortable: false },
         // { text: 'quantity_hours', value: 'quantity_hours' },
         // { text: 'interview_requested', value: 'interview_requested' },
         // { text: 'possible_interview_times', value: 'possible_interview_times' },
         // { text: 'interview_notes', value: 'interview_notes' },
         { text: 'Name', value: 'guest_first_name', sortable: false },
         // { text: 'Last name', value: 'guest_last_name' },
-        { text: 'Phone', value: 'guest_phone_number', sortable: false },
-        { text: 'Email', value: 'guest_email', sortable: false },
-        { text: 'Preferred Contact', value: 'guest_preferred_contact', sortable: false },
+        // { text: 'Phone', value: 'guest_phone_number', sortable: false },
+        // { text: 'Email', value: 'guest_email', sortable: false },
+        // { text: 'Preferred Contact', value: 'guest_preferred_contact', sortable: false },
         { text: 'Created At', value: 'created_at', sortable: false },
-        { text: 'Updated At', value: 'updated_at', sortable: false },
+        // { text: 'Updated At', value: 'updated_at', sortable: false },
       ],
     }
   },

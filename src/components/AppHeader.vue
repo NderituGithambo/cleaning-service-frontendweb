@@ -1,6 +1,6 @@
 <template>
   <header class="pa-0">
-    <h1>{{ logo }}</h1>
+    <h1>FreshEco</h1>
 
     <div class="header-aside">
       <div class="headlines">
@@ -35,7 +35,6 @@
 export default {
   data() {
     return {
-      logo: `Pacific Cleaning`,
       showHeader: true,
     };
   },
@@ -76,6 +75,7 @@ header {
         font-style: italic;
         font-weight: normal;
         color: $light-blue;
+        transform: rotate(-4deg);
       }
       .call-to-action {
         color: $dark-blue;

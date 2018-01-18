@@ -21,7 +21,7 @@ export default {
 footer {
   background-color: $zero-opacity;
   padding: 20px;
-  color: $light-blue;
+  color: black;
   position: absolute;
   left: 0;
   bottom: 0;
