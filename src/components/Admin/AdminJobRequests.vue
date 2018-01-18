@@ -7,8 +7,8 @@
       v-bind:items="items"
       v-bind:search="search"
       :loading="loading"
-      hide-actions
       class="elevation-1"
+      hide-actions
     >
       <template slot="headerCell" slot-scope="props">
         <v-tooltip bottom>
@@ -20,27 +20,41 @@
           </span>
         </v-tooltip>
       </template>
-      <template slot="items" slot-scope="props">
-        <td class="text-xs-right">{{ props.item.id }}</td>
-        <td class="text-xs-right">{{ props.item.client_id }}</td>
-        <td class="text-xs-right">{{ props.item.address }}</td>
-        <td class="text-xs-right">{{ props.item.work_description }}</td>
-        <!-- <td class="text-xs-right">{{ props.item.quantity_hours }}</td> -->
-        <!-- <td class="text-xs-right">{{ props.item.interview_requested }}</td> -->
-        <!-- <td class="text-xs-right">{{ props.item.possible_interview_times }}</td> -->
-        <!-- <td class="text-xs-right">{{ props.item.interview_notes }}</td> -->
-        <td class="text-xs-right">{{ `${props.item.guest_first_name} ${props.item.guest_last_name}` }}</td>
-        <!-- <td class="text-xs-right">{{ props.item.guest_last_name }}</td> -->
-        <td class="text-xs-right">{{ props.item.guest_phone_number | phone }}</td>
-        <td class="text-xs-right">{{ props.item.guest_email }}</td>
-        <td class="text-xs-right">{{ props.item.guest_preferred_contact }}</td>
-        <td class="text-xs-right">{{ props.item.created_at | moment }}</td>
-        <td class="text-xs-right">{{ props.item.updated_at | moment }}</td>
-      </template>
+        <template slot="items" slot-scope="props">
+          <router-link v-bind:to="toJobRequest(props.item.id)">
+            <td class="text-xs-right">{{ props.item.id }}</td>
+          </router-link>
+          <td class="text-xs-right">{{ props.item.client_id || "guest" }}</td>
+          <td class="text-xs-right">{{ props.item.address }}</td>
+          <td class="text-xs-right">{{ props.item.work_description }}</td>
+          <!-- <td class="text-xs-right">{{ props.item.quantity_hours }}</td> -->
+          <!-- <td class="text-xs-right">{{ props.item.interview_requested }}</td> -->
+          <!-- <td class="text-xs-right">{{ props.item.possible_interview_times }}</td> -->
+          <!-- <td class="text-xs-right">{{ props.item.interview_notes }}</td> -->
+          <td class="text-xs-right">{{ `${props.item.guest_first_name} ${props.item.guest_last_name}` }}</td>
+          <!-- <td class="text-xs-right">{{ props.item.guest_last_name }}</td> -->
+          <td class="text-xs-right">{{ props.item.guest_phone_number | phone }}</td>
+          <td class="text-xs-right">{{ props.item.guest_email }}</td>
+          <td class="text-xs-right">{{ props.item.guest_preferred_contact }}</td>
+          <td class="text-xs-right">{{ props.item.created_at | moment }}</td>
+          <td class="text-xs-right">{{ props.item.updated_at | moment }}</td>
+        </template>
     </v-data-table>
-    <v-card-text>
-      <v-pagination v-bind:length.number="numPages" v-model="pagination.page"></v-pagination>
-    </v-card-text>
+    <v-card>
+      <v-card-text>
+        <v-pagination
+          v-bind:length.number="numPages"
+          v-model="pagination.page"
+        ></v-pagination>
+        <v-select
+          v-bind:items="rowsPerPageItems"
+          v-model="pagination.rowsPerPage"
+          label="Select"
+          single-line
+          class="drop-down"
+        ></v-select>
+      </v-card-text>
+    </v-card>
   </div>
 </template>
 
@@ -56,28 +70,35 @@ export default {
       pagination: {
         descending: true,
         page: 1,
-        rowsPerPage: 5,
+        rowsPerPage: 25,
         sortBy: "created_at"
       },
+      rowsPerPageItems: [
+        { text: 5, value: 5 },
+        { text: 10, value: 10 },
+        { text: 25, value: 25 },
+        { text: 50, value: 50 },
+        { text: 100, value: 100 },
+      ],
       selected: [],
       items: [],
       loading: true,
       headers: [
         { text: 'ID', value: 'id', sortable: false },
-        { text: 'Client ID', value: 'client_id' },
-        { text: 'Address', value: 'address' },
-        { text: 'Description', value: 'work_description' },
+        { text: 'Client ID', value: 'client_id', sortable: false },
+        { text: 'Address', value: 'address', sortable: false },
+        { text: 'Description', value: 'work_description', sortable: false },
         // { text: 'quantity_hours', value: 'quantity_hours' },
         // { text: 'interview_requested', value: 'interview_requested' },
         // { text: 'possible_interview_times', value: 'possible_interview_times' },
         // { text: 'interview_notes', value: 'interview_notes' },
-        { text: 'Name', value: 'guest_first_name' },
+        { text: 'Name', value: 'guest_first_name', sortable: false },
         // { text: 'Last name', value: 'guest_last_name' },
-        { text: 'Phone', value: 'guest_phone_number' },
-        { text: 'Email', value: 'guest_email' },
-        { text: 'Preferred Contact', value: 'guest_preferred_contact' },
-        { text: 'Created At', value: 'created_at' },
-        { text: 'Updated At', value: 'updated_at' },
+        { text: 'Phone', value: 'guest_phone_number', sortable: false },
+        { text: 'Email', value: 'guest_email', sortable: false },
+        { text: 'Preferred Contact', value: 'guest_preferred_contact', sortable: false },
+        { text: 'Created At', value: 'created_at', sortable: false },
+        { text: 'Updated At', value: 'updated_at', sortable: false },
       ],
     }
   },
@@ -85,12 +106,15 @@ export default {
   computed: {
     numPages: function() {
       return Math.ceil(this.totalNum / this.pagination.rowsPerPage)
-    }
+    },
   },
 
   watch: {
-    'pagination.page': function() {
-      this.fetchJobRequests(this.page, this.numPerPage)
+    pagination: {
+      handler: function() {
+        this.fetchJobRequests(this.page, this.numPerPage)
+      },
+      deep: true
     }
   },
 
@@ -116,6 +140,9 @@ export default {
       }
       this.loading = false
     },
+    toJobRequest: function(id) {
+      return `/admin/dashboard/job_requests/${id}`
+    }
   },
 };
 </script>
@@ -129,21 +156,9 @@ p {
   text-align: left;
 }
 
-.container {
-  width: 100%;
-  border: 1px dashed white;
-
-  .row {
-    width: 100%;
-    border: 1px dashed red;
-
-    .column {
-      width: 6.25%;
-      display: inline-block;
-      border: 1px dashed green;
-
-    }
-  }
+.drop-down {
+  float: right;
+  width: 100px;
 }
 
 </style>
