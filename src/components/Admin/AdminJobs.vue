@@ -22,7 +22,14 @@
       </template>
 
       <template slot="items" slot-scope="props">
-        <td class="text-xs-right" v-for="attribute in props.item">{{ attribute }}</td>
+        <td class="text-xs-right" v-for="(attribute, key) in props.item">
+          <span v-if="key === 'created_at' || key === 'updated_at' ">
+            {{ attribute | moment }}
+          </span>
+          <span v-else>
+            {{ attribute }}
+          </span>
+        </td>
       </template>
 
     </v-data-table>
@@ -102,10 +109,13 @@ export default {
         }
         const request = axios.get(`http://localhost:3000/admin/jobs?p=${page}&npp=${rowsPerPage}`, config)
         const response = await request
+
         console.log("response", response)
         this.items = response.data.jobs
+
         this.totalNum = response.data.total_num
 
+        // Generate headers for table
         Object.keys(this.items[0]).forEach(key => {
           this.headers.push({ text: key, value: key, sortable: false })
         })
