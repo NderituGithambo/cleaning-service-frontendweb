@@ -1,6 +1,8 @@
 <template>
   <main>
-    <h1>Admin Dashboard</h1>
+    <router-link to="/admin/dashboard">
+      <h1>Admin Dashboard</h1>
+    </router-link>
     <br/>
       <router-link to="/admin/dashboard/job_requests">
         <v-btn large class="ma-0" flat :ripple="false">Job Requests</v-btn>

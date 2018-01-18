@@ -13,6 +13,8 @@ import AppHeader from './components/AppHeader.vue'
 import AppFooter from './components/AppFooter.vue'
 
 export default {
+  name: 'app',
+
   data() {
     return {
       showHeader: () => {
@@ -29,7 +31,6 @@ export default {
     'app-header': AppHeader,
     'app-footer': AppFooter,
   },
-  name: 'app',
 };
 </script>
 
