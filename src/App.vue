@@ -21,7 +21,8 @@ export default {
         return (
           this.$route.name === "admin" ||
           this.$route.name === "adminDashboard" ||
-          this.$route.name === "adminJobRequests"
+          this.$route.name === "adminJobRequests" ||
+          this.$route.name === "adminJobRequestSingle"
         ) ? false : true
       }
     }

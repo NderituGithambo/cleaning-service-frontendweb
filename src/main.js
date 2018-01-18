@@ -29,6 +29,12 @@ Vue.filter('phone', function(phone) {
     .replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
 });
 
+Vue.filter('underscoresAreSpaces', function(string) {
+  // if (!string) return;
+  console.log("went here");
+  return string.replace(/_/g, " ")
+});
+
 
 
 

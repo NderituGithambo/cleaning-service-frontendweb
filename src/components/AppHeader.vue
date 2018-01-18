@@ -74,7 +74,7 @@ header {
         font-size: 2em;
         font-style: italic;
         font-weight: normal;
-        color: $light-blue;
+        color: rgba(0, 119, 255, 0.145);
         transform: rotate(-4deg);
       }
       .call-to-action {
