@@ -9,6 +9,7 @@ import AdminDashboard from '@/components/Admin/AdminDashboard';
 import AdminJobRequests from '@/components/Admin/AdminJobRequests';
 import AdminJobRequest from '@/components/Admin/AdminJobRequest';
 import AdminJobs from '@/components/Admin/AdminJobs';
+import AdminDataIndex from '@/components/Admin/AdminDataIndex';
 
 Vue.use(Router);
 
@@ -39,8 +40,9 @@ export default new Router({
       children: [
         {
           path: 'job_requests',
-          component: AdminJobRequests,
+          component: AdminDataIndex,
           name: 'adminJobRequests',
+          props: { dataModel: 'job_request' }
         },
         {
           path: 'job_requests/:id',
@@ -49,8 +51,9 @@ export default new Router({
         },
         {
           path: 'jobs',
-          component: AdminJobs,
+          component: AdminDataIndex,
           name: 'adminJobs',
+          props: { dataModel: 'job' }
         },
       ]
     },

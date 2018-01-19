@@ -56,9 +56,9 @@
 import axios from 'axios'
 
 export default {
+  props: ['dataModel'],
   data () {
     return {
-      dataModel: 'job_request',
       totalRows: 0,
       pagination: {
         descending: true,
@@ -92,6 +92,10 @@ export default {
         this.fetchItems()
       },
       deep: true
+    },
+    dataModel: function(value) {
+      console.log(value)
+      this.fetchItems()
     }
   },
 
