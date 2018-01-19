@@ -5,7 +5,6 @@
     <v-data-table
       v-bind:headers="headers"
       v-bind:items="items"
-      v-bind:search="search"
       :loading="loading"
       class="elevation-1"
       hide-actions
@@ -60,8 +59,7 @@ export default {
   data () {
     return {
       dataModel: 'job',
-      search: '',
-      totalNum: 0,
+      totalRows: 0,
       pagination: {
         descending: true,
         page: 1,
@@ -84,39 +82,38 @@ export default {
 
   computed: {
     numPages: function() {
-      return Math.ceil(this.totalNum / this.pagination.rowsPerPage)
+      return Math.ceil(this.totalRows / this.pagination.rowsPerPage)
     },
   },
 
   watch: {
     pagination: {
       handler: function() {
-        this.fetchItems(this.page, this.numPerPage)
+        this.fetchItems()
       },
       deep: true
     }
   },
 
   mounted() {
-    this.fetchItems(this.page, this.numPerPage)
+    this.fetchItems()
   },
 
   methods: {
-    async fetchItems(page, numPerPage) { // Not using this
+    async fetchItems() { // Not using this
       this.loading = true
       try {
         const { page, rowsPerPage } = this.pagination
         const config = {
           headers: { Authorization: localStorage.getItem("token") }
         }
-        const request = axios.get(`http://localhost:3000/admin/jobs?p=${page}&npp=${rowsPerPage}`, config)
+        const request = axios.get(`http://localhost:3000/admin/${this.dataModel}s?p=${page}&npp=${rowsPerPage}`, config)
         const response = await request
-
-        this.items = response.data.jobs
-
-        this.totalNum = response.data.total_num
+        this.items = response.data[`${this.dataModel}s`]
+        this.totalRows = response.data.total_rows
 
         // Generate headers for table
+        this.headers = []
         Object.keys(this.items[0]).forEach(key => {
           this.headers.push({ text: key, value: key, sortable: false })
         })
@@ -127,7 +124,7 @@ export default {
       this.loading = false
     },
     itemURL: function(id) {
-      return `/admin/dashboard/job_requests/${id}`
+      return `/admin/dashboard/${this.dataModel}s/${id}`
     }
   },
 };
@@ -137,9 +134,6 @@ export default {
 <style lang="scss" scoped>
 h1 {
   font-weight: normal;
-}
-p {
-  text-align: left;
 }
 
 .drop-down {
