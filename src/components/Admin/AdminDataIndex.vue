@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>{{ dataModel | capitalize }}s</h1>
+    <h1>{{ dataModel | underscoresAreSpaces | capitalize  }}s</h1>
     <br/>
     <v-data-table
       v-bind:headers="headers"

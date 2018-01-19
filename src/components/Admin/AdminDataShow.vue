@@ -1,21 +1,49 @@
 <template>
   <div class="container">
-    <v-list two-line>
-      <template v-for="(item, key) in items">
-        <v-subheader v-if="key" v-text="key"></v-subheader>
-        <v-list-tile v-else v-bind:key="item">
-        <v-list-tile-content>
-          <v-list-tile-title v-html="item"></v-list-tile-title>
-          <v-list-tile-sub-title v-html="item"></v-list-tile-sub-title>
-        </v-list-tile-content>
-        </v-list-tile>
-      </template>
-    </v-list>
+    <h1>Showing {{ dataModel | underscoresAreSpaces }} with id {{ $route.params.id }}</h1>
+    <br/>
+    <v-card v-for="(section, title) in items" v-bind:key="uuid()">
+      <h2>{{ title | capitalize | underscoresAreSpaces }}</h2>
+      <v-card-text>
+        <v-list two-line>
+          <template v-for="(item, key, index) in section">
+            <v-list-tile v-bind:key="uuid()">
+              <v-list-tile-content>
+                <v-list-tile-title v-html="key"></v-list-tile-title>
+
+                <v-list-tile-sub-title
+                  v-if="
+                    key === 'created_at' ||
+                    key === 'updated_at' ||
+                    key === 'confirmed_time' ||
+                    key === 'time_work_started' ||
+                    key === 'time_work_completed'
+                  "
+                  v-html="$options.filters.moment(item)"
+                ></v-list-tile-sub-title>
+                <v-list-tile-sub-title
+                  v-else-if="
+                    key === 'phone_number' ||
+                    key === 'guest_phone_number'
+                  "
+                  v-html="$options.filters.phone(item)"
+                ></v-list-tile-sub-title>
+                <v-list-tile-sub-title v-else v-html="item"></v-list-tile-sub-title>
+
+              </v-list-tile-content>
+            </v-list-tile>
+          </template>
+        </v-list>
+      </v-card-text>
+    </v-card>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+const uuidv4 = require('uuid/v4');
+
+
 
 export default {
   props: {
@@ -53,11 +81,20 @@ export default {
       }
       this.loading = false
     },
+    uuid: function() {
+      return uuidv4();
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+h2 {
+  padding: 2em;
+}
 
+.card {
+  margin-top: 2em;
+}
 
 </style>

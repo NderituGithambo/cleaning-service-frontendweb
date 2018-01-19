@@ -12,7 +12,6 @@ import router from './router';
 Vue.config.productionTip = false;
 
 
-
 //
 // Global filters
 //
@@ -31,7 +30,6 @@ Vue.filter('phone', (phone) => {
 
 Vue.filter('underscoresAreSpaces', (string) => {
   // if (!string) return;
-  console.log("went here");
   return string.replace(/_/g, " ")
 });
 

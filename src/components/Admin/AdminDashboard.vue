@@ -1,18 +1,23 @@
 <template>
-  <main>
-    <router-link to="/admin/dashboard">
-      <h1>Admin Dashboard</h1>
-    </router-link>
-    <br/>
-      <router-link to="/admin/dashboard/job_requests">
-        <v-btn large class="ma-0" flat :ripple="false">Job Requests</v-btn>
+  <div>
+    <header>
+      <router-link to="/admin/dashboard">
+        <h1>Admin Dashboard</h1>
       </router-link>
-      <router-link to="/admin/dashboard/jobs">
-        <v-btn large class="ma-0" flat :ripple="false">Jobs</v-btn>
-      </router-link>
+      <nav>
+        <router-link to="/admin/dashboard/job_requests">
+          <v-btn large class="ma-0" flat :ripple="false">Job Requests</v-btn>
+        </router-link>
+        <router-link to="/admin/dashboard/jobs">
+          <v-btn large class="ma-0" flat :ripple="false">Jobs</v-btn>
+        </router-link>
+      </nav>
+    </header>
     <br/>
-    <router-view/>
-  </main>
+    <main>
+      <router-view/>
+    </main>
+  </div>
 </template>
 
 <script>
@@ -64,11 +69,28 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang="scss" scoped>
+@import "../../colors.scss";
+
 h1 {
   font-weight: normal;
 }
 p {
   text-align: left;
+}
+
+a {
+  color: $blue;
+}
+
+header {
+  width: 100%;
+  background-color: $transparent;
+  border-bottom: 1px solid black;
+
+  nav {
+    display: flex;
+    justify-content: center;
+  }
 }
 </style>
