@@ -36,7 +36,7 @@
     <v-card>
       <v-card-text>
         <v-pagination
-          v-bind:length.number="numPages"
+          v-bind:length.number="numPages()"
           v-model="pagination.page"
         ></v-pagination>
         <v-select
@@ -56,7 +56,12 @@
 import axios from 'axios'
 
 export default {
-  props: ['dataModel'],
+  props: {
+    dataModel: {
+      type: String,
+      required: true,
+    }
+  },
   data () {
     return {
       totalRows: 0,
@@ -78,12 +83,6 @@ export default {
       loading: true,
       headers: [],
     }
-  },
-
-  computed: {
-    numPages: function() {
-      return Math.ceil(this.totalRows / this.pagination.rowsPerPage)
-    },
   },
 
   watch: {
@@ -129,7 +128,11 @@ export default {
     },
     itemURL: function(id) {
       return `/admin/dashboard/${this.dataModel}s/${id}`
-    }
+    },
+    numPages: function() {
+      const numPages = Math.ceil(this.totalRows / this.pagination.rowsPerPage)
+      return numPages
+    },
   },
 };
 </script>
