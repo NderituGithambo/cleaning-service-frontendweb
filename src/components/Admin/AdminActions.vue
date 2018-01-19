@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <main>
     <h1>Actions</h1>
     <br/>
     <v-card>
@@ -9,7 +9,7 @@
       </router-link>
 
     </v-card>
-  </div>
+  </main>
 </template>
 
 <script>
@@ -23,7 +23,15 @@ h2 {
   padding: 2em;
 }
 
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .card {
   margin-top: 2em;
+  max-width: 600px;
 }
 </style>

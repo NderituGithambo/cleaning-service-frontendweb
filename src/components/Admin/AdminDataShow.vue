@@ -57,7 +57,7 @@
         </v-list>
       </v-card-text>
 
-      <v-btn v-if="dataModel === 'job_request'" color="error" dark large>Make this a job</v-btn>
+      <v-btn v-if="dataModel === 'job_request'" color="primary" dark large>Make this a job</v-btn>
 
     </v-card>
   </div>

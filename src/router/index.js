@@ -10,6 +10,7 @@ import AdminActions from '@/components/Admin/AdminActions';
 import AdminDataIndex from '@/components/Admin/AdminDataIndex';
 import AdminDataShow from '@/components/Admin/AdminDataShow';
 import AdminDataCreate from '@/components/Admin/AdminDataCreate';
+import AdminJobCreate from '@/components/Admin/AdminJobCreate';
 
 Vue.use(Router);
 
@@ -61,15 +62,16 @@ export default new Router({
           props: { dataModel: 'job' }
         },
         {
+          path: 'jobs/create',
+          component: AdminJobCreate,
+          name: 'adminJobCreate',
+        },
+        {
+          // This path needs to be below jobs/*
+          // to prevent misfiring
           path: 'jobs/:id',
           component: AdminDataShow,
           name: 'adminJob',
-          props: { dataModel: 'job' }
-        },
-        {
-          path: 'jobs/create',
-          component: AdminDataCreate,
-          name: 'adminJobCreate',
           props: { dataModel: 'job' }
         },
       ]
