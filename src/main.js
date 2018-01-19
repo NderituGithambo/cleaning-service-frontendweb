@@ -18,22 +18,26 @@ Vue.config.productionTip = false;
 //
 
 import moment from 'moment'
-Vue.filter('moment', function(date) {
+Vue.filter('moment', (date) => {
   return moment(date).format('MMMM Do YYYY, h:mm:ss a');
 })
 
-Vue.filter('phone', function(phone) {
+Vue.filter('phone', (phone) => {
   if (!phone) return;
   return phone
     .replace(/[^0-9]/g, '')
     .replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
 });
 
-Vue.filter('underscoresAreSpaces', function(string) {
+Vue.filter('underscoresAreSpaces', (string) => {
   // if (!string) return;
   console.log("went here");
   return string.replace(/_/g, " ")
 });
+
+Vue.filter('capitalize', (string) => {
+  return string.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+})
 
 
 

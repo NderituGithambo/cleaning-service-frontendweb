@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Jobs</h1>
+    <h1>{{ dataModel | capitalize }}s</h1>
     <br/>
     <v-data-table
       v-bind:headers="headers"
@@ -11,19 +11,20 @@
       hide-actions
     >
       <template slot="headerCell" slot-scope="props">
-        <v-tooltip bottom>
-          <span slot="activator">
-            {{ props.header.text }}
-          </span>
-          <span>
-            {{ props.header.text }}
-          </span>
-        </v-tooltip>
+        <span v-if="props.header.value === 'id'" slot="activator" class="text-left">
+          {{ props.header.text }}
+        </span>
+        <span v-else slot="activator">
+          {{ props.header.text }}
+        </span>
       </template>
 
       <template slot="items" slot-scope="props">
         <td class="text-xs-right" v-for="(attribute, key) in props.item">
-          <span v-if="key === 'created_at' || key === 'updated_at' ">
+          <router-link v-if="key === 'id'" v-bind:to="itemURL(attribute)" class="id-link">
+            {{ attribute }}
+          </router-link>
+          <span v-else-if="key === 'created_at' || key === 'updated_at' ">
             {{ attribute | moment }}
           </span>
           <span v-else>
@@ -58,6 +59,7 @@ import axios from 'axios'
 export default {
   data () {
     return {
+      dataModel: 'job',
       search: '',
       totalNum: 0,
       pagination: {
@@ -110,7 +112,6 @@ export default {
         const request = axios.get(`http://localhost:3000/admin/jobs?p=${page}&npp=${rowsPerPage}`, config)
         const response = await request
 
-        console.log("response", response)
         this.items = response.data.jobs
 
         this.totalNum = response.data.total_num
@@ -144,6 +145,18 @@ p {
 .drop-down {
   float: right;
   width: 100px;
+}
+
+.id-link {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.text-left {
+  display: flex;
 }
 
 </style>
