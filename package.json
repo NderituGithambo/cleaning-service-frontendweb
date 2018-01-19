@@ -21,6 +21,7 @@
     "uuid": "^3.2.1",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
+    "vue-simple-calendar": "^2.0.0",
     "vuelidate": "^0.6.1",
     "vuetify": "^0.17.6"
   },

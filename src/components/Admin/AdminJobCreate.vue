@@ -13,7 +13,7 @@
             required
           ></v-select>
 
-
+          <calendar/>
 
 
 
@@ -38,9 +38,14 @@
 
 <script>
 import axios from 'axios'
+import calendar from './calendar.vue'
 
 export default {
   props: ['indicateRequestReceived'],
+
+  components: {
+    'calendar': calendar,
+  },
 
   data () {
     return {
@@ -55,8 +60,6 @@ export default {
       isSubmitDisabled: false,
     }
   },
-
-
 
   methods: {
     async submit() {
