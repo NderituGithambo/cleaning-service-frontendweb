@@ -3,15 +3,19 @@
     <h1>Create new {{ dataModel | capitalize | underscoresAreSpaces }}</h1>
     <br/>
     <v-card>
-
-
+ssad
     </v-card>
   </div>
 </template>
 
 <script>
 export default {
-
+  props: {
+    dataModel: {
+      type: String,
+      required: true,
+    }
+  },
 }
 </script>
 

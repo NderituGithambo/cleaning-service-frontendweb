@@ -4,7 +4,7 @@
     <br/>
     <v-card>
 
-      <router-link to="jobs/create">
+      <router-link to="/admin/jobs/create">
         <v-btn color="primary">Create new job</v-btn>
       </router-link>
 

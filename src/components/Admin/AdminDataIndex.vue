@@ -127,7 +127,7 @@ export default {
       this.loading = false
     },
     itemURL: function(id) {
-      return `/admin/dashboard/${this.dataModel}s/${id}`
+      return `/admin/${this.dataModel}s/${id}`
     },
     numPages: function() {
       const numPages = Math.ceil(this.totalRows / this.pagination.rowsPerPage)

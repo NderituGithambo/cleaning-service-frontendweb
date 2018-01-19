@@ -1,14 +1,14 @@
 <template>
   <div>
     <header>
-      <router-link to="/admin/dashboard">
+      <router-link to="/admin">
         <h1>Admin Dashboard</h1>
       </router-link>
       <nav>
-        <router-link to="/admin/dashboard/job_requests">
+        <router-link to="/admin/job_requests">
           <v-btn large class="ma-0" flat :ripple="false">Job Requests</v-btn>
         </router-link>
-        <router-link to="/admin/dashboard/jobs">
+        <router-link to="/admin/jobs">
           <v-btn large class="ma-0" flat :ripple="false">Jobs</v-btn>
         </router-link>
       </nav>
@@ -37,8 +37,8 @@ export default {
     } catch (error) {
       console.log(error)
       // Clear token even if user logged in as employee or client
-      localStorage.removeItem('token');
-      next('/')
+      // localStorage.removeItem('token');
+      next('/admin/login')
     }
   },
 

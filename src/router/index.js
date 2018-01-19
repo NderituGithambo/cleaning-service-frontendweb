@@ -29,14 +29,13 @@ export default new Router({
       component: Register,
     },
     {
-      path: '/admin',
+      path: '/admin/login',
       component: AdminLogin,
-      name: 'admin',
+      name: 'adminLogin',
     },
     {
-      path: '/admin/dashboard',
+      path: '/admin',
       component: AdminDashboard,
-      name: 'adminDashboard',
       children: [
         {
           path: '',

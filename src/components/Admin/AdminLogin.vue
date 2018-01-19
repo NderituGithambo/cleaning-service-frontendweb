@@ -94,7 +94,7 @@
               this.isSubmitDisabled = false
               const token = response.data.auth_token
               localStorage.setItem("token", token)
-              this.$router.push({ path: '/admin/dashboard' })
+              this.$router.push({ path: '/admin' })
             }, 1000)
           } catch (error) {
             console.log(error)
