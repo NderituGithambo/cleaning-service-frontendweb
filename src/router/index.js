@@ -45,12 +45,19 @@ export default new Router({
         {
           path: 'job_requests/:id',
           component: AdminDataShow,
-          name: 'adminJobRequest'
+          name: 'adminJobRequest',
+          props: { dataModel: 'job_request' }
         },
         {
           path: 'jobs',
           component: AdminDataIndex,
           name: 'adminJobs',
+          props: { dataModel: 'job' }
+        },
+        {
+          path: 'jobs/:id',
+          component: AdminDataShow,
+          name: 'adminJob',
           props: { dataModel: 'job' }
         },
       ]

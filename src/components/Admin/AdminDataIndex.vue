@@ -62,6 +62,7 @@ export default {
       required: true,
     }
   },
+
   data () {
     return {
       totalRows: 0,
@@ -93,7 +94,6 @@ export default {
       deep: true
     },
     dataModel: function(value) {
-      console.log(value)
       this.fetchItems()
     }
   },
@@ -122,7 +122,7 @@ export default {
         })
 
       } catch (error) {
-        console.log("***", error);
+        console.log(error);
       }
       this.loading = false
     },
