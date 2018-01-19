@@ -18,14 +18,7 @@ export default {
   data() {
     return {
       showHeader: () => {
-        return (
-          this.$route.name === "admin" ||
-          this.$route.name === "adminDashboard" ||
-          this.$route.name === "adminJobRequests" ||
-          this.$route.name === "adminJobRequest" ||
-          this.$route.name === "adminJobs" ||
-          this.$route.name === "adminJob"
-        ) ? false : true
+        return !/^admin.*/.test(this.$route.name)
       }
     }
   },

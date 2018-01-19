@@ -6,8 +6,10 @@ import Register from '@/components/Register/Register';
 
 import AdminLogin from '@/components/Admin/AdminLogin';
 import AdminDashboard from '@/components/Admin/AdminDashboard';
+import AdminActions from '@/components/Admin/AdminActions';
 import AdminDataIndex from '@/components/Admin/AdminDataIndex';
 import AdminDataShow from '@/components/Admin/AdminDataShow';
+import AdminDataCreate from '@/components/Admin/AdminDataCreate';
 
 Vue.use(Router);
 
@@ -37,6 +39,11 @@ export default new Router({
       name: 'adminDashboard',
       children: [
         {
+          path: '',
+          component: AdminActions,
+          name: 'adminActions',
+        },
+        {
           path: 'job_requests',
           component: AdminDataIndex,
           name: 'adminJobRequests',
@@ -58,6 +65,12 @@ export default new Router({
           path: 'jobs/:id',
           component: AdminDataShow,
           name: 'adminJob',
+          props: { dataModel: 'job' }
+        },
+        {
+          path: 'jobs/create',
+          component: AdminDataCreate,
+          name: 'adminJobCreate',
           props: { dataModel: 'job' }
         },
       ]
