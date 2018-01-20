@@ -20,18 +20,27 @@ export default {
 
   methods: {
     catchClickOnDay: function(event) {
+      const date = this.getDateFromClickEvent(event)
+      console.log("You clicked", date)
+    },
+    getDateFromClickEvent: function(event) {
       let dayNum = event.currentTarget.getAttribute('dayNum')
       let monthNum = event.currentTarget.getAttribute('monthNum')
       let year = this.currentYear
       if (monthNum < 0) {
         monthNum = 11
         year -= 1
-      }
-      else if (monthNum > 11) {
+      } else if (monthNum > 11) {
         monthNum = 0
         year += 1
       }
-      console.log("You clicked", this.MONTH_NAMES[monthNum], dayNum, year)
+      return {
+        dayNum: Number(dayNum),
+        dayName: this.getDayNameByDayMonthYear(dayNum, monthNum, year),
+        monthNum: Number(monthNum),
+        monthName: this.MONTH_NAMES[monthNum],
+        year: Number(year)
+      }
     },
     getDaysInFebByYear: function(year) {
       if (year % 100 === 0 && year % 400 !== 0) return 28
@@ -39,7 +48,7 @@ export default {
       return 28
     },
     getDayNameByDayMonthYear: function(day, month, year) {
-      const dateString = `${month + 1} ${day}, ${year}`
+      const dateString = `${this.MONTH_NAMES[month]} ${day}, ${year}`
       const timestamp = new Date.parse(dateString)
       return this.DAY_NAMES[timestamp.getDay()]
     },
