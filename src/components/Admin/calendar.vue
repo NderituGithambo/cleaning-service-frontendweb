@@ -115,21 +115,8 @@ export default {
         return { monthNum: this.currentMonth + offset, yearChange: 0 }
       }
     },
-    getMonthsWithDayNumsByYear: function(year) {
-      return [
-        { name: 'January', days: 31 },
-        { name: 'February', days: this.getDaysInFebByYear(year) },
-        { name: 'March', days: 31 },
-        { name: 'April', days: 30 },
-        { name: 'May', days: 31 },
-        { name: 'June', days: 30 },
-        { name: 'July', days: 31 },
-        { name: 'August', days: 31 },
-        { name: 'September', days: 30 },
-        { name: 'October', days: 31 },
-        { name: 'November', days: 30 },
-        { name: 'December', days: 31 },
-      ]
+    getDayNumsOfMonthsByYear: function(year) {
+      return [31, this.getDaysInFebByYear(year), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     },
     getDaysOfMonthData(monthDiff) {
       let monthNum = this.currentMonth
@@ -141,11 +128,11 @@ export default {
 
       const dayData = []
 
-      const numDays = this.getMonthsWithDayNumsByYear(year)[monthNum].days
+      const numDays = this.getDayNumsOfMonthsByYear(year)[monthNum]
       if (monthDiff < 0) {
         for (let dayNum = numDays - this.daysFromPrevMonth + 1; dayNum <= numDays; dayNum++) {
           dayData.push({
-            monthName: this.getMonthsWithDayNumsByYear(year)[monthNum].name,
+            monthName: this.monthNames[monthNum],
             name: this.getDayNameByDayMonthYear(dayNum, monthNum, year),
             num: dayNum,
           })
@@ -154,7 +141,7 @@ export default {
       } else if (monthDiff > 0) {
         for (let dayNum = 1; dayNum <= this.daysFromNextMonth; dayNum++) {
           dayData.push({
-            monthName: this.getMonthsWithDayNumsByYear(year)[monthNum].name,
+            monthName: this.monthNames[monthNum],
             name: this.getDayNameByDayMonthYear(dayNum, monthNum, year),
             num: dayNum,
           })
@@ -164,7 +151,7 @@ export default {
 
       for (let dayNum = 1; dayNum <= numDays; dayNum++) {
         dayData.push({
-          monthName: this.getMonthsWithDayNumsByYear(year)[monthNum].name,
+          monthName: this.monthNames[monthNum],
           name: this.getDayNameByDayMonthYear(dayNum, monthNum, year),
           num: dayNum,
         })
@@ -192,7 +179,7 @@ export default {
         this.currentYear
       )
       // How many days to display from the next month after last day in current month
-      const daysInThisMonth = this.getMonthsWithDayNumsByYear(this.currentYear)[this.currentMonth].days
+      const daysInThisMonth = this.getDayNumsOfMonthsByYear(this.currentYear)[this.currentMonth]
       this.daysFromNextMonth = 13 - this.getDayNumberInWeekByDayMonthYear(
         daysInThisMonth,
         this.currentMonth,
