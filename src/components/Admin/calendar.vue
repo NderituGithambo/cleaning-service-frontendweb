@@ -142,8 +142,14 @@ export default {
     navMonth(change) {
       let monthNum = this.currentMonth
       monthNum += change
-      if (monthNum < 0) { monthNum = 11 }
-      else if (monthNum > 11) { monthNum = 0 }
+      if (monthNum < 0) {
+        monthNum = 11
+        this.currentYear -= 1
+      }
+      else if (monthNum > 11) {
+        monthNum = 0
+        this.currentYear += 1
+      }
       this.currentMonth = monthNum
     },
     initializeMonthData() {
