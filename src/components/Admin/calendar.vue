@@ -1,9 +1,13 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper no-select">
 
     <div class="date-nav">
-      <span class="date-nav-btn" v-on:click="() => navMonth(-1)">[  < ]</span>
-      <span class="date-nav-btn" v-on:click="() => navMonth(1)">[ >  ]</span>
+      <span class="date-nav-btn" v-on:click="() => navMonth(-1)">
+        [  < ]
+      </span>
+      <span class="date-nav-btn" v-on:click="() => navMonth(1)">
+        [ >  ]
+      </span>
     </div>
 
     <h1>{{ monthNames[currentMonth] }} {{ currentYear }}</h1>
@@ -19,8 +23,11 @@
 
         <div
           class="day day-prev-month"
-          v-for="day in getDaysOfMonthData(-1)">
-          {{ day.num }}
+          v-for="day in getDaysOfMonthData(-1)"
+          v-bind:dayNum="day.num"
+          v-bind:monthNum="currentMonth - 1"
+          v-on:click="catchClickOnDay">
+          <span class="day-num">{{ day.num }}</span>
         </div>
 
         <div
@@ -28,14 +35,17 @@
           v-for="day in getDaysOfMonthData()"
           v-bind:dayNum="day.num"
           v-bind:monthNum="currentMonth"
-          v-on:click="catchClick">
+          v-on:click="catchClickOnDay">
           <span class="day-num">{{ day.num }}</span>
         </div>
 
         <div
           class="day day-prev-month"
-          v-for="day in getDaysOfMonthData(1)">
-          {{ day.num }}
+          v-for="day in getDaysOfMonthData(1)"
+          v-bind:dayNum="day.num"
+          v-bind:monthNum="currentMonth + 1"
+          v-on:click="catchClickOnDay">
+          <span class="day-num">{{ day.num }}</span>
         </div>
 
       </div>
@@ -67,9 +77,19 @@ export default {
   },
 
   methods: {
-    catchClick: function(event) {
-      console.log(event.currentTarget.getAttribute('dayNum'))
-      console.log(event.currentTarget.getAttribute('monthNum'))
+    catchClickOnDay: function(event) {
+      let dayNum = event.currentTarget.getAttribute('dayNum')
+      let monthNum = event.currentTarget.getAttribute('monthNum')
+      let year = this.currentYear
+      if (monthNum < 0) {
+        monthNum = 11
+        year -= 1
+      }
+      else if (monthNum > 11) {
+        monthNum = 0
+        year += 1
+      }
+      console.log("You clicked", this.monthNames[monthNum], dayNum, year)
     },
     getDaysInFebByYear: function(year) {
       if (year % 100 === 0 && year % 400 !== 0) return 28
@@ -226,17 +246,30 @@ export default {
 
     .view-month {
       display: grid;
-      grid-template-columns: repeat(7, 8em);
+      grid-template-columns: repeat(7, 10em);
       grid-template-rows: [row] auto;
       grid-gap: 2px;
 
       .day-header {
         height: 2em;
         background-color: rgb(238, 238, 238);
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        padding: 0 0.5em;
       }
 
       .day {
         height: 8em;
+        padding: 0.25em 0.5em;
+
+        &:hover {
+          background-color: rgba(127, 255, 212, 0.363);
+        }
+
+        .day-num {
+          float: right;
+        }
       }
 
       .day-current-month {
