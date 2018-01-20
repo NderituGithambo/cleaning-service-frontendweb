@@ -1,7 +1,12 @@
 <template>
   <div class="wrapper">
-    <div class="calendar-container">
 
+    <div class="date-nav">
+      <span class="date-nav-btn" v-on:click="() => navMonth(-1)">[  < ]</span>
+      <span class="date-nav-btn" v-on:click="() => navMonth(1)">[ >  ]</span>
+    </div>
+
+    <div class="calendar-container">
       <div class="month">
 
         <div
@@ -44,7 +49,7 @@ export default {
     return {
       // variables
       currentYear: 2018,
-      currentMonth: 1,
+      currentMonth: 0,
       daysFromPrevMonth: 0,
       daysFromNextMonth: 0,
 
@@ -69,20 +74,13 @@ export default {
       const timestamp = new Date.parse(dateString)
       return timestamp.getDay()
     },
-    getPrevMonthWithYearChange: function() {
-      // return (this.currentMonth - 1) < 0 ? 11 : this.currentMonth - 1
-      if ((this.currentMonth - 1) < 0) {
-        return { month: 11, yearChange: -1 }
+    getAdjacentMonthNumAndYearChange: function(offset) {
+      if ((this.currentMonth + offset) < 0) {
+        return { monthNum: 11, yearChange: -1 }
+      } else if ((this.currentMonth + offset) > 11) {
+        return { monthNum: 0, yearChange: 1 }
       } else {
-        return { month: this.currentMonth - 1, yearChange: 0 }
-      }
-    },
-    getNextMonthWithYearChange: function() {
-      // return (this.currentMonth + 1) > 11 ? 0 : this.currentMonth + 1
-      if ((this.currentMonth + 1) > 11) {
-        return { month: 0, yearChange: 1 }
-      } else {
-        return { month: this.currentMonth + 1, yearChange: 0 }
+        return { monthNum: this.currentMonth + offset, yearChange: 0 }
       }
     },
     getMonthsWithDayNumsByYear: function(year) {
@@ -105,15 +103,13 @@ export default {
       let monthNum = this.currentMonth
       let year = this.currentYear
       if (monthDiff) {
-        monthNum += monthDiff
-        year += this.getPrevMonthWithYearChange().yearChange
+        monthNum = this.getAdjacentMonthNumAndYearChange(monthDiff).monthNum
+        year += this.getAdjacentMonthNumAndYearChange(monthDiff).yearChange
       }
 
       const dayData = []
+
       const numDays = this.getMonthsWithDayNumsByYear(year)[monthNum].days
-
-      console.log(monthDiff)
-
       if (monthDiff < 0) {
         for (let dayNum = numDays - this.daysFromPrevMonth + 1; dayNum <= numDays; dayNum++) {
           dayData.push({
@@ -143,21 +139,37 @@ export default {
       }
       return dayData
     },
+    navMonth(change) {
+      let monthNum = this.currentMonth
+      monthNum += change
+      if (monthNum < 0) { monthNum = 11 }
+      else if (monthNum > 11) { monthNum = 0 }
+      this.currentMonth = monthNum
+    },
+    initializeMonthData() {
+      // How many days to display from the previous month before first day in current month
+      this.daysFromPrevMonth = this.getDayNumberInWeekByDayMonthYear(
+        1,
+        this.currentMonth,
+        this.currentYear
+      )
+      // How many days to display from the next month after last day in current month
+      this.daysFromNextMonth = 6 - this.getDayNumberInWeekByDayMonthYear(
+        this.getMonthsWithDayNumsByYear(this.currentYear)[this.currentMonth].days,
+        this.currentMonth,
+        this.currentYear
+      )
+    },
+  },
+
+  watch: {
+    currentMonth: function() {
+      this.initializeMonthData()
+    }
   },
 
   mounted() {
-    // How many days to display from the previous month before first day in current month
-    this.daysFromPrevMonth = this.getDayNumberInWeekByDayMonthYear(
-      1,
-      this.currentMonth,
-      this.currentYear
-    )
-    // How many days to display from the next month after last day in current month
-    this.daysFromNextMonth = 6 - this.getDayNumberInWeekByDayMonthYear(
-      this.getMonthsWithDayNumsByYear(this.currentYear)[this.currentMonth].days,
-      this.currentMonth,
-      this.currentYear
-    )
+    this.initializeMonthData()
   }
 }
 </script>
@@ -169,6 +181,20 @@ export default {
 
 .wrapper {
   text-align: center;
+
+  .date-nav {
+    margin: 1em;
+
+    .date-nav-btn {
+      cursor: pointer;
+      &:hover {
+        background-color: lime;
+      }
+      &:active {
+        background-color: green;
+      }
+    }
+  }
 
   .calendar-container {
     display: flex;
