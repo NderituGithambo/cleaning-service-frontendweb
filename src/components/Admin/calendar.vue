@@ -1,11 +1,12 @@
 <template>
   <div class="wrapper">
     <div class="calendar-container">
+
       <div class="month">
 
         <div
           class="day day-prev-month"
-          v-for="day in getDayData(getPrevMonthWithYearChange().month, (currentYear + getPrevMonthWithYearChange().yearChange), -1)">
+          v-for="day in getDaysOfMonthData(-1)">
           {{ day.monthName }}
           {{ day.name }}
           {{ day.num }}
@@ -13,7 +14,15 @@
 
         <div
           class="day day-current-month"
-          v-for="day in getDayData(currentMonth, currentYear)">
+          v-for="day in getDaysOfMonthData()">
+          {{ day.monthName }}
+          {{ day.name }}
+          {{ day.num }}
+        </div>
+
+        <div
+          class="day day-prev-month"
+          v-for="day in getDaysOfMonthData(1)">
           {{ day.monthName }}
           {{ day.name }}
           {{ day.num }}
@@ -53,7 +62,6 @@ export default {
     getDayNameByDayMonthYear: function(day, month, year) {
       const dateString = `${month + 1} ${day}, ${year}`
       const timestamp = new Date.parse(dateString)
-      console.log(timestamp, day, month, year)
       return this.dayNames[timestamp.getDay()]
     },
     getDayNumberInWeekByDayMonthYear: function(day, month, year) {
@@ -93,15 +101,38 @@ export default {
         { name: 'December', days: 31 },
       ]
     },
-    getNumDaysInPrevMonth: function() {
-      const { month, yearChange } = this.getPrevMonthWithYearChange()
-      return this.getMonthsWithDayNumsByYear(this.currentYear + yearChange)[month].days
-    },
-    getDayData(monthNum, year, monthDiff) {
-      // if (monthDiff) { monthNum -= monthDiff }
+    getDaysOfMonthData(monthDiff) {
+      let monthNum = this.currentMonth
+      let year = this.currentYear
+      if (monthDiff) {
+        monthNum += monthDiff
+        year += this.getPrevMonthWithYearChange().yearChange
+      }
+
       const dayData = []
       const numDays = this.getMonthsWithDayNumsByYear(year)[monthNum].days
-      // console.log(monthDiff)
+
+      console.log(monthDiff)
+
+      if (monthDiff < 0) {
+        for (let dayNum = numDays - this.daysFromPrevMonth + 1; dayNum <= numDays; dayNum++) {
+          dayData.push({
+            monthName: this.getMonthsWithDayNumsByYear(year)[monthNum].name,
+            name: this.getDayNameByDayMonthYear(dayNum, monthNum, year),
+            num: dayNum,
+          })
+        }
+        return dayData
+      } else if (monthDiff > 0) {
+        for (let dayNum = 1; dayNum <= this.daysFromNextMonth; dayNum++) {
+          dayData.push({
+            monthName: this.getMonthsWithDayNumsByYear(year)[monthNum].name,
+            name: this.getDayNameByDayMonthYear(dayNum, monthNum, year),
+            num: dayNum,
+          })
+        }
+        return dayData
+      }
 
       for (let dayNum = 1; dayNum <= numDays; dayNum++) {
         dayData.push({
@@ -110,7 +141,6 @@ export default {
           num: dayNum,
         })
       }
-      console.log(dayData)
       return dayData
     },
   },
