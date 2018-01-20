@@ -1,4 +1,6 @@
-<div class="wrapper no-select">
+<div
+  v-on:click="hideMenus"
+  class="wrapper no-select">
 
   <div class="date-nav">
     <span class="date-nav-btn" v-on:click="() => navMonth(-1)">
@@ -23,8 +25,8 @@
       <div
         class="day day-prev-month"
         v-for="day in getDaysOfMonthData(-1)"
-        v-bind:dayNum="day.num"
-        v-bind:monthNum="currentMonth - 1"
+        :dayNum="day.num"
+        :monthNum="currentMonth - 1"
         v-on:click="catchClickOnDay">
         <span class="day-num">{{ day.num }}</span>
       </div>
@@ -32,21 +34,31 @@
       <div
         class="day day-current-month"
         v-for="day in getDaysOfMonthData()"
-        v-bind:dayNum="day.num"
-        v-bind:monthNum="currentMonth"
-        v-on:click="catchClickOnDay">
+        :dayNum="day.num"
+        :monthNum="currentMonth"
+        v-on:click="catchClickOnDay"
+        v-on:dblclick="catchDblClickOnDay">
         <span class="day-num">{{ day.num }}</span>
       </div>
 
       <div
         class="day day-prev-month"
         v-for="day in getDaysOfMonthData(1)"
-        v-bind:dayNum="day.num"
-        v-bind:monthNum="currentMonth + 1"
+        :dayNum="day.num"
+        :monthNum="currentMonth + 1"
         v-on:click="catchClickOnDay">
         <span class="day-num">{{ day.num }}</span>
       </div>
 
     </div>
   </div>
+
+  <transition name="fade">
+    <new-event
+      v-if="newEventMenuDisplayed"
+      :style-position="newEventMenuStylePosition"
+      :date="currentDateSelected"
+    />
+  </transition>
+
 </div>

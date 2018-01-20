@@ -1,6 +1,8 @@
 import axios from 'axios'
 require('datejs')
 
+import newEvent from './newEvent.vue'
+
 export default {
   data () {
     return {
@@ -10,6 +12,10 @@ export default {
       daysFromPrevMonth: 0,
       daysFromNextMonth: 0,
       selectedDay: null,
+      newEventMenuDisplayed: false,
+      newEventMenuStylePosition: '',
+      currentDateSelected: '',
+
 
       // constants
       DAY_NAMES: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
@@ -18,10 +24,27 @@ export default {
     }
   },
 
+  components: {
+    'new-event': newEvent
+  },
+
   methods: {
+    hideMenus: function() {
+      this.newEventMenuDisplayed = false
+    },
     catchClickOnDay: function(event) {
       const date = this.getDateFromClickEvent(event)
-      console.log("You clicked", date)
+      // console.log("You clicked", date)
+    },
+    catchDblClickOnDay: function(event) {
+      const date = this.getDateFromClickEvent(event)
+      console.log("You double-clicked", date)
+      const top = event.path["0"].offsetTop
+      const left = event.path["0"].offsetLeft
+      const width = event.path["0"].offsetWidth
+      const height = event.path["0"].offsetHeight
+      this.newEventMenuStylePosition = `top: ${top - 32}px; left: ${left + width}px;`
+      this.newEventMenuDisplayed = !this.newEventMenuDisplayed
     },
     getDateFromClickEvent: function(event) {
       let dayNum = event.currentTarget.getAttribute('dayNum')
@@ -34,13 +57,15 @@ export default {
         monthNum = 0
         year += 1
       }
-      return {
+      const date = {
         dayNum: Number(dayNum),
         dayName: this.getDayNameByDayMonthYear(dayNum, monthNum, year),
         monthNum: Number(monthNum),
         monthName: this.MONTH_NAMES[monthNum],
         year: Number(year)
       }
+      this.currentDateSelected = date
+      return date
     },
     getDaysInFebByYear: function(year) {
       if (year % 100 === 0 && year % 400 !== 0) return 28
