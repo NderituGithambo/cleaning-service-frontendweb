@@ -6,30 +6,35 @@
       <span class="date-nav-btn" v-on:click="() => navMonth(1)">[ >  ]</span>
     </div>
 
+    <h1>{{ monthNames[currentMonth] }} {{ currentYear }}</h1>
+
     <div class="calendar-container">
-      <div class="month">
+      <div class="view-month">
+
+        <div
+          class="day-header"
+          v-for="dayName in dayNames">
+          {{ dayName }}
+        </div>
 
         <div
           class="day day-prev-month"
           v-for="day in getDaysOfMonthData(-1)">
-          {{ day.monthName }}
-          {{ day.name }}
           {{ day.num }}
         </div>
 
         <div
           class="day day-current-month"
-          v-for="day in getDaysOfMonthData()">
-          {{ day.monthName }}
-          {{ day.name }}
-          {{ day.num }}
+          v-for="day in getDaysOfMonthData()"
+          v-bind:dayNum="day.num"
+          v-bind:monthNum="currentMonth"
+          v-on:click="catchClick">
+          <span class="day-num">{{ day.num }}</span>
         </div>
 
         <div
           class="day day-prev-month"
           v-for="day in getDaysOfMonthData(1)">
-          {{ day.monthName }}
-          {{ day.name }}
           {{ day.num }}
         </div>
 
@@ -52,13 +57,20 @@ export default {
       currentMonth: 0,
       daysFromPrevMonth: 0,
       daysFromNextMonth: 0,
+      selectedDay: null,
 
       // constants
       dayNames: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+      monthNames: ['January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December']
     }
   },
 
   methods: {
+    catchClick: function(event) {
+      console.log(event.currentTarget.getAttribute('dayNum'))
+      console.log(event.currentTarget.getAttribute('monthNum'))
+    },
     getDaysInFebByYear: function(year) {
       if (year % 100 === 0 && year % 400 !== 0) return 28
       else if (year % 4 === 0) return 29
@@ -160,11 +172,16 @@ export default {
         this.currentYear
       )
       // How many days to display from the next month after last day in current month
-      this.daysFromNextMonth = 6 - this.getDayNumberInWeekByDayMonthYear(
-        this.getMonthsWithDayNumsByYear(this.currentYear)[this.currentMonth].days,
+      const daysInThisMonth = this.getMonthsWithDayNumsByYear(this.currentYear)[this.currentMonth].days
+      this.daysFromNextMonth = 13 - this.getDayNumberInWeekByDayMonthYear(
+        daysInThisMonth,
         this.currentMonth,
         this.currentYear
       )
+      // To keep the same amount of rows in the calendar all the time
+      if (this.daysFromPrevMonth + daysInThisMonth + this.daysFromNextMonth > 42) {
+        this.daysFromNextMonth -= 7
+      }
     },
   },
 
@@ -203,30 +220,36 @@ export default {
   }
 
   .calendar-container {
+    margin: 1em;
     display: flex;
     justify-content: center;
 
-    .month {
+    .view-month {
       display: grid;
-      grid-template-columns: repeat(7, 1fr);
+      grid-template-columns: repeat(7, 8em);
       grid-template-rows: [row] auto;
+      grid-gap: 2px;
+
+      .day-header {
+        height: 2em;
+        background-color: rgb(238, 238, 238);
+      }
 
       .day {
-        width: 8em;
         height: 8em;
-        border: 1px dashed red;
       }
 
       .day-current-month {
         background-color: pink;
       }
 
+      $light-pink: rgb(255, 241, 243);
       .day-next-month {
-        background-color: rgb(255, 241, 243);
+        background-color: $light-pink;
       }
 
       .day-prev-month {
-        background-color: rgb(255, 241, 243);
+        background-color: $light-pink;
       }
     }
   }
