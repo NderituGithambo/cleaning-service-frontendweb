@@ -15,6 +15,7 @@ export default {
       newEventMenuDisplayed: false,
       newEventMenuStylePosition: '',
       currentDateSelected: '',
+      jobs: {},
 
 
       // constants

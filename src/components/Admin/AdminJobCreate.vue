@@ -2,7 +2,6 @@
   <div class="wrapper">
     <h1>Create a new job</h1>
     <br/>
-
     <v-card>
       <v-card-text>
         <form>
@@ -14,8 +13,6 @@
           ></v-select>
 
           <calendar></calendar>
-
-
 
           <div class="button-container">
             <v-btn
