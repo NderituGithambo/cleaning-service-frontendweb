@@ -1,0 +1,67 @@
+@import "../../../colors.scss";
+
+.wrapper {
+  text-align: center;
+
+  .date-nav {
+    margin: 1em;
+
+    .date-nav-btn {
+      cursor: pointer;
+      &:hover {
+        background-color: lime;
+      }
+      &:active {
+        background-color: green;
+      }
+    }
+  }
+
+  .calendar-container {
+    margin: 1em;
+    display: flex;
+    justify-content: center;
+
+    .view-month {
+      display: grid;
+      grid-template-columns: repeat(7, 10em);
+      grid-template-rows: [row] auto;
+      grid-gap: 2px;
+
+      .day-header {
+        height: 2em;
+        background-color: rgb(238, 238, 238);
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        padding: 0 0.5em;
+      }
+
+      .day {
+        height: 8em;
+        padding: 0.25em 0.5em;
+
+        &:hover {
+          background-color: rgba(127, 255, 212, 0.363);
+        }
+
+        .day-num {
+          float: right;
+        }
+      }
+
+      .day-current-month {
+        background-color: pink;
+      }
+
+      $light-pink: rgb(255, 241, 243);
+      .day-next-month {
+        background-color: $light-pink;
+      }
+
+      .day-prev-month {
+        background-color: $light-pink;
+      }
+    }
+  }
+}

@@ -38,7 +38,7 @@
 
 <script>
 import axios from 'axios'
-import calendar from './calendar.vue'
+import calendar from './Calendar/calendar.vue'
 
 export default {
   props: ['indicateRequestReceived'],
