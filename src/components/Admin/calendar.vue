@@ -10,14 +10,14 @@
       </span>
     </div>
 
-    <h1>{{ monthNames[currentMonth] }} {{ currentYear }}</h1>
+    <h1>{{ MONTH_NAMES[currentMonth] }} {{ currentYear }}</h1>
 
     <div class="calendar-container">
       <div class="view-month">
 
         <div
           class="day-header"
-          v-for="dayName in dayNames">
+          v-for="dayName in DAY_NAMES">
           {{ dayName }}
         </div>
 
@@ -70,8 +70,8 @@ export default {
       selectedDay: null,
 
       // constants
-      dayNames: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-      monthNames: ['January', 'February', 'March', 'April', 'May', 'June',
+      DAY_NAMES: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+      MONTH_NAMES: ['January', 'February', 'March', 'April', 'May', 'June',
         'July', 'August', 'September', 'October', 'November', 'December']
     }
   },
@@ -89,7 +89,7 @@ export default {
         monthNum = 0
         year += 1
       }
-      console.log("You clicked", this.monthNames[monthNum], dayNum, year)
+      console.log("You clicked", this.MONTH_NAMES[monthNum], dayNum, year)
     },
     getDaysInFebByYear: function(year) {
       if (year % 100 === 0 && year % 400 !== 0) return 28
@@ -99,7 +99,7 @@ export default {
     getDayNameByDayMonthYear: function(day, month, year) {
       const dateString = `${month + 1} ${day}, ${year}`
       const timestamp = new Date.parse(dateString)
-      return this.dayNames[timestamp.getDay()]
+      return this.DAY_NAMES[timestamp.getDay()]
     },
     getDayNumberInWeekByDayMonthYear: function(day, month, year) {
       const dateString = `${month + 1}/${day}/${year}`
@@ -132,7 +132,7 @@ export default {
       if (monthDiff < 0) {
         for (let dayNum = numDays - this.daysFromPrevMonth + 1; dayNum <= numDays; dayNum++) {
           dayData.push({
-            monthName: this.monthNames[monthNum],
+            monthName: this.MONTH_NAMES[monthNum],
             name: this.getDayNameByDayMonthYear(dayNum, monthNum, year),
             num: dayNum,
           })
@@ -141,7 +141,7 @@ export default {
       } else if (monthDiff > 0) {
         for (let dayNum = 1; dayNum <= this.daysFromNextMonth; dayNum++) {
           dayData.push({
-            monthName: this.monthNames[monthNum],
+            monthName: this.MONTH_NAMES[monthNum],
             name: this.getDayNameByDayMonthYear(dayNum, monthNum, year),
             num: dayNum,
           })
@@ -151,7 +151,7 @@ export default {
 
       for (let dayNum = 1; dayNum <= numDays; dayNum++) {
         dayData.push({
-          monthName: this.monthNames[monthNum],
+          monthName: this.MONTH_NAMES[monthNum],
           name: this.getDayNameByDayMonthYear(dayNum, monthNum, year),
           num: dayNum,
         })
