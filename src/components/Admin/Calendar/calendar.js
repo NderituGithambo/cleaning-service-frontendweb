@@ -30,6 +30,10 @@ export default {
   },
 
   methods: {
+    onDblClickEvent: function(event) {
+      event.stopPropagation();
+      console.log("u dbl clicked event")
+    },
     hideMenus: function() {
       this.newEventMenuDisplayed = false
     },
@@ -39,11 +43,11 @@ export default {
     },
     catchDblClickOnDay: function(event) {
       const date = this.getDateFromClickEvent(event)
-      console.log("You double-clicked", date)
-      const top = event.path["0"].offsetTop
-      const left = event.path["0"].offsetLeft
-      const width = event.path["0"].offsetWidth
-      const height = event.path["0"].offsetHeight
+      console.log("You double-clicked", event.path)
+      const top = event.path["1"].offsetTop
+      const left = event.path["1"].offsetLeft
+      const width = event.path["1"].offsetWidth
+      const height = event.path["1"].offsetHeight
       this.newEventMenuStylePosition = `top: ${top - 32}px; left: ${left + width}px;`
       this.newEventMenuDisplayed = !this.newEventMenuDisplayed
     },

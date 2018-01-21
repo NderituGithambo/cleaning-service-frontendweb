@@ -8,11 +8,23 @@
     <div class="input-area">
       <div>
         Start Time:
-        <vue-timepicker format="h:mm A" :minute-interval="15"></vue-timepicker>
+      </div>
+      <div>
+        <vue-timepicker
+          v-model="startTime"
+          :format="timeFormat"
+          :minute-interval="minuteInterval">
+        </vue-timepicker>
       </div>
       <div>
         End Time:
-        <vue-timepicker format="h:mm A" :minute-interval="15"></vue-timepicker>
+      </div>
+      <div>
+        <vue-timepicker
+          v-model="endTime"
+          :format="timeFormat"
+          :minute-interval="minuteInterval">
+        </vue-timepicker>
       </div>
     </div>
   </div>
@@ -28,13 +40,10 @@ export default {
 
   data() {
     return {
-      times: [
-        '9:00am',
-        '10:00am',
-        '11:00am',
-        '12:00pm',
-      ],
       startTime: null,
+      endTime: null,
+      timeFormat: "hh:mm A",
+      minuteInterval: 5,
     }
   },
 
@@ -83,6 +92,9 @@ div.pop-up {
 
   .input-area {
     width: 100%;
+    display: grid;
+    grid-template-columns: [col] 30% [col] 70%;
+    grid-template-rows: [row] auto;
   }
 }
 

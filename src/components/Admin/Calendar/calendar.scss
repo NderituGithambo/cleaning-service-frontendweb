@@ -39,14 +39,39 @@
 
       .day {
         height: 8em;
-        padding: 0.25em 0.5em;
+        padding-top: 1.5em;
+        position: relative;
+        $pad-h: 0.25em;
+        padding-right: $pad-h;
+        padding-left: $pad-h;
 
-        &:hover {
-          background-color: rgba(127, 255, 212, 0.363);
+        .day-num-header {
+          position: absolute;
+          display: inline-block;
+          top: 0;
+          right: 0;
+          background-color: rgb(199, 244, 255);
+          width: 100%;
+          text-align: right;
+          padding-right: 0.5em;
+
+          &:hover {
+            background-color: rgb(127, 255, 212);
+          }
         }
 
-        .day-num {
-          float: right;
+        .event-list {
+          overflow: scroll;
+          height: 100%;
+          width: 100%;
+
+          .event {
+            font-size: 0.8em;
+            background-color: rgba(202, 0, 0, 0.699);
+            border-radius: 4px;
+            margin: 1px 0;
+            z-index: 4;
+          }
         }
       }
 
