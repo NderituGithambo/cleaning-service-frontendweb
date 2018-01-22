@@ -12,6 +12,7 @@ export default {
   // that contains whatever other key-attribute pairs
   // are desired to be displayed in the pop-up.
   // 'End date' is not required.
+  // Dates to be parsed by datejs.
 
   data () {
     return {
@@ -41,7 +42,35 @@ export default {
 
 
 
+  watch: {
+    currentMonth: function() {
+      this.initializeMonthData()
+    },
+    events: function(events) {
+      // TO DO:
+      // Need to extract a parent function for getDaysOfMonthData
+      // that pushes both prev, current and next month days
+      // into a single array.
+      // At the same time, this function also pushes the days events
+      // into the day object via getEventsForDay method.
+    }
+  },
+
+
+
   methods: {
+    getEventsForDay: function(day) {
+      // Iterates through events array ... if an event is found on this day,
+      // push that event to the events array in dayData (in getDaysOfMonthData)
+
+      console.log("TO-DO: populating calendar with events", events)
+      events.forEach(function(event) {
+        this.eventComponents += `
+          <event :onDblClickEvent="{onDblClickEvent}"/>
+        `
+      })
+    },
+
     onDblClickEvent: function(event) {
       console.log("You double-clicked on an event")
     },
@@ -132,9 +161,13 @@ export default {
       if (monthDiff < 0) {
         for (let dayNum = numDays - this.daysFromPrevMonth + 1; dayNum <= numDays; dayNum++) {
           dayData.push({
+            dayNum: dayNum,
+            dayName: this.getDayNameByDayMonthYear(dayNum, monthNum, year),
+            monthNum: monthNum,
             monthName: this.MONTH_NAMES[monthNum],
-            name: this.getDayNameByDayMonthYear(dayNum, monthNum, year),
-            num: dayNum,
+            year: year,
+            // TO DO:
+            // events: getEventsForDay()
           })
         }
         return dayData
@@ -156,6 +189,17 @@ export default {
         })
       }
       return dayData
+    },
+
+    displayedDays() {
+      const prevMonthDays = this.getDaysOfMonthData(-1)
+      const currentMonthDays = this.getDaysOfMonthData()
+      const nextMonthDays = this.getDaysOfMonthData(1)
+
+      const displayedDays = prevMonthDays.concat(currentMonthDays, nextMonthDays)
+
+      console.log(displayedDays)
+      return displayedDays
     },
 
     navMonth(change) {
@@ -192,15 +236,6 @@ export default {
       }
     },
   },
-
-
-
-  watch: {
-    currentMonth: function() {
-      this.initializeMonthData()
-    }
-  },
-
 
 
   mounted() {

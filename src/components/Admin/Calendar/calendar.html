@@ -21,7 +21,7 @@
         v-for="dayName in DAY_NAMES">
         {{ dayName }}
       </div>
-
+<!--
       <div
         class="day day-prev-month"
         v-for="day in getDaysOfMonthData(-1)"
@@ -29,26 +29,26 @@
         :monthNum="currentMonth - 1"
         v-on:click="catchClickOnDay">
         <div class="day-num-header">{{ day.num }}</div>
-      </div>
+      </div> -->
 
       <div
         class="day day-current-month"
-        v-for="day in getDaysOfMonthData()"
+        v-for="day in displayedDays()"
         :dayNum="day.num"
         :monthNum="currentMonth"
         v-on:dblclick="catchDblClickOnDay"
-        v-on:click="catchClickOnDay">
+        v-on:click="catchClickOnDay"
+      >
         <div
           class="day-num-header">
-          {{ day.num }}
+          {{ day.dayNum }}
         </div>
 
         <div class="event-list">
-          <event :onDblClickEvent="{onDblClickEvent}"/>
+          <!-- <event v-for="event in day.events"></event> -->
         </div>
-
       </div>
-
+<!--
       <div
         class="day day-prev-month"
         v-for="day in getDaysOfMonthData(1)"
@@ -56,7 +56,7 @@
         :monthNum="currentMonth + 1"
         v-on:click="catchClickOnDay">
         <div class="day-num-header">{{ day.num }}</div>
-      </div>
+      </div> -->
 
     </div>
   </div>
