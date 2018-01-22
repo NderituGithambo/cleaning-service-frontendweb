@@ -59,16 +59,28 @@ export default {
 
 
   methods: {
-    getEventsForDay: function(day) {
+    getEventsForDay: function(dayNum, monthName, year) {
+      function isSameDay(d1, d2) {
+        return d1.getFullYear() === d2.getFullYear() &&
+          d1.getMonth() === d2.getMonth() &&
+          d1.getDate() === d2.getDate()
+      }
+
       // Iterates through events array ... if an event is found on this day,
       // push that event to the events array in dayData (in getDaysOfMonthData)
-
-      console.log("TO-DO: populating calendar with events", events)
-      events.forEach(function(event) {
-        this.eventComponents += `
-          <event :onDblClickEvent="{onDblClickEvent}"/>
-        `
+      const eventsForDay = [];
+      const thisDate = Date.parse(`${monthName} ${dayNum}, ${year}`)
+      this.events.forEach(function(event) {
+        const eventDate = Date.parse(event.startTime)
+        if (isSameDay(thisDate, eventDate)) {
+          const eventData = {
+            startTime: event.startTime,
+            title: 'test',
+          }
+          eventsForDay.push(eventData)
+        }
       })
+      return eventsForDay
     },
 
     onDblClickEvent: function(event) {
@@ -157,7 +169,7 @@ export default {
     },
 
     getDaysOfMonthData(monthDiff) {
-      // Prev / Next month adjustments:
+      // Prev / next month adjustments:
       let monthNum = this.currentMonth
       let year = this.currentYear
       if (monthDiff) {
@@ -166,22 +178,21 @@ export default {
         year += yearChange
       }
       const numDays = this.getDayNumsOfMonthsByYear(year)[monthNum]
-      let startDay = monthDiff < 0 ? numDays - this.daysFromPrevMonth + 1 : 1
-      let endDay = monthDiff > 0 ? this.daysFromNextMonth : numDays
+      const startDay = monthDiff < 0 ? numDays - this.daysFromPrevMonth + 1 : 1
+      const endDay = monthDiff > 0 ? this.daysFromNextMonth : numDays
 
-      // Populating array of days
+      // Populate array of days
       const dayData = []
+      const monthName = this.MONTH_NAMES[monthNum]
       for (let dayNum = startDay; dayNum <= endDay; dayNum++) {
         dayData.push({
           dayNum: dayNum,
           dayName: this.getDayNameByDayMonthYear(dayNum, monthNum, year),
           monthNum: monthNum,
-          monthName: this.MONTH_NAMES[monthNum],
+          monthName: monthName,
           monthDiff: monthDiff,
           year: year,
-
-          // TO DO:
-          // events: getEventsForDay()
+          events: this.getEventsForDay(dayNum, monthName, year)
         })
       }
       return dayData

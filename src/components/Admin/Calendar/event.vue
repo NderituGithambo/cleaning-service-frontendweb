@@ -2,16 +2,15 @@
   <div
     v-on:dblclick="catchDblClick"
     class="event">
-    hello from event
+      {{ eventData.title }} --
+      {{ eventData.startTime }}
   </div>
 </template>
 
 
 <script>
-import VueTimepicker from 'vue2-timepicker'
-
 export default {
-  props: ['onDblClickEvent'],
+  props: ['eventData'],
 
   data() {
     return {
@@ -22,7 +21,6 @@ export default {
     catchDblClick: function(event) {
       event.stopPropagation()
       console.log(this);
-      this.onDblClickEvent.onDblClickEvent(event)
     }
   }
 };
@@ -39,6 +37,8 @@ div.event {
   z-index: 4;
   text-align: left;
   padding-left: 0.25em;
+  max-height: 1.6em;
+  overflow: hidden;
 }
 
 </style>

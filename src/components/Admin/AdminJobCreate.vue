@@ -68,6 +68,7 @@ export default {
   watch: {
     employeeIdSelected: async function(employeeId) {
       const employeeData = await this.fetchEmployee(employeeId)
+      this.jobsListProcessed = []
       this.createJobsListProcessed(employeeData)
     }
   },

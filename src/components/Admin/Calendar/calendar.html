@@ -22,6 +22,7 @@
         {{ dayName }}
       </div>
 
+
       <div
         v-for="day in displayedDays()"
         :dayNum="day.num"
@@ -36,9 +37,14 @@
         </div>
 
         <div class="event-list">
-          <!-- <event v-for="event in day.events"></event> -->
+          <event
+            v-for="event in day.events"
+            :eventData="event"
+            :key="event.id"
+          />
         </div>
       </div>
+
 
     </div>
   </div>
