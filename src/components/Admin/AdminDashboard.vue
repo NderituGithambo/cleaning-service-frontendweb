@@ -1,19 +1,30 @@
 <template>
   <div>
-    <header>
+    <nav>
       <router-link to="/admin">
-        <h1>Admin Dashboard</h1>
+        <div class="nav-btn"><h1>Dashboard</h1></div>
       </router-link>
-      <nav>
-        <router-link to="/admin/job_requests">
-          <v-btn large class="ma-0" flat :ripple="false">Job Requests</v-btn>
-        </router-link>
-        <router-link to="/admin/jobs">
-          <v-btn large class="ma-0" flat :ripple="false">Jobs</v-btn>
-        </router-link>
-      </nav>
-    </header>
-    <br/>
+      <hr/>
+      <div class="section-title no-select">
+        Create
+      </div>
+      <router-link to="/admin/jobs/create">
+        <div class="nav-btn">Job</div>
+      </router-link>
+      <hr/>
+      <div class="section-title no-select">
+        View
+      </div>
+      <router-link to="/admin/job_requests">
+        <div class="nav-btn">Job Requests</div>
+      </router-link>
+      <router-link to="/admin/jobs">
+        <div class="nav-btn">Jobs</div>
+      </router-link>
+      <router-link to="/admin/employees">
+        <div class="nav-btn">Employees</div>
+      </router-link>
+    </nav>
     <main>
       <router-view/>
     </main>
@@ -25,10 +36,10 @@ import axios from 'axios'
 
 export default {
   async beforeRouteEnter(to, from, next) {
+    // Authenticates for admin here
     const config = {
       headers: { Authorization: localStorage.getItem("token") }
     }
-
     try {
       // This route only allows admin-type users
       const request = axios.get('http://localhost:3000/admin/dashboard', config)
@@ -50,10 +61,6 @@ export default {
     };
   },
 
-  mounted() {
-    return
-  },
-
   methods: {
     async fetchJobRequests() { // Not using this
       try {
@@ -72,25 +79,62 @@ export default {
 <style lang="scss" scoped>
 @import "../../colors.scss";
 
-h1 {
-  font-weight: normal;
-}
-p {
-  text-align: left;
-}
+nav {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  left: 0;
+  top: 0;
 
-a {
-  color: $blue;
-}
+  width: 12vw;
+  height: 100vh;
 
-header {
-  width: 100%;
-  background-color: $transparent;
-  border-bottom: 1px solid black;
+  padding: 1em 0 1em 0;
 
-  nav {
+  background-color: white;
+  background: linear-gradient(to right, $darker-blue, $dark-blue);
+
+  hr {
+    margin-bottom: 0.2em;
+    margin-top: 1em;
+    height: 1px;
+  }
+
+  a {
+    color: $light-blue;
+    text-decoration: none;
+    margin: 0.5em 0;
+  }
+
+  .nav-btn {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
+    padding: 0.25em 0.5em;
+
+    &:hover {
+      // background: linear-gradient(to bottom, $dark-blue, $blue);
+      color: $lighter-blue;
+    }
+
+    h1 {
+      font-weight: normal;
+    }
+  }
+
+  .section-title {
+    display: flex;
+    justify-content: flex-start;
+    padding: 0.25em 0.5em;
+    font-style: italic;
+    color: $light-grey;
+  }
+}
+
+main {
+  padding-left: 12vw;
+
+  a {
+    color: $blue;
   }
 }
 </style>

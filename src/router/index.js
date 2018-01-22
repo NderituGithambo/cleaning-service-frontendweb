@@ -67,12 +67,31 @@ export default new Router({
           name: 'adminJobCreate',
         },
         {
-          // This path needs to be below jobs/*
+          // This path needs to be below create
           // to prevent misfiring
           path: 'jobs/:id',
           component: AdminDataShow,
           name: 'adminJob',
           props: { dataModel: 'job' }
+        },
+        {
+          path: 'employees',
+          component: AdminDataIndex,
+          name: 'adminEmployees',
+          props: { dataModel: 'employee' }
+        },
+        // {
+        //   path: 'employees/create',
+        //   component: AdminEmployeeCreate,
+        //   name: 'adminEmployeeCreate',
+        // },
+        {
+          // This path needs to be below create
+          // to prevent misfiring
+          path: 'employees/:id',
+          component: AdminDataShow,
+          name: 'adminEmployee',
+          props: { dataModel: 'employee' }
         },
       ]
     },

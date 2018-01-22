@@ -66,7 +66,7 @@
 
     data () {
       return {
-        username: 'admin_user99',
+        username: 'admin_user',
         password: 'password',
 
         isLoading: false,

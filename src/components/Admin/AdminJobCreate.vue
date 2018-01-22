@@ -9,6 +9,8 @@
             label="Assign employee"
             v-model="employee"
             :items="employeesList"
+            item-text="first_name"
+            item-value="id"
             required
           ></v-select>
 
@@ -47,11 +49,7 @@ export default {
   data () {
     return {
       employee: null,
-      employeesList: [
-        "Guy Something",
-        "Dude Erreeno",
-        "Phillip Nobody",
-      ],
+      employeesList: [],
 
       isLoading: false,
       isSubmitDisabled: false,
@@ -80,9 +78,26 @@ export default {
       }
     },
 
+    async fetchEmployees() {
+      const config = {
+        headers: { Authorization: localStorage.getItem("token") }
+      }
+      try {
+        const request = axios.get('http://localhost:3000/admin/employees', config)
+        const response = await request
+        this.employeesList = response.data.employees
+      } catch (e) {
+        console.log(e)
+      }
+    },
+
     clear() {
       this.employee = null
     },
+  },
+
+  mounted() {
+    this.fetchEmployees()
   },
 }
 </script>

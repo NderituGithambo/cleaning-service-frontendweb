@@ -1,7 +1,8 @@
 import axios from 'axios'
 require('datejs')
 
-import newEvent from './newEvent.vue'
+import newEventPopUp from './newEventPopUp.vue'
+import event from './event.vue'
 
 export default {
   data () {
@@ -15,35 +16,65 @@ export default {
       newEventMenuDisplayed: false,
       newEventMenuStylePosition: '',
       currentDateSelected: '',
-      jobs: {},
-
+      events: [],
 
       // constants
       DAY_NAMES: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-      MONTH_NAMES: ['January', 'February', 'March', 'April', 'May', 'June',
-        'July', 'August', 'September', 'October', 'November', 'December']
+      MONTH_NAMES: ['January', 'February', 'March', 'April', 'May', 'June', 'July',
+        'August', 'September', 'October', 'November', 'December']
     }
   },
 
+
+
   components: {
-    'new-event': newEvent
+    'new-event-pop-up': newEventPopUp,
+    'event': event,
   },
 
+
+
   methods: {
-    onDblClickEvent: function(event) {
-      event.stopPropagation();
-      console.log("u dbl clicked event")
+    async fetchEvents() { // Not using this
+      this.loading = true
+      try {
+        const { page, rowsPerPage } = this.pagination
+        const config = {
+          headers: { Authorization: localStorage.getItem("token") }
+        }
+        const request = axios.get(`http://localhost:3000/admin/${this.dataModel}s?p=${page}&npp=${rowsPerPage}`, config)
+        const response = await request
+        this.items = response.data[`${this.dataModel}s`]
+        this.totalRows = response.data.total_rows
+
+        // Generate headers for table
+        this.headers = []
+        Object.keys(this.items[0]).forEach(key => {
+          this.headers.push({ text: key, value: key, sortable: false })
+        })
+
+      } catch (error) {
+        console.log(error);
+      }
+      this.loading = false
     },
+
+    onDblClickEvent: function(event) {
+      console.log("You double-clicked on an event")
+    },
+
     hideMenus: function() {
       this.newEventMenuDisplayed = false
     },
+
     catchClickOnDay: function(event) {
       const date = this.getDateFromClickEvent(event)
       // console.log("You clicked", date)
     },
+
     catchDblClickOnDay: function(event) {
       const date = this.getDateFromClickEvent(event)
-      console.log("You double-clicked", event.path)
+      console.log("You double-clicked on a day", event.path)
       const top = event.path["1"].offsetTop
       const left = event.path["1"].offsetLeft
       const width = event.path["1"].offsetWidth
@@ -51,6 +82,7 @@ export default {
       this.newEventMenuStylePosition = `top: ${top - 32}px; left: ${left + width}px;`
       this.newEventMenuDisplayed = !this.newEventMenuDisplayed
     },
+
     getDateFromClickEvent: function(event) {
       let dayNum = event.currentTarget.getAttribute('dayNum')
       let monthNum = event.currentTarget.getAttribute('monthNum')
@@ -72,21 +104,25 @@ export default {
       this.currentDateSelected = date
       return date
     },
+
     getDaysInFebByYear: function(year) {
       if (year % 100 === 0 && year % 400 !== 0) return 28
       else if (year % 4 === 0) return 29
       return 28
     },
+
     getDayNameByDayMonthYear: function(day, month, year) {
       const dateString = `${this.MONTH_NAMES[month]} ${day}, ${year}`
       const timestamp = new Date.parse(dateString)
       return this.DAY_NAMES[timestamp.getDay()]
     },
+
     getDayNumberInWeekByDayMonthYear: function(day, month, year) {
       const dateString = `${month + 1}/${day}/${year}`
       const timestamp = new Date.parse(dateString)
       return timestamp.getDay()
     },
+
     getAdjacentMonthNumAndYearChange: function(offset) {
       if ((this.currentMonth + offset) < 0) {
         return { monthNum: 11, yearChange: -1 }
@@ -96,9 +132,11 @@ export default {
         return { monthNum: this.currentMonth + offset, yearChange: 0 }
       }
     },
+
     getDayNumsOfMonthsByYear: function(year) {
       return [31, this.getDaysInFebByYear(year), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     },
+
     getDaysOfMonthData(monthDiff) {
       let monthNum = this.currentMonth
       let year = this.currentYear
@@ -106,9 +144,7 @@ export default {
         monthNum = this.getAdjacentMonthNumAndYearChange(monthDiff).monthNum
         year += this.getAdjacentMonthNumAndYearChange(monthDiff).yearChange
       }
-
       const dayData = []
-
       const numDays = this.getDayNumsOfMonthsByYear(year)[monthNum]
       if (monthDiff < 0) {
         for (let dayNum = numDays - this.daysFromPrevMonth + 1; dayNum <= numDays; dayNum++) {
@@ -129,7 +165,6 @@ export default {
         }
         return dayData
       }
-
       for (let dayNum = 1; dayNum <= numDays; dayNum++) {
         dayData.push({
           monthName: this.MONTH_NAMES[monthNum],
@@ -139,6 +174,7 @@ export default {
       }
       return dayData
     },
+
     navMonth(change) {
       let monthNum = this.currentMonth
       monthNum += change
@@ -152,6 +188,7 @@ export default {
       }
       this.currentMonth = monthNum
     },
+
     initializeMonthData() {
       // How many days to display from the previous month before first day in current month
       this.daysFromPrevMonth = this.getDayNumberInWeekByDayMonthYear(
@@ -173,11 +210,15 @@ export default {
     },
   },
 
+
+
   watch: {
     currentMonth: function() {
       this.initializeMonthData()
     }
   },
+
+
 
   mounted() {
     this.initializeMonthData()

@@ -46,6 +46,9 @@
           single-line
           class="drop-down"
         ></v-select>
+        <br/>
+        <br/>
+        <br/>
       </v-card-text>
     </v-card>
   </div>
@@ -69,7 +72,7 @@ export default {
       pagination: {
         descending: true,
         page: 1,
-        rowsPerPage: 25,
+        rowsPerPage: 10,
         sortBy: "created_at"
       },
       rowsPerPageItems: [

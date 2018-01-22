@@ -44,15 +44,7 @@
         </div>
 
         <div class="event-list">
-          <div v-on:dblclick="onDblClickEvent" class="event">lalala</div>
-          <div v-on:dblclick="onDblClickEvent" class="event">lalala</div>
-          <div v-on:dblclick="onDblClickEvent" class="event">lalala</div>
-          <div v-on:dblclick="onDblClickEvent" class="event">lalala</div>
-          <div v-on:dblclick="onDblClickEvent" class="event">lalala</div>
-          <div v-on:dblclick="onDblClickEvent" class="event">lalala</div>
-          <div v-on:dblclick="onDblClickEvent" class="event">lalala</div>
-          <div v-on:dblclick="onDblClickEvent" class="event">lalala</div>
-          <div v-on:dblclick="onDblClickEvent" class="event">lalala</div>
+          <event :onDblClickEvent="{onDblClickEvent}"/>
         </div>
 
       </div>
@@ -70,7 +62,7 @@
   </div>
 
   <transition name="fade">
-    <new-event
+    <new-event-pop-up
       v-if="newEventMenuDisplayed"
       :style-position="newEventMenuStylePosition"
       :date="currentDateSelected"

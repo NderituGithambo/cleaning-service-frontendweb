@@ -6,7 +6,7 @@
     <h1>{{ date.monthName }} {{ date.dayNum }}, {{ date.year }}</h1>
     <br/>
     <div class="input-area">
-      <div>
+      <div class="label">
         Start Time:
       </div>
       <div>
@@ -16,7 +16,7 @@
           :minute-interval="minuteInterval">
         </vue-timepicker>
       </div>
-      <div>
+      <div class="label">
         End Time:
       </div>
       <div>
@@ -27,6 +27,7 @@
         </vue-timepicker>
       </div>
     </div>
+    <v-btn color="primary">Save</v-btn>
   </div>
 </template>
 
@@ -60,7 +61,7 @@ export default {
 @import "../../../colors.scss";
 
 div.pop-up {
-  height: 16em;
+  height: 14em;
   width: 20em;
   position: absolute;
   z-index: 5;
@@ -95,6 +96,17 @@ div.pop-up {
     display: grid;
     grid-template-columns: [col] 30% [col] 70%;
     grid-template-rows: [row] auto;
+
+    .label {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+  }
+
+  button {
+    margin-top: 2em;
+    margin-left: auto;
   }
 }
 

@@ -57,18 +57,9 @@
         }
 
         .event-list {
-          overflow-y: scroll;
+          overflow-y: auto;
           height: 100%;
           width: 100%;
-
-          .event {
-            font-size: 0.8em;
-            background-color: rgb(255, 154, 136);
-            margin: 1px 0;
-            z-index: 4;
-            text-align: left;
-            padding-left: 0.25em;
-          }
         }
       }
 
