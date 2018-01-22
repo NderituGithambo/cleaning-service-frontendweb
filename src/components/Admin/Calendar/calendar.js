@@ -1,10 +1,18 @@
-import axios from 'axios'
 require('datejs')
 
 import newEventPopUp from './newEventPopUp.vue'
 import event from './event.vue'
 
 export default {
+  props: ['events'],
+  // 'Events' prop must be an array of objects
+  // with the following attributes:
+  // Start date, end date, title,
+  // and a custom 'content' object inside,
+  // that contains whatever other key-attribute pairs
+  // are desired to be displayed in the pop-up.
+  // 'End date' is not required.
+
   data () {
     return {
       // variables
@@ -16,7 +24,6 @@ export default {
       newEventMenuDisplayed: false,
       newEventMenuStylePosition: '',
       currentDateSelected: '',
-      events: [],
 
       // constants
       DAY_NAMES: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
@@ -35,30 +42,6 @@ export default {
 
 
   methods: {
-    async fetchEvents() { // Not using this
-      this.loading = true
-      try {
-        const { page, rowsPerPage } = this.pagination
-        const config = {
-          headers: { Authorization: localStorage.getItem("token") }
-        }
-        const request = axios.get(`http://localhost:3000/admin/${this.dataModel}s?p=${page}&npp=${rowsPerPage}`, config)
-        const response = await request
-        this.items = response.data[`${this.dataModel}s`]
-        this.totalRows = response.data.total_rows
-
-        // Generate headers for table
-        this.headers = []
-        Object.keys(this.items[0]).forEach(key => {
-          this.headers.push({ text: key, value: key, sortable: false })
-        })
-
-      } catch (error) {
-        console.log(error);
-      }
-      this.loading = false
-    },
-
     onDblClickEvent: function(event) {
       console.log("You double-clicked on an event")
     },

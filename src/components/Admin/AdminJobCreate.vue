@@ -7,14 +7,21 @@
         <form>
           <v-select
             label="Assign employee"
-            v-model="employee"
+            v-model="employeeIdSelected"
             :items="employeesList"
             item-text="first_name"
             item-value="id"
             required
-          ></v-select>
+          >
+            <template slot="item" slot-scope="data">
+              {{ data.item.last_name }}, {{ data.item.first_name }}
+            </template>
+            <template slot="selection" slot-scope="data">
+              {{ data.item.last_name }}, {{ data.item.first_name }}
+            </template>
+          </v-select>
 
-          <calendar></calendar>
+          <calendar :events="jobsListProcessed"></calendar>
 
           <div class="button-container">
             <v-btn
@@ -48,15 +55,28 @@ export default {
 
   data () {
     return {
-      employee: null,
+      employeeIdSelected: null,
+      employeeData: null,
       employeesList: [],
+      jobsListProcessed: [],
 
       isLoading: false,
       isSubmitDisabled: false,
     }
   },
 
+  watch: {
+    employeeIdSelected: async function(employeeId) {
+      const employeeData = await this.fetchEmployee(employeeId)
+      this.createJobsListProcessed(employeeData)
+    }
+  },
+
   methods: {
+    createJobsListProcessed(employeeData) {
+      console.log('employeeData', employeeData);
+    },
+
     async submit() {
       this.isSubmitDisabled = true
       this.isLoading = true
@@ -86,6 +106,20 @@ export default {
         const request = axios.get('http://localhost:3000/admin/employees', config)
         const response = await request
         this.employeesList = response.data.employees
+      } catch (e) {
+        console.log(e)
+      }
+    },
+
+    async fetchEmployee(id) {
+      const config = {
+        headers: { Authorization: localStorage.getItem("token") }
+      }
+      try {
+        const request = axios.get(`http://localhost:3000/admin/employees/${id}`, config)
+        const response = await request
+        // console.log('fetching employee', response);
+        return response.data
       } catch (e) {
         console.log(e)
       }
