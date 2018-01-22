@@ -75,6 +75,11 @@ export default {
   methods: {
     createJobsListProcessed(employeeData) {
       console.log('employeeData', employeeData);
+      employeeData.jobs.forEach(job => {
+        const event = {}
+        event.startTime = job.confirmed_time
+        this.jobsListProcessed.push(event)
+      })
     },
 
     async submit() {
