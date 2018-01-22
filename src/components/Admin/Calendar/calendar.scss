@@ -67,13 +67,8 @@
         background-color: pink;
       }
 
-      $light-pink: rgb(255, 241, 243);
-      .day-next-month {
-        background-color: $light-pink;
-      }
-
-      .day-prev-month {
-        background-color: $light-pink;
+      .day-adjacent-month {
+        background-color: rgb(255, 241, 243);
       }
     }
   }

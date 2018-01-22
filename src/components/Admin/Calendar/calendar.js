@@ -123,6 +123,10 @@ export default {
       return 28
     },
 
+    getDayNumsOfMonthsByYear: function(year) {
+      return [31, this.getDaysInFebByYear(year), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    },
+
     getDayNameByDayMonthYear: function(day, month, year) {
       const dateString = `${this.MONTH_NAMES[month]} ${day}, ${year}`
       const timestamp = new Date.parse(dateString)
@@ -135,71 +139,60 @@ export default {
       return timestamp.getDay()
     },
 
-    getAdjacentMonthNumAndYearChange: function(offset) {
-      if ((this.currentMonth + offset) < 0) {
-        return { monthNum: 11, yearChange: -1 }
-      } else if ((this.currentMonth + offset) > 11) {
-        return { monthNum: 0, yearChange: 1 }
+    getAdjacentMonthNumAndYearChange: function(monthDiff) {
+      if ((this.currentMonth + monthDiff) < 0) {
+        // If December of previous year
+        return { newMonthNum: 11, yearChange: -1 }
+      } else if ((this.currentMonth + monthDiff) > 11) {
+        // If January of next year
+        return { newMonthNum: 0, yearChange: 1 }
       } else {
-        return { monthNum: this.currentMonth + offset, yearChange: 0 }
+        // If adjacent month in current year
+        return { newMonthNum: this.currentMonth + monthDiff, yearChange: 0 }
       }
     },
 
-    getDayNumsOfMonthsByYear: function(year) {
-      return [31, this.getDaysInFebByYear(year), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    dayStyleClass(monthDiff) {
+      return 'day ' + (monthDiff ? 'day-adjacent-month' : 'day-current-month')
     },
 
     getDaysOfMonthData(monthDiff) {
+      // Prev / Next month adjustments:
       let monthNum = this.currentMonth
       let year = this.currentYear
       if (monthDiff) {
-        monthNum = this.getAdjacentMonthNumAndYearChange(monthDiff).monthNum
-        year += this.getAdjacentMonthNumAndYearChange(monthDiff).yearChange
+        const { newMonthNum, yearChange } = this.getAdjacentMonthNumAndYearChange(monthDiff)
+        monthNum = newMonthNum
+        year += yearChange
       }
-      const dayData = []
       const numDays = this.getDayNumsOfMonthsByYear(year)[monthNum]
-      if (monthDiff < 0) {
-        for (let dayNum = numDays - this.daysFromPrevMonth + 1; dayNum <= numDays; dayNum++) {
-          dayData.push({
-            dayNum: dayNum,
-            dayName: this.getDayNameByDayMonthYear(dayNum, monthNum, year),
-            monthNum: monthNum,
-            monthName: this.MONTH_NAMES[monthNum],
-            year: year,
-            // TO DO:
-            // events: getEventsForDay()
-          })
-        }
-        return dayData
-      } else if (monthDiff > 0) {
-        for (let dayNum = 1; dayNum <= this.daysFromNextMonth; dayNum++) {
-          dayData.push({
-            monthName: this.MONTH_NAMES[monthNum],
-            name: this.getDayNameByDayMonthYear(dayNum, monthNum, year),
-            num: dayNum,
-          })
-        }
-        return dayData
-      }
-      for (let dayNum = 1; dayNum <= numDays; dayNum++) {
+      let startDay = monthDiff < 0 ? numDays - this.daysFromPrevMonth + 1 : 1
+      let endDay = monthDiff > 0 ? this.daysFromNextMonth : numDays
+
+      // Populating array of days
+      const dayData = []
+      for (let dayNum = startDay; dayNum <= endDay; dayNum++) {
         dayData.push({
+          dayNum: dayNum,
+          dayName: this.getDayNameByDayMonthYear(dayNum, monthNum, year),
+          monthNum: monthNum,
           monthName: this.MONTH_NAMES[monthNum],
-          name: this.getDayNameByDayMonthYear(dayNum, monthNum, year),
-          num: dayNum,
+          monthDiff: monthDiff,
+          year: year,
+
+          // TO DO:
+          // events: getEventsForDay()
         })
       }
       return dayData
     },
 
     displayedDays() {
-      const prevMonthDays = this.getDaysOfMonthData(-1)
-      const currentMonthDays = this.getDaysOfMonthData()
-      const nextMonthDays = this.getDaysOfMonthData(1)
-
-      const displayedDays = prevMonthDays.concat(currentMonthDays, nextMonthDays)
-
-      console.log(displayedDays)
-      return displayedDays
+      // Used in html rendering, v-for loop
+      return this.getDaysOfMonthData(-1).concat(
+        this.getDaysOfMonthData(),
+        this.getDaysOfMonthData(1),
+      )
     },
 
     navMonth(change) {
