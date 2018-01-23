@@ -1,41 +1,49 @@
 <template>
   <div
     class="pop-up"
-    v-on:click="catchOnClick"
     :style="stylePosition">
-
-    <div class="new-event">
-      <h1>{{ date.monthName }} {{ date.dayNum }}, {{ date.year }}</h1>
-      <br/>
-      <div class="input-area">
-        <div class="label">
-          Start Time:
+    <div class="content">
+      <div class="new-event">
+        <h1>{{ date.monthName }} {{ date.dayNum }}, {{ date.year }}</h1>
+        <br/>
+        <div class="input-area">
+          <div class="label">
+            Start Time:
+          </div>
+          <div>
+            <vue-timepicker
+              v-model="startTime"
+              hide-clear-button
+              :format="timeFormat"
+              :minute-interval="minuteInterval">
+            </vue-timepicker>
+          </div>
+          <div class="label">
+            End Time:
+          </div>
+          <div>
+            <vue-timepicker
+              v-model="endTime"
+              hide-clear-button
+              :format="timeFormat"
+              :minute-interval="minuteInterval">
+            </vue-timepicker>
+          </div>
         </div>
-        <div>
-          <vue-timepicker
-            v-model="startTime"
-            :format="timeFormat"
-            :minute-interval="minuteInterval">
-          </vue-timepicker>
-        </div>
-        <div class="label">
-          End Time:
-        </div>
-        <div>
-          <vue-timepicker
-            v-model="endTime"
-            :format="timeFormat"
-            :minute-interval="minuteInterval">
-          </vue-timepicker>
-        </div>
+        <v-btn color="primary">Save</v-btn>
       </div>
-      <v-btn color="primary">Save</v-btn>
+
+      <div class="existing-event">
+        {{ eventData.content }}
+      </div>
     </div>
 
-    <div class="existing-event">
-      {{ eventData.content }}
-    </div>
-
+    <canvas
+      v-on:click="catchOnClick"
+      v-draw
+      width="415px"
+      height="500px">
+    </canvas>
   </div>
 </template>
 
@@ -64,11 +72,37 @@ export default {
     }
   },
 
+  directives: {
+    draw: {
+      // When insterted into DOM
+      inserted: function (el) {
+        if (el.getContext) {
+          // el.width = el.clientWidth;
+          // el.height = el.clientHeight;
+          var ctx = el.getContext('2d');
+
+          ctx.beginPath();
+          ctx.moveTo(0, 250);
+          ctx.lineTo(15, 225);
+          ctx.lineTo(15, 0);
+          ctx.lineTo(415, 0);
+          ctx.lineTo(415, 500);
+          ctx.lineTo(15, 500);
+          ctx.lineTo(15, 275);
+          ctx.lineTo(0, 250);
+
+          ctx.fillStyle = 'rgba(200, 200, 200, 1)'
+          ctx.fill()
+        }
+      }
+    }
+  },
+
   methods: {
     catchOnClick: function(event) {
       event.stopPropagation()
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -76,53 +110,64 @@ export default {
 <style lang="scss" scoped>
 @import "../../../colors.scss";
 
-div.pop-up {
-  height: 14em;
-  width: 20em;
+
+.pop-up {
+  // border: 1px dashed rgb(74, 161, 74);
   position: absolute;
-  z-index: 5;
+  height: 500px;
+  width: 415px;
+  padding-left: 20px;
 
-  background-color: white;
-  border: 1px solid lightgrey;
-  border-radius: 4px;
-  $top: 4px;
-  $left: 4px;
-  $blur: 16px;
-  $sprd: 4px;
-  $clr: rgba(0, 0, 0, 0.425);
-  box-shadow: $left $top $blur $sprd $clr;
-  -moz-box-shadow: $left $top $blur $sprd $clr;
-  -webkit-box-shadow: $left $top $blur $sprd $clr;
+  .content {
+    // border: 1px dashed teal;
+    position: absolute;
+    height: 490px;
+    width: 390px;
+    margin-top: 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    padding-top: 1em;
 
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 0.5em 1em;
+    z-index: 1;
+    background-color: $light-grey;
 
-  h1 {
-    font-size: 1.2em;
-  }
+    // display: flex;
+    // flex-direction: column;
+    // align-items: center;
+    // justify-content: center;
 
-  h2 {
-    font-size: 1em;
-  }
+    h1 {
+      font-size: 1.2em;
+    }
 
-  .input-area {
-    width: 100%;
-    display: grid;
-    grid-template-columns: [col] 40% [col] 60%;
-    grid-template-rows: [row] auto;
+    h2 {
+      font-size: 1em;
+    }
 
-    .label {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
+    .input-area {
+      width: 100%;
+      display: grid;
+      grid-template-columns: [col] 40% [col] 60%;
+      grid-template-rows: [row] auto;
+
+      .label {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+      }
+    }
+
+    button {
+      margin-top: 2em;
+      margin-left: auto;
     }
   }
 
-  button {
-    margin-top: 2em;
-    margin-left: auto;
+  canvas {
+    z-index: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
   }
 }
 

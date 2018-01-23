@@ -103,7 +103,7 @@ export default {
       const width = e.currentTarget.offsetWidth
       const height = e.currentTarget.offsetHeight
       // TO DO: the next line may be better done as a class
-      this.eventMenuStylePosition = `top: ${top - 32}px; left: ${left + width}px;`
+      this.eventMenuStylePosition = `top: ${top - 200}px; left: ${left + width - 10}px;`
       this.eventMenuDisplayed = !this.eventMenuDisplayed
     },
 
@@ -162,7 +162,6 @@ export default {
       let monthNum = this.currentMonth
       let year = this.currentYear
       if (monthDiff) {
-        console.log('got here');
         const { newMonthNum, yearChange } = this.getAdjacentMonthNumAndYearChange(monthDiff)
         monthNum = newMonthNum
         year += yearChange
