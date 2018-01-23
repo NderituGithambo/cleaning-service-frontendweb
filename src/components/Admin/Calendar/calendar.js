@@ -52,22 +52,11 @@ export default {
 
   methods: {
     getEventsForDay: function(dayNum, monthNum, year) {
-      function isSameDay(d1, d2) {
-        const comparison = d1.format('DD-MM-YYYY') === d2.format('DD-MM-YYYY')
-        return comparison
-      }
-
-      // Iterates through events array ... if an event is found on this day,
-      // push that event to the events array in dayData (in getDaysOfMonthData)
-      const eventsForDay = [];
-      // const thisDate = moment(`${monthName} ${dayNum}, ${year}`)
       const thisDate = moment({ day: dayNum, months: monthNum, year: year })
-
-      console.log(thisDate.month())
-
+      const eventsForDay = [];
       this.events.forEach(function(event) {
         const eventDate = moment(event.startTime)
-        if (isSameDay(thisDate, eventDate)) {
+        if (thisDate.format('DD-MM-YYYY') === eventDate.format('DD-MM-YYYY')) {
           const eventData = {
             startTime: 0,
             endTime: 0,
@@ -77,7 +66,6 @@ export default {
           eventsForDay.push(eventData)
         }
       })
-
       return eventsForDay
     },
 
