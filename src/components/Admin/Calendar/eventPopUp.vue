@@ -49,9 +49,17 @@ export default {
 
   data() {
     return {
-      startTime: {},
-      endTime: {},
-      timeFormat: "hh:mm A",
+      startTime: {
+        hh: '00',
+        mm: '00',
+        a: 'am'
+      },
+      endTime: {
+        hh: '00',
+        mm: '00',
+        a: 'am'
+      },
+      timeFormat: "hh:mm a",
       minuteInterval: 5,
     }
   },
@@ -102,7 +110,7 @@ div.pop-up {
   .input-area {
     width: 100%;
     display: grid;
-    grid-template-columns: [col] 30% [col] 70%;
+    grid-template-columns: [col] 40% [col] 60%;
     grid-template-rows: [row] auto;
 
     .label {
