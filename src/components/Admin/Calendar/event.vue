@@ -2,7 +2,7 @@
   <div
     v-on:dblclick="catchDblClick"
     class="event">
-      {{ eventData.startTime }}
+    {{ eventData.startTime }}
   </div>
 </template>
 
@@ -17,9 +17,9 @@ export default {
   },
 
   methods: {
-    catchDblClick: function(event) {
-      event.stopPropagation()
-      console.log(this);
+    catchDblClick: function(e) {
+      e.stopPropagation()
+      console.log('You double-clicked an event', this.eventData);
     }
   }
 };
@@ -32,7 +32,7 @@ export default {
 div.event {
   font-size: 0.8em;
   background-color: rgb(255, 154, 136);
-  margin: 1px 0;
+  margin: 1px 2px;
   z-index: 4;
   text-align: left;
   padding-left: 0.25em;

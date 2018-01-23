@@ -25,12 +25,12 @@
 
       <div
         v-for="day in displayedDays()"
-        :dayNum="day.num"
-        :monthNum="currentMonth"
+        :dayNum="day.dayNum"
+        :monthNum="day.monthNum"
+        :year="day.year"
         v-on:dblclick="catchDblClickOnDay"
         v-on:click="catchClickOnDay"
-        :class=dayStyleClass(day.monthDiff)
-      >
+        :class=dayStyleClass(day.monthDiff)>
         <div
           class="day-num-header">
           {{ day.dayNum }}
@@ -41,6 +41,7 @@
             v-for="event in day.events"
             :eventData="event"
             :key="event.id"
+            @select-event="setSelectedEventData"
           />
         </div>
       </div>
@@ -50,10 +51,11 @@
   </div>
 
   <transition name="fade">
-    <new-event-pop-up
-      v-if="newEventMenuDisplayed"
-      :style-position="newEventMenuStylePosition"
+    <event-pop-up
+      v-if="eventMenuDisplayed"
+      :style-position="eventMenuStylePosition"
       :date="currentDateSelected"
+      :event-data="selectedEventData"
     />
   </transition>
 

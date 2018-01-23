@@ -1,6 +1,6 @@
 import moment from 'moment'
 
-import newEventPopUp from './newEventPopUp.vue'
+import eventPopUp from './eventPopUp.vue'
 import event from './event.vue'
 
 export default {
@@ -22,9 +22,11 @@ export default {
       daysFromPrevMonth: 0,
       daysFromNextMonth: 0,
       selectedDay: null,
-      newEventMenuDisplayed: false,
-      newEventMenuStylePosition: '',
+      eventMenuDisplayed: false,
+      eventMenuStylePosition: '',
       currentDateSelected: '',
+
+      selectedEventData: '',
 
       // constants
       DAY_NAMES: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
@@ -36,7 +38,7 @@ export default {
 
 
   components: {
-    'new-event-pop-up': newEventPopUp,
+    'event-pop-up': eventPopUp,
     'event': event,
   },
 
@@ -51,6 +53,10 @@ export default {
 
 
   methods: {
+    setSelectedEventData(eventData) {
+      this.selectedEventData = eventData
+    },
+
     getEventsForDay: function(dayNum, monthNum, year) {
       const thisDate = moment({ day: dayNum, months: monthNum, year: year })
       const eventsForDay = [];
@@ -82,37 +88,30 @@ export default {
     },
 
     hideMenus: function() {
-      this.newEventMenuDisplayed = false
+      this.eventMenuDisplayed = false
     },
 
     catchClickOnDay: function(event) {
       const date = this.getDateFromClickEvent(event)
     },
 
-    catchDblClickOnDay: function(event) {
-      const date = this.getDateFromClickEvent(event)
-      console.log("You double-clicked on a day", event.path)
+    catchDblClickOnDay: function(e) {
+      this.currentDateSelected = this.getDateFromClickEvent(e)
       // TO DO: the next 4 lines may not be optimal...
-      const top = event.path["1"].offsetTop
-      const left = event.path["1"].offsetLeft
-      const width = event.path["1"].offsetWidth
-      const height = event.path["1"].offsetHeight
+      const top = e.currentTarget.offsetTop
+      const left = e.currentTarget.offsetLeft
+      const width = e.currentTarget.offsetWidth
+      const height = e.currentTarget.offsetHeight
       // TO DO: the next line may be better done as a class
-      this.newEventMenuStylePosition = `top: ${top - 32}px; left: ${left + width}px;`
-      this.newEventMenuDisplayed = !this.newEventMenuDisplayed
+      this.eventMenuStylePosition = `top: ${top - 32}px; left: ${left + width}px;`
+      this.eventMenuDisplayed = !this.eventMenuDisplayed
     },
 
-    getDateFromClickEvent: function(event) {
-      let dayNum = event.currentTarget.getAttribute('dayNum')
-      let monthNum = event.currentTarget.getAttribute('monthNum')
-      let year = this.currentYear
-      if (monthNum < 0) {
-        monthNum = 11
-        year -= 1
-      } else if (monthNum > 11) {
-        monthNum = 0
-        year += 1
-      }
+    getDateFromClickEvent: function(e) {
+      console.log(e.target.parentElement);
+      const dayNum = e.currentTarget.getAttribute('dayNum')
+      const monthNum = e.currentTarget.getAttribute('monthNum')
+      const year = e.currentTarget.getAttribute('year')
       const date = {
         dayNum: Number(dayNum),
         dayName: this.getDayNameByDayMonthYear(dayNum, monthNum, year),
@@ -120,7 +119,6 @@ export default {
         monthName: this.MONTH_NAMES[monthNum],
         year: Number(year)
       }
-      this.currentDateSelected = date
       return date
     },
 
@@ -164,6 +162,7 @@ export default {
       let monthNum = this.currentMonth
       let year = this.currentYear
       if (monthDiff) {
+        console.log('got here');
         const { newMonthNum, yearChange } = this.getAdjacentMonthNumAndYearChange(monthDiff)
         monthNum = newMonthNum
         year += yearChange

@@ -3,31 +3,39 @@
     class="pop-up"
     v-on:click="catchOnClick"
     :style="stylePosition">
-    <h1>{{ date.monthName }} {{ date.dayNum }}, {{ date.year }}</h1>
-    <br/>
-    <div class="input-area">
-      <div class="label">
-        Start Time:
+
+    <div class="new-event">
+      <h1>{{ date.monthName }} {{ date.dayNum }}, {{ date.year }}</h1>
+      <br/>
+      <div class="input-area">
+        <div class="label">
+          Start Time:
+        </div>
+        <div>
+          <vue-timepicker
+            v-model="startTime"
+            :format="timeFormat"
+            :minute-interval="minuteInterval">
+          </vue-timepicker>
+        </div>
+        <div class="label">
+          End Time:
+        </div>
+        <div>
+          <vue-timepicker
+            v-model="endTime"
+            :format="timeFormat"
+            :minute-interval="minuteInterval">
+          </vue-timepicker>
+        </div>
       </div>
-      <div>
-        <vue-timepicker
-          v-model="startTime"
-          :format="timeFormat"
-          :minute-interval="minuteInterval">
-        </vue-timepicker>
-      </div>
-      <div class="label">
-        End Time:
-      </div>
-      <div>
-        <vue-timepicker
-          v-model="endTime"
-          :format="timeFormat"
-          :minute-interval="minuteInterval">
-        </vue-timepicker>
-      </div>
+      <v-btn color="primary">Save</v-btn>
     </div>
-    <v-btn color="primary">Save</v-btn>
+
+    <div class="existing-event">
+      {{ eventData.content }}
+    </div>
+
   </div>
 </template>
 
@@ -36,13 +44,13 @@
 import VueTimepicker from 'vue2-timepicker'
 
 export default {
-  props: ['stylePosition', 'date'],
+  props: ['stylePosition', 'date', 'eventData'],
   components: { VueTimepicker },
 
   data() {
     return {
-      startTime: null,
-      endTime: null,
+      startTime: {},
+      endTime: {},
       timeFormat: "hh:mm A",
       minuteInterval: 5,
     }
