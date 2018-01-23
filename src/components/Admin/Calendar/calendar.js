@@ -55,17 +55,25 @@ export default {
       const thisDate = moment({ day: dayNum, months: monthNum, year: year })
       const eventsForDay = [];
       this.events.forEach(function(event) {
-        const eventDate = moment(event.startTime)
+        const eventDate = moment(event.startDate)
         if (thisDate.format('DD-MM-YYYY') === eventDate.format('DD-MM-YYYY')) {
           const eventData = {
-            startTime: 0,
-            endTime: 0,
-            title: 'title',
-            content: event.content
+            moment: eventDate,
+            startTime: eventDate.format('hh:mm A'),
+            endTime: eventDate.format('hh:mm A'),
+            title: event.title,
+            content: event.content,
           }
           eventsForDay.push(eventData)
         }
       })
+
+      eventsForDay.sort((a, b) => {
+        if (a.moment.isBefore(b.moment)) { return -1 }
+        if (a.moment.isAfter(b.moment)) { return 1 }
+        return 0;
+      })
+
       return eventsForDay
     },
 
@@ -79,16 +87,17 @@ export default {
 
     catchClickOnDay: function(event) {
       const date = this.getDateFromClickEvent(event)
-      // console.log("You clicked", date)
     },
 
     catchDblClickOnDay: function(event) {
       const date = this.getDateFromClickEvent(event)
       console.log("You double-clicked on a day", event.path)
+      // TO DO: the next 4 lines may not be optimal...
       const top = event.path["1"].offsetTop
       const left = event.path["1"].offsetLeft
       const width = event.path["1"].offsetWidth
       const height = event.path["1"].offsetHeight
+      // TO DO: the next line may be better done as a class
       this.newEventMenuStylePosition = `top: ${top - 32}px; left: ${left + width}px;`
       this.newEventMenuDisplayed = !this.newEventMenuDisplayed
     },
@@ -165,13 +174,12 @@ export default {
 
       // Populate array of days
       const dayData = []
-      const monthName = this.MONTH_NAMES[monthNum]
       for (let dayNum = startDay; dayNum <= endDay; dayNum++) {
         dayData.push({
           dayNum: dayNum,
           dayName: this.getDayNameByDayMonthYear(dayNum, monthNum, year),
           monthNum: monthNum,
-          monthName: monthName,
+          monthName: this.MONTH_NAMES[monthNum],
           monthDiff: monthDiff,
           year: year,
           events: this.getEventsForDay(dayNum, monthNum, year)

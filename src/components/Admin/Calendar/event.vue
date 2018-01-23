@@ -2,7 +2,6 @@
   <div
     v-on:dblclick="catchDblClick"
     class="event">
-      {{ eventData.title }} --
       {{ eventData.startTime }}
   </div>
 </template>

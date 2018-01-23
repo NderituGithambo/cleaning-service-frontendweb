@@ -77,8 +77,12 @@ export default {
     createJobsListProcessed(employeeData) {
       console.log('employeeData', employeeData);
       employeeData.jobs.forEach(job => {
-        const event = {}
-        event.startTime = job.confirmed_time
+        const event = {
+          startDate: job.confirmed_time,
+          endDate: '',
+          title: job.address,
+          content: job,
+        }
         this.jobsListProcessed.push(event)
       })
     },
