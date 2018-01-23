@@ -1,4 +1,4 @@
-require('datejs')
+import moment from 'moment'
 
 import newEventPopUp from './newEventPopUp.vue'
 import event from './event.vue'
@@ -46,40 +46,38 @@ export default {
     currentMonth: function() {
       this.initializeMonthData()
     },
-    events: function(events) {
-      // TO DO:
-      // Need to extract a parent function for getDaysOfMonthData
-      // that pushes both prev, current and next month days
-      // into a single array.
-      // At the same time, this function also pushes the days events
-      // into the day object via getEventsForDay method.
-    }
   },
 
 
 
   methods: {
-    getEventsForDay: function(dayNum, monthName, year) {
+    getEventsForDay: function(dayNum, monthNum, year) {
       function isSameDay(d1, d2) {
-        return d1.getFullYear() === d2.getFullYear() &&
-          d1.getMonth() === d2.getMonth() &&
-          d1.getDate() === d2.getDate()
+        const comparison = d1.format('DD-MM-YYYY') === d2.format('DD-MM-YYYY')
+        return comparison
       }
 
       // Iterates through events array ... if an event is found on this day,
       // push that event to the events array in dayData (in getDaysOfMonthData)
       const eventsForDay = [];
-      const thisDate = Date.parse(`${monthName} ${dayNum}, ${year}`)
+      // const thisDate = moment(`${monthName} ${dayNum}, ${year}`)
+      const thisDate = moment({ day: dayNum, months: monthNum, year: year })
+
+      console.log(thisDate.month())
+
       this.events.forEach(function(event) {
-        const eventDate = Date.parse(event.startTime)
+        const eventDate = moment(event.startTime)
         if (isSameDay(thisDate, eventDate)) {
           const eventData = {
-            startTime: event.startTime,
-            title: 'test',
+            startTime: 0,
+            endTime: 0,
+            title: 'title',
+            content: event.content
           }
           eventsForDay.push(eventData)
         }
       })
+
       return eventsForDay
     },
 
@@ -139,16 +137,12 @@ export default {
       return [31, this.getDaysInFebByYear(year), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     },
 
-    getDayNameByDayMonthYear: function(day, month, year) {
-      const dateString = `${this.MONTH_NAMES[month]} ${day}, ${year}`
-      const timestamp = new Date.parse(dateString)
-      return this.DAY_NAMES[timestamp.getDay()]
+    getDayNameByDayMonthYear: function(dayNum, monthNum, year) {
+      return moment({ day: dayNum, months: monthNum, year: year }).format('dddd')
     },
 
-    getDayNumberInWeekByDayMonthYear: function(day, month, year) {
-      const dateString = `${month + 1}/${day}/${year}`
-      const timestamp = new Date.parse(dateString)
-      return timestamp.getDay()
+    getDayNumberInWeekByDayMonthYear: function(dayNum, monthNum, year) {
+      return moment({ day: dayNum, months: monthNum, year: year }).day()
     },
 
     getAdjacentMonthNumAndYearChange: function(monthDiff) {
@@ -192,7 +186,7 @@ export default {
           monthName: monthName,
           monthDiff: monthDiff,
           year: year,
-          events: this.getEventsForDay(dayNum, monthName, year)
+          events: this.getEventsForDay(dayNum, monthNum, year)
         })
       }
       return dayData
