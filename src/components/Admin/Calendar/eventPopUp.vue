@@ -55,6 +55,8 @@ export default {
 
   data() {
     return {
+      timeFormat: "hh:mm a",
+      minuteInterval: 5,
       startTime: {
         hh: '00',
         mm: '00',
@@ -65,32 +67,6 @@ export default {
         mm: '00',
         a: 'am'
       },
-      timeFormat: "hh:mm a",
-      minuteInterval: 5,
-    }
-  },
-
-  directives: {
-    draw: {
-      // When insterted into DOM
-      inserted: function (el) {
-        if (el.getContext) {
-          var ctx = el.getContext('2d');
-
-          ctx.beginPath();
-          ctx.moveTo(0, 250);
-          ctx.lineTo(15, 225);
-          ctx.lineTo(15, 0);
-          ctx.lineTo(415, 0);
-          ctx.lineTo(415, 500);
-          ctx.lineTo(15, 500);
-          ctx.lineTo(15, 275);
-          ctx.lineTo(0, 250);
-
-          ctx.fillStyle = '#525252'
-          ctx.fill()
-        }
-      }
     }
   },
 
@@ -98,6 +74,23 @@ export default {
     catchOnClick: function(event) {
       event.stopPropagation()
     },
+  },
+
+  mounted() {
+    console.log('from pop up:', this.eventData)
+    const { startTime, endTime, content, title } = this.eventData
+    if (this.eventData) {
+      this.startTime = {
+        hh: startTime.slice(0, 2),
+        mm: startTime.slice(3, 5),
+        a: startTime.slice(-2),
+      }
+      this.endTime = {
+        hh: endTime.slice(0, 2),
+        mm: endTime.slice(3, 5),
+        a: endTime.slice(-2),
+      }
+    }
   },
 };
 </script>

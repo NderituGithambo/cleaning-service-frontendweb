@@ -65,8 +65,8 @@ export default {
         if (thisDate.format('DD-MM-YYYY') === eventDate.format('DD-MM-YYYY')) {
           const eventData = {
             moment: eventDate,
-            startTime: eventDate.format('hh:mm A'),
-            endTime: eventDate.format('hh:mm A'),
+            startTime: eventDate.format('hh:mm a'),
+            endTime: eventDate.format('hh:mm a'),
             title: event.title,
             content: event.content,
           }
@@ -233,7 +233,7 @@ export default {
       console.log("you emitted", eventData)
       this.selectedEventData = eventData
       this.eventMenuDisplayed = true
-      // TO DO: need to send the data to the pop-up new newly selected event
+      // TO DO: need to send the newly selected event data to the pop-up
 
 
 
