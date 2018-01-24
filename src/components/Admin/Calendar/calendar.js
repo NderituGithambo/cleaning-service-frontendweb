@@ -12,7 +12,6 @@ export default {
   // that contains whatever other key-attribute pairs
   // are desired to be displayed in the pop-up.
   // 'End date' is not required.
-  // Dates to be parsed by datejs.
 
   data () {
     return {
@@ -21,10 +20,10 @@ export default {
       currentMonth: 0,
       daysFromPrevMonth: 0,
       daysFromNextMonth: 0,
-      selectedDay: null,
       eventMenuDisplayed: false,
       eventMenuStylePosition: '',
       currentDateSelected: '',
+      newEventPlaceholder: [],
 
       selectedEventData: '',
 
@@ -60,7 +59,8 @@ export default {
     getEventsForDay: function(dayNum, monthNum, year) {
       const thisDate = moment({ day: dayNum, months: monthNum, year: year })
       const eventsForDay = [];
-      this.events.forEach(function(event) {
+      console.log(this.events.concat(this.newEventPlaceholder))
+      this.events.concat(this.newEventPlaceholder).forEach(function(event) {
         const eventDate = moment(event.startDate)
         if (thisDate.format('DD-MM-YYYY') === eventDate.format('DD-MM-YYYY')) {
           const eventData = {
@@ -89,6 +89,7 @@ export default {
 
     hideMenus: function() {
       this.eventMenuDisplayed = false
+      this.newEventPlaceholder = []
     },
 
     catchClickOnDay: function(event) {
@@ -106,10 +107,22 @@ export default {
       // Center the pop up with the selected day
       this.eventMenuStylePosition = `top: ${top - 200 + (boxHeight / 2)}px; left: ${left + boxWidth - 23}px;`
       this.eventMenuDisplayed = !this.eventMenuDisplayed
+
+      const { dayNum, monthNum, year } = this.currentDateSelected
+      const newEvent = {
+        startDate: moment({
+          day: dayNum,
+          month: monthNum,
+          year: year,
+        }).format('YYYY-MM-DDTHH:mm:ss.SSSZ'),
+        // 2018-01-31T10:04:47.000-08:00
+        title: 'newEvent',
+      }
+      console.log("here", newEvent)
+      this.newEventPlaceholder.push(newEvent)
     },
 
     getDateFromClickEvent: function(e) {
-      // console.log(e.target.parentElement);
       const dayNum = e.currentTarget.getAttribute('dayNum')
       const monthNum = e.currentTarget.getAttribute('monthNum')
       const year = e.currentTarget.getAttribute('year')

@@ -2,8 +2,8 @@
   <div
     v-on:dblclick.stop="catchDblClick"
     class="event"
-    :class="{ 'existing-event': eventData, 'new-event': !eventData }">
-    <div v-if="eventData">
+    :class="[eventData.content ? 'existing-event' : 'new-event']">
+    <div v-if="eventData.content">
       {{ eventData.startTime }}
     </div>
     <div v-else>
@@ -55,7 +55,7 @@ div.event {
 }
 
 .new-event {
-  background-color: aliceblue;
+  background-color: rgba(240, 248, 255, 0.5);
   border: 1px dashed blue;
 }
 
