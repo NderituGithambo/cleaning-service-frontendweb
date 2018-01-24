@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <h1>Create a new job</h1>
+    <h1>Manage Jobs</h1>
     <br/>
     <v-card>
       <v-card-text>

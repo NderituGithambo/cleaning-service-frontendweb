@@ -1,6 +1,6 @@
 <template>
   <div
-    v-on:dblclick="catchDblClick"
+    v-on:dblclick.stop="catchDblClick"
     class="event">
     {{ eventData.startTime }}
   </div>
@@ -17,9 +17,8 @@ export default {
   },
 
   methods: {
-    catchDblClick: function(e) {
-      e.stopPropagation()
-      console.log('You double-clicked an event', this.eventData);
+    catchDblClick: function() {
+      this.$emit('open-pop-up-with-event-data', this.eventData)
     }
   }
 };

@@ -41,7 +41,7 @@
             v-for="event in day.events"
             :eventData="event"
             :key="event.id"
-            @select-event="setSelectedEventData"
+            @open-pop-up-with-event-data="openPopUpWithEventData"
           />
         </div>
       </div>
@@ -50,13 +50,11 @@
     </div>
   </div>
 
-  <transition name="fade">
-    <event-pop-up
-      v-if="eventMenuDisplayed"
-      :style-position="eventMenuStylePosition"
-      :date="currentDateSelected"
-      :event-data="selectedEventData"
-    />
-  </transition>
+  <event-pop-up
+    v-if="eventMenuDisplayed"
+    :style-position="eventMenuStylePosition"
+    :date="currentDateSelected"
+    :event-data="selectedEventData"
+  />
 
 </div>

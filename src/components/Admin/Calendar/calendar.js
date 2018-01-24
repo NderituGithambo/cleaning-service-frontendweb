@@ -97,13 +97,14 @@ export default {
 
     catchDblClickOnDay: function(e) {
       this.currentDateSelected = this.getDateFromClickEvent(e)
-      // TO DO: the next 4 lines may not be optimal...
+
       const top = e.currentTarget.offsetTop
       const left = e.currentTarget.offsetLeft
-      const width = e.currentTarget.offsetWidth
-      const height = e.currentTarget.offsetHeight
-      // TO DO: the next line may be better done as a class
-      this.eventMenuStylePosition = `top: ${top - 200}px; left: ${left + width - 10}px;`
+      const boxWidth = e.currentTarget.offsetWidth
+      const boxHeight = e.currentTarget.offsetHeight
+
+      // Center the pop up with the selected day
+      this.eventMenuStylePosition = `top: ${top - 200 + (boxHeight / 2)}px; left: ${left + boxWidth - 23}px;`
       this.eventMenuDisplayed = !this.eventMenuDisplayed
     },
 
@@ -227,10 +228,25 @@ export default {
         this.daysFromNextMonth -= 7
       }
     },
+
+    openPopUpWithEventData(eventData) {
+      console.log("you emitted", eventData)
+      this.selectedEventData = eventData
+      this.eventMenuDisplayed = true
+      // TO DO: need to send the data to the pop-up new newly selected event
+
+
+
+      // TO DO: need to set position of pop-up to align with the selected event
+
+
+
+
+    },
   },
 
 
   mounted() {
     this.initializeMonthData()
-  }
+  },
 }

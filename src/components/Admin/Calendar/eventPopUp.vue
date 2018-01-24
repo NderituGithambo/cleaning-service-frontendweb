@@ -1,9 +1,16 @@
 <template>
   <div
-    class="pop-up"
+    class="container"
     :style="stylePosition">
+
+    <div class="arrow">
+      <div class="outer"></div>
+      <div class="inner"></div>
+    </div>
+
     <div class="content">
-      <div class="new-event">
+
+      <div class="event-info">
         <h1>{{ date.monthName }} {{ date.dayNum }}, {{ date.year }}</h1>
         <br/>
         <div class="input-area">
@@ -30,20 +37,11 @@
             </vue-timepicker>
           </div>
         </div>
-        <v-btn color="primary">Save</v-btn>
+        <v-btn color="primary">OK</v-btn>
       </div>
 
-      <div class="existing-event">
-        {{ eventData.content }}
-      </div>
     </div>
 
-    <canvas
-      v-on:click="catchOnClick"
-      v-draw
-      width="415px"
-      height="500px">
-    </canvas>
   </div>
 </template>
 
@@ -77,8 +75,6 @@ export default {
       // When insterted into DOM
       inserted: function (el) {
         if (el.getContext) {
-          // el.width = el.clientWidth;
-          // el.height = el.clientHeight;
           var ctx = el.getContext('2d');
 
           ctx.beginPath();
@@ -91,7 +87,7 @@ export default {
           ctx.lineTo(15, 275);
           ctx.lineTo(0, 250);
 
-          ctx.fillStyle = 'rgba(200, 200, 200, 1)'
+          ctx.fillStyle = '#525252'
           ctx.fill()
         }
       }
@@ -110,31 +106,59 @@ export default {
 <style lang="scss" scoped>
 @import "../../../colors.scss";
 
-
-.pop-up {
-  // border: 1px dashed rgb(74, 161, 74);
+/* Message box starts here */
+.container {
+  clear: both;
   position: absolute;
-  height: 500px;
-  width: 415px;
-  padding-left: 20px;
+
+  $border-color: rgb(208, 208, 208);
+  $fill-color: rgb(248, 248, 248);
+  $border-radius: 0;
+
+  .arrow {
+    width: 12px;
+    height: 20px;
+    overflow: hidden;
+    position: relative;
+    float: left;
+    top: 200px;
+    right: -1px;
+
+    .outer {
+      width: 0;
+      height: 0;
+      border-right: 20px solid $border-color;
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .inner {
+      width: 0;
+      height: 0;
+      border-right: 20px solid $fill-color;
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+      position: absolute;
+      top: 0;
+      left: 2px;
+    }
+  }
 
   .content {
-    // border: 1px dashed teal;
-    position: absolute;
-    height: 490px;
-    width: 390px;
-    margin-top: 5px;
-    margin-right: 5px;
-    margin-bottom: 5px;
-    padding-top: 1em;
-
-    z-index: 1;
-    background-color: $light-grey;
-
-    // display: flex;
-    // flex-direction: column;
-    // align-items: center;
-    // justify-content: center;
+    float: left;
+    width: 300px;
+    height: 400px;
+    border: 1px solid $border-color;
+    background-color: $fill-color;
+    border: 1px solid $border-color;
+    padding: 6px 8px;
+    -webkit-border-radius: $border-radius;
+    -moz-border-radius: $border-radius;
+    -o-border-radius: $border-radius;
+    border-radius: $border-radius;
 
     h1 {
       font-size: 1.2em;
@@ -144,31 +168,69 @@ export default {
       font-size: 1em;
     }
 
-    .input-area {
-      width: 100%;
-      display: grid;
-      grid-template-columns: [col] 40% [col] 60%;
-      grid-template-rows: [row] auto;
+    .event-info {
+      .input-area {
+        width: 100%;
+        display: grid;
+        grid-template-columns: [col] 40% [col] 60%;
+        grid-template-rows: [row] auto;
 
-      .label {
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
+        .label {
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+        }
+      }
+
+      button {
+        float: right;
       }
     }
-
-    button {
-      margin-top: 2em;
-      margin-left: auto;
-    }
-  }
-
-  canvas {
-    z-index: 0;
-    position: absolute;
-    top: 0;
-    left: 0;
   }
 }
 
+
+
+//  ** old pop-up **
+// .pop-up {
+//   // border: 1px dashed rgb(74, 161, 74);
+//   position: absolute;
+//   height: 500px;
+//   width: 415px;
+//   padding-left: 20px;
+
+//   .content {
+//     // border: 1px dashed teal;
+//     position: absolute;
+//     height: 490px;
+//     width: 390px;
+//     margin-top: 5px;
+//     margin-right: 5px;
+//     margin-bottom: 5px;
+//     padding-top: 1em;
+
+//     z-index: 4;
+//     background-color: white;
+
+//     // display: flex;
+//     // flex-direction: column;
+//     // align-items: center;
+//     // justify-content: center;
+
+
+
+
+//     button {
+//       margin-top: 2em;
+//       margin-left: auto;
+//     }
+//   }
+
+//   canvas {
+//     z-index: 3;
+//     position: absolute;
+//     top: 0;
+//     left: 0;
+//   }
+// }
 </style>
