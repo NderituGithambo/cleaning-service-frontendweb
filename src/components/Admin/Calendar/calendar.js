@@ -114,6 +114,10 @@ export default {
           day: dayNum,
           month: monthNum,
           year: year,
+          hour: 23,
+          minute: 59,
+          second: 59,
+          millisecond: 59,
         }).format('YYYY-MM-DDTHH:mm:ss.SSSZ'),
         // 2018-01-31T10:04:47.000-08:00
         title: 'newEvent',
