@@ -109,7 +109,7 @@ export default {
     },
 
     getDateFromClickEvent: function(e) {
-      console.log(e.target.parentElement);
+      // console.log(e.target.parentElement);
       const dayNum = e.currentTarget.getAttribute('dayNum')
       const monthNum = e.currentTarget.getAttribute('monthNum')
       const year = e.currentTarget.getAttribute('year')
@@ -233,9 +233,6 @@ export default {
       console.log("you emitted", eventData)
       this.selectedEventData = eventData
       this.eventMenuDisplayed = true
-      // TO DO: need to send the newly selected event data to the pop-up
-
-
 
       // TO DO: need to set position of pop-up to align with the selected event
 

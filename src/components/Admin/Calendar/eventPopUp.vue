@@ -56,7 +56,7 @@ export default {
   data() {
     return {
       timeFormat: "hh:mm a",
-      minuteInterval: 5,
+      minuteInterval: 15,
       startTime: {
         hh: '00',
         mm: '00',
@@ -71,9 +71,6 @@ export default {
   },
 
   methods: {
-    catchOnClick: function(event) {
-      event.stopPropagation()
-    },
   },
 
   mounted() {
