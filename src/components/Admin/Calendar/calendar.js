@@ -24,8 +24,8 @@ export default {
       eventPopUpStylePosition: '',
       currentDateSelected: '',
       newEventPlaceholder: [],
-
       selectedEventData: '',
+
 
       // constants
       DAY_NAMES: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
@@ -54,9 +54,9 @@ export default {
 
   methods: {
     /*
-    =====================
-    Calendar Architecture
-    =====================
+    ===============
+    Calendar Layout
+    ===============
     */
 
     getDaysInFebByYear: function(year) {
@@ -219,6 +219,7 @@ export default {
         }
       })
 
+      // Sort by event startTime using momentjs
       eventsForDay.sort((a, b) => {
         if (a.moment.isBefore(b.moment)) { return -1 }
         if (a.moment.isAfter(b.moment)) { return 1 }
@@ -290,6 +291,11 @@ export default {
     hideMenus: function() {
       this.eventPopUpDisplayed = false
       this.newEventPlaceholder = []
+    },
+
+
+    emitNewEventDataToParent: function(newEventData) {
+      this.$emit('save-new-event', newEventData)
     },
   },
 

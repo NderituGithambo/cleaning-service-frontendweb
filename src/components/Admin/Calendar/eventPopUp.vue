@@ -37,7 +37,7 @@
             </vue-timepicker>
           </div>
         </div>
-        <v-btn color="primary">OK</v-btn>
+        <v-btn color="primary" v-on:click="emitNewEventDataToParent">OK</v-btn>
       </div>
 
     </div>
@@ -71,6 +71,14 @@ export default {
   },
 
   methods: {
+    emitNewEventDataToParent: function() {
+      /* This gets re-emitted from parent to outside of calendar
+      component to avoid depending on Vuex */
+      this.$emit('emit-new-event-data-to-parent', {
+        startTime: this.startTime,
+        endTime: this.endTime,
+      })
+    }
   },
 
   mounted() {
@@ -89,6 +97,8 @@ export default {
       }
     }
   },
+
+
 };
 </script>
 

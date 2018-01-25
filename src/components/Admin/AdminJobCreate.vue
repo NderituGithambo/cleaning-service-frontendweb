@@ -21,7 +21,10 @@
             </template>
           </v-select>
 
-          <calendar :events="jobsListProcessed"></calendar>
+          <calendar
+            :events="jobsListProcessed"
+            @save-new-event="saveNewEvent"
+          ></calendar>
 
           <div class="button-container">
             <v-btn
@@ -135,8 +138,12 @@ export default {
       }
     },
 
-    clear() {
+    clear: function() {
       this.employee = null
+    },
+
+    saveNewEvent: function(newEventData) {
+      console.log("from AdminJobCreate.vue component:", newEventData);
     },
   },
 
