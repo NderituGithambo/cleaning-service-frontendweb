@@ -5,13 +5,13 @@ import event from './event.vue'
 
 export default {
   props: ['events'],
-  // 'Events' prop must be an array of objects
-  // with the following attributes:
-  // Start date, end date, title,
-  // and a custom 'content' object inside,
-  // that contains whatever other key-attribute pairs
-  // are desired to be displayed in the pop-up.
-  // 'End date' is not required.
+  /* 'Events' prop must be an array of objects
+  with the following attributes:
+  Start date, end date, title,
+  and a custom 'content' object inside,
+  that contains whatever other key-attribute pairs
+  are desired to be displayed in the pop-up.
+  'End date' is not required. */
 
   data () {
     return {
@@ -20,7 +20,7 @@ export default {
       currentMonth: 0,
       daysFromPrevMonth: 0,
       daysFromNextMonth: 0,
-      eventMenuDisplayed: false,
+      eventPopUpDisplayed: false,
       eventPopUpStylePosition: '',
       currentDateSelected: '',
       newEventPlaceholder: [],
@@ -45,6 +45,7 @@ export default {
 
   watch: {
     currentMonth: function() {
+      // Adjust displayed days in calendar when changing months
       this.initializeMonthData()
     },
   },
@@ -52,93 +53,11 @@ export default {
 
 
   methods: {
-    setSelectedEventData(eventData) {
-      this.selectedEventData = eventData
-    },
-
-    getEventsForDay: function(dayNum, monthNum, year) {
-      const thisDate = moment({ day: dayNum, months: monthNum, year: year })
-      const eventsForDay = [];
-      this.events.concat(this.newEventPlaceholder).forEach(function(event) {
-        const eventDate = moment(event.startDate)
-        if (thisDate.format('DD-MM-YYYY') === eventDate.format('DD-MM-YYYY')) {
-          const eventData = {
-            moment: eventDate,
-            startTime: eventDate.format('hh:mm a'),
-            endTime: eventDate.format('hh:mm a'),
-            title: event.title,
-            content: event.content,
-          }
-          eventsForDay.push(eventData)
-        }
-      })
-
-      eventsForDay.sort((a, b) => {
-        if (a.moment.isBefore(b.moment)) { return -1 }
-        if (a.moment.isAfter(b.moment)) { return 1 }
-        return 0;
-      })
-
-      return eventsForDay
-    },
-
-    onDblClickEvent: function(event) {
-      console.log("You double-clicked on an event")
-    },
-
-    hideMenus: function() {
-      this.eventMenuDisplayed = false
-      this.newEventPlaceholder = []
-    },
-
-    catchClickOnDay: function(event) {
-      const date = this.getDateFromClickEvent(event)
-    },
-
-    catchDblClickOnDay: function(e) {
-      this.currentDateSelected = this.getDateFromClickEvent(e)
-
-      console.log("clicked:", e);
-
-      const top = e.currentTarget.offsetTop
-      const left = e.currentTarget.offsetLeft
-      const boxWidth = e.currentTarget.offsetWidth
-      const boxHeight = e.currentTarget.offsetHeight
-
-      // Center the pop up with the selected EVENT
-      this.eventMenuStylePosition = `top: ${top - 200 + (boxHeight / 2)}px; left: ${left + boxWidth - 23}px;`
-      this.eventMenuDisplayed = !this.eventMenuDisplayed
-
-      const { dayNum, monthNum, year } = this.currentDateSelected
-      const newEvent = {
-        startDate: moment({
-          day: dayNum,
-          month: monthNum,
-          year: year,
-          hour: 23,
-          minute: 59,
-          second: 59,
-          millisecond: 59,
-        }).format('YYYY-MM-DDTHH:mm:ss.SSSZ'),
-        // 2018-01-31T10:04:47.000-08:00
-        title: 'newEvent',
-      }
-      this.newEventPlaceholder.push(newEvent)
-    },
-
-    getDateFromClickEvent: function(e) {
-      const dayNum = e.currentTarget.getAttribute('dayNum')
-      const monthNum = e.currentTarget.getAttribute('monthNum')
-      const year = e.currentTarget.getAttribute('year')
-      const date = {
-        dayNum: Number(dayNum),
-        dayName: this.getDayNameByDayMonthYear(dayNum, monthNum, year),
-        monthNum: Number(monthNum),
-        monthName: this.MONTH_NAMES[monthNum],
-        year: Number(year)
-      }
-      return date
-    },
+    /*
+    =====================
+    Calendar Architecture
+    =====================
+    */
 
     getDaysInFebByYear: function(year) {
       if (year % 100 === 0 && year % 400 !== 0) return 28
@@ -146,17 +65,21 @@ export default {
       return 28
     },
 
+
     getDayNumsOfMonthsByYear: function(year) {
       return [31, this.getDaysInFebByYear(year), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     },
+
 
     getDayNameByDayMonthYear: function(dayNum, monthNum, year) {
       return moment({ day: dayNum, months: monthNum, year: year }).format('dddd')
     },
 
+
     getDayNumberInWeekByDayMonthYear: function(dayNum, monthNum, year) {
       return moment({ day: dayNum, months: monthNum, year: year }).day()
     },
+
 
     getAdjacentMonthNumAndYearChange: function(monthDiff) {
       if ((this.currentMonth + monthDiff) < 0) {
@@ -171,9 +94,11 @@ export default {
       }
     },
 
+
     dayStyleClass(monthDiff) {
       return 'day ' + (monthDiff ? 'day-adjacent-month' : 'day-current-month')
     },
+
 
     getDaysOfMonthData(monthDiff) {
       // Prev / next month adjustments:
@@ -204,6 +129,7 @@ export default {
       return dayData
     },
 
+
     displayedDays() {
       // Used in html rendering, v-for loop
       return this.getDaysOfMonthData(-1).concat(
@@ -211,6 +137,7 @@ export default {
         this.getDaysOfMonthData(1),
       )
     },
+
 
     navMonth(change) {
       let monthNum = this.currentMonth
@@ -225,6 +152,7 @@ export default {
       }
       this.currentMonth = monthNum
     },
+
 
     initializeMonthData() {
       // How many days to display from the previous month before first day in current month
@@ -246,23 +174,123 @@ export default {
       }
     },
 
+
+
+    /*
+    =============================
+    Calendar Events & Interaction
+    =============================
+    */
+
+    catchClickOnDay: function(event) {
+      const date = this.getDateFromClickEvent(event)
+    },
+
+
+    getDateFromClickEvent: function(e) {
+      const dayNum = e.currentTarget.getAttribute('dayNum')
+      const monthNum = e.currentTarget.getAttribute('monthNum')
+      const year = e.currentTarget.getAttribute('year')
+      const date = {
+        dayNum: Number(dayNum),
+        dayName: this.getDayNameByDayMonthYear(dayNum, monthNum, year),
+        monthNum: Number(monthNum),
+        monthName: this.MONTH_NAMES[monthNum],
+        year: Number(year)
+      }
+      return date
+    },
+
+
+    getEventsForDay: function(dayNum, monthNum, year) {
+      const thisDate = moment({ day: dayNum, months: monthNum, year: year })
+      const eventsForDay = [];
+      this.events.concat(this.newEventPlaceholder).forEach(function(event) {
+        const eventDate = moment(event.startDate)
+        if (thisDate.format('DD-MM-YYYY') === eventDate.format('DD-MM-YYYY')) {
+          const eventData = {
+            moment: eventDate,
+            startTime: eventDate.format('hh:mm a'),
+            endTime: eventDate.format('hh:mm a'),
+            title: event.title,
+            content: event.content,
+          }
+          eventsForDay.push(eventData)
+        }
+      })
+
+      eventsForDay.sort((a, b) => {
+        if (a.moment.isBefore(b.moment)) { return -1 }
+        if (a.moment.isAfter(b.moment)) { return 1 }
+        return 0;
+      })
+
+      return eventsForDay
+    },
+
+
+    catchDblClickOnDay: function(e) {
+      /* When the day is double-clicked, the event pop-up comes up
+      after emit function in event's mounted() method */
+      const { dayNum, monthNum, year } = this.getDateFromClickEvent(e)
+      /* The latest possible time in day ensures that new event box
+      shows up last in the event list */
+      const newEvent = {
+        startDate: moment({
+          day: dayNum,
+          month: monthNum,
+          year: year,
+          hour: 23,
+          minute: 59,
+          second: 59,
+          millisecond: 59,
+        }).format('YYYY-MM-DDTHH:mm:ss.SSSZ'),
+        title: 'newEvent',
+      }
+      this.newEventPlaceholder.push(newEvent)
+    },
+
+
     openPopUpWithEventData(eventData) {
       this.selectedEventData = eventData
-      this.eventMenuDisplayed = true
 
-      console.log("FROM CALENDAR.JS", eventData)
+      const { moment } = eventData
+      this.currentDateSelected = {
+        dayNum: moment.format('Do'),
+        dayName: moment.format('dddd'),
+        monthNum: moment.month(),
+        monthName: moment.format('MMMM'),
+        year: moment.year(),
+      }
 
+      // For events about to be created...
+      if (!eventData.content) {
+        // Preferred time display on new events (0:00 am)
+        this.selectedEventData = {
+          startTime: '00:00 am',
+          endTime: '00:00 am',
+        }
+      }
+
+      // Set position of pop-up
       const { offsetTop, offsetLeft, offsetHeight, offsetWidth } = eventData.el
       const top = offsetTop + eventData.el.offsetParent.offsetTop
       const left = offsetLeft + eventData.el.offsetParent.offsetLeft
-      this.eventPopUpStylePosition = `top: ${top - 202 + (offsetHeight / 2)}px; left: ${left + offsetWidth - 23}px;`
+      this.setEventPopUpPosition(top, left, offsetHeight, offsetWidth)
 
+      this.eventPopUpDisplayed = true
     },
 
-    setPopUpPosition() {
-      
-    }
 
+    setEventPopUpPosition(top, left, boxHeight, boxWidth) {
+      this.eventPopUpStylePosition = `top: ${top - 201 + (boxHeight / 2)}px; left: ${left + boxWidth - 23}px;`
+    },
+
+
+    hideMenus: function() {
+      this.eventPopUpDisplayed = false
+      this.newEventPlaceholder = []
+    },
   },
 
 
