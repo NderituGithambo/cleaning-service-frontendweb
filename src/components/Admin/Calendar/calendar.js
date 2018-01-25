@@ -21,7 +21,7 @@ export default {
       daysFromPrevMonth: 0,
       daysFromNextMonth: 0,
       eventMenuDisplayed: false,
-      eventMenuStylePosition: '',
+      eventPopUpStylePosition: '',
       currentDateSelected: '',
       newEventPlaceholder: [],
 
@@ -59,7 +59,6 @@ export default {
     getEventsForDay: function(dayNum, monthNum, year) {
       const thisDate = moment({ day: dayNum, months: monthNum, year: year })
       const eventsForDay = [];
-      console.log(this.events.concat(this.newEventPlaceholder))
       this.events.concat(this.newEventPlaceholder).forEach(function(event) {
         const eventDate = moment(event.startDate)
         if (thisDate.format('DD-MM-YYYY') === eventDate.format('DD-MM-YYYY')) {
@@ -99,12 +98,14 @@ export default {
     catchDblClickOnDay: function(e) {
       this.currentDateSelected = this.getDateFromClickEvent(e)
 
+      console.log("clicked:", e);
+
       const top = e.currentTarget.offsetTop
       const left = e.currentTarget.offsetLeft
       const boxWidth = e.currentTarget.offsetWidth
       const boxHeight = e.currentTarget.offsetHeight
 
-      // Center the pop up with the selected day
+      // Center the pop up with the selected EVENT
       this.eventMenuStylePosition = `top: ${top - 200 + (boxHeight / 2)}px; left: ${left + boxWidth - 23}px;`
       this.eventMenuDisplayed = !this.eventMenuDisplayed
 
@@ -122,7 +123,6 @@ export default {
         // 2018-01-31T10:04:47.000-08:00
         title: 'newEvent',
       }
-      console.log("here", newEvent)
       this.newEventPlaceholder.push(newEvent)
     },
 
@@ -247,16 +247,22 @@ export default {
     },
 
     openPopUpWithEventData(eventData) {
-      console.log("you emitted", eventData)
       this.selectedEventData = eventData
       this.eventMenuDisplayed = true
 
-      // TO DO: need to set position of pop-up to align with the selected event
+      console.log("FROM CALENDAR.JS", eventData)
 
-
-
+      const { offsetTop, offsetLeft, offsetHeight, offsetWidth } = eventData.el
+      const top = offsetTop + eventData.el.offsetParent.offsetTop
+      const left = offsetLeft + eventData.el.offsetParent.offsetLeft
+      this.eventPopUpStylePosition = `top: ${top - 202 + (offsetHeight / 2)}px; left: ${left + offsetWidth - 23}px;`
 
     },
+
+    setPopUpPosition() {
+      
+    }
+
   },
 
 

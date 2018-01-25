@@ -86,7 +86,10 @@ nav {
   left: 0;
   top: 0;
 
+  z-index: 6;
+
   width: 12vw;
+  min-width: 120px;
   height: 100vh;
 
   padding: 1em 0 1em 0;

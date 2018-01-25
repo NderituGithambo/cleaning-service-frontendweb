@@ -33,7 +33,9 @@
 
     .view-month {
       display: grid;
-      grid-template-columns: repeat(7, 10em);
+      width: 90%;
+      grid-template-columns: repeat(7, 1fr);
+
       grid-template-rows: [row] auto;
       grid-gap: 2px;
 

@@ -111,7 +111,7 @@ export default {
     overflow: hidden;
     position: relative;
     float: left;
-    top: 200px;
+    top: 175px;
     right: -1px;
 
     .outer {
@@ -141,6 +141,7 @@ export default {
     float: left;
     width: 300px;
     height: 400px;
+    max-height: 400px;
     border: 1px solid $border-color;
     background-color: $fill-color;
     border: 1px solid $border-color;
@@ -178,6 +179,12 @@ export default {
     }
   }
 }
+
+  hr {
+    position: absolute;
+    top: 200px;
+    width: 100%;
+  }
 
 
 
