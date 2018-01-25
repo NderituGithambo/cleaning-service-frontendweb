@@ -2,18 +2,20 @@
   v-on:click="hideMenus"
   class="wrapper no-select">
 
-  <div class="date-nav">
-    <span class="date-nav-btn" v-on:click="() => navMonth(-1)">
-      [  < ]
-    </span>
-    <span class="date-nav-btn" v-on:click="() => navMonth(1)">
-      [ >  ]
-    </span>
+  <div class="calendar-header">
+    <h1 class="month-year">{{ MONTH_NAMES[currentMonth] }} {{ currentYear }}</h1>
+
+    <div class="date-nav">
+      <span class="date-nav-btn" v-on:click="() => navMonth(-1)">
+        [  < ]
+      </span>
+      <span class="date-nav-btn" v-on:click="() => navMonth(1)">
+        [ >  ]
+      </span>
+    </div>
   </div>
 
-  <h1>{{ MONTH_NAMES[currentMonth] }} {{ currentYear }}</h1>
-
-  <div class="calendar-container">
+  <div class="calendar-main">
     <div class="view-month">
 
       <div
