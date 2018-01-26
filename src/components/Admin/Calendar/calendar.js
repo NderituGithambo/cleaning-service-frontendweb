@@ -257,7 +257,8 @@ export default {
 
       const { moment } = eventData
       this.currentDateSelected = {
-        dayNum: moment.format('Do'),
+        dayNum: moment.format('DD'),
+        dayNumOrd: moment.format('Do'),
         dayName: moment.format('dddd'),
         monthNum: moment.month(),
         monthName: moment.format('MMMM'),
@@ -295,6 +296,29 @@ export default {
 
 
     emitNewEventDataToParent: function(newEventData) {
+      // Create blue-outlined event here with new event data
+
+      console.log("newEventData", newEventData);
+
+      newEventData.startTime.a === "pm"
+      const newEvent = {
+        startDate: moment({
+          day: newEventData.date.dayNum,
+          month: newEventData.date.monthNum,
+          year: newEventData.date.year,
+          hour: Number(newEventData.startTime.hh) + newEventData.startTime.a === "pm" ? 12 : 0,
+          minute: newEventData.startTime.mm,
+          second: 0,
+          millisecond: 0,
+        }).format('YYYY-MM-DDTHH:mm:ss.SSSZ'),
+        title: 'newEvent',
+      }
+
+      // TO DO: newEvent hour/min/sec is all zero -- this needs to be solved
+
+      this.newEventPlaceholder.push(newEvent)
+      console.log("newEvent", newEvent);
+
       this.$emit('save-new-event', newEventData)
     },
   },

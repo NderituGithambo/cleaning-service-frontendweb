@@ -72,11 +72,12 @@ export default {
 
   methods: {
     emitNewEventDataToParent: function() {
-      /* This gets re-emitted from parent to outside of calendar
+      /* This gets re-emitted in parent to outside of calendar
       component to avoid depending on Vuex */
       this.$emit('emit-new-event-data-to-parent', {
         startTime: this.startTime,
         endTime: this.endTime,
+        date: this.date,
       })
     }
   },
