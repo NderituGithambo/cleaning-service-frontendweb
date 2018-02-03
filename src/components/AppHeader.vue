@@ -1,6 +1,6 @@
 <template>
   <header class="pa-0">
-    <h1>FreshEco</h1>
+    <h1>VanCleaning</h1>
 
     <div class="header-aside">
       <div class="headlines">
