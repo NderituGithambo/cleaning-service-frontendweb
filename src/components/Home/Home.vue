@@ -2,7 +2,7 @@
   <main>
     <section>
       <article>
-        Photos here
+        <pre>{{ dummyText }}</pre>
       </article>
       <aside>
         <request-form v-if="!isRequestSent" :indicateRequestReceived="indicateRequestReceived"/>
@@ -19,6 +19,8 @@
 import requestForm from './requestForm.vue'
 import requestReceived from './requestReceived.vue'
 
+import { dummyText } from './dummyText.js'
+
 export default {
   name: 'Home',
   components: {
@@ -28,6 +30,7 @@ export default {
   data() {
     return {
       isRequestSent: false,
+      dummyText: dummyText,
     }
   },
   methods: {
@@ -56,7 +59,16 @@ article {
   display: flex;
   align-items: flex-start;
 
-  // border: 1px dashed red;
+  text-align: left;
+  padding: 1em;
+  padding-right: 2em;
+  font-size: 1.2em;
+
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: inherit;
+  }
 }
 
 aside {
