@@ -61,8 +61,10 @@ article {
 
   text-align: left;
   padding: 1em;
-  padding-right: 2em;
+  margin-right: 2em;
   font-size: 1.2em;
+
+  background: $transparent;
 
   pre {
     white-space: pre-wrap;
