@@ -37,7 +37,7 @@
             </vue-timepicker>
           </div>
         </div>
-        <v-btn color="primary" v-on:click="emitNewEventDataToParent">OK</v-btn>
+        <v-btn color="primary" v-on:click="handleClickOkay">OK</v-btn>
       </div>
 
     </div>
@@ -71,9 +71,9 @@ export default {
   },
 
   methods: {
-    emitNewEventDataToParent: function() {
+    handleClickOkay: function() {
       /* This gets re-emitted in parent to outside of calendar */
-      this.$emit('emit-new-event-data-to-parent', {
+      this.$emit('handle-click-okay-in-pop-up', {
         startTime: this.startTime,
         endTime: this.endTime,
         date: this.date,

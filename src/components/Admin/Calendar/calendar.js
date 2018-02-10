@@ -28,10 +28,7 @@ export default {
       selectedDate: '',
       selectedEventData: '',
 
-      newEventPlaceholder: [],
-
-      stashedEvent: '',
-
+      newEventPlaceholder: null,
 
       // constants
       DAY_NAMES: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
@@ -195,26 +192,32 @@ export default {
 
     catchDblClickOnDay(e) {
       console.log("You double-clicked on a day", e)
-
-      this.newEventPlaceholder = []
       /* When the day is double-clicked, the event pop-up comes up
       after emit function in event's mounted() method */
+
+      this.newEventPlaceholder = null
+
       const { dayNum, monthNum, year } = this.getDateFromClickEvent(e)
-      /* The latest possible time in day ensures that new event box
-      shows up last in the event list */
+
+      const momentObj = moment({
+        day: dayNum,
+        month: monthNum,
+        year: year,
+        hour: 0,
+        minute: 0,
+        second: 0,
+        millisecond: 0,
+      })
+
       const newEvent = {
-        startDate: moment({
-          day: dayNum,
-          month: monthNum,
-          year: year,
-          hour: 0,
-          minute: 0,
-          second: 0,
-          millisecond: 0,
-        }).format('YYYY-MM-DDTHH:mm:ss.SSSZ'),
+        startDate: momentObj.format('YYYY-MM-DDTHH:mm:ss.SSSZ'),
         title: 'newEvent',
+        momentObj: momentObj,
       }
-      if (this.newEventPlaceholder.length === 0) this.newEventPlaceholder.push(newEvent)
+
+      this.setSelectedDateFromMomentObj(momentObj)
+
+      this.newEventPlaceholder = newEvent
     },
 
 
@@ -224,7 +227,16 @@ export default {
       this.selectedEventData = eventData
 
       // To send selected date to event pop-up
-      const { momentObj } = eventData
+      this.setSelectedDateFromMomentObj(eventData.momentObj)
+
+      // Set position of pop-up
+      this.setEventPopUpPositionFromElement(eventData.el)
+
+      this.eventPopUpDisplayed = true
+    },
+
+
+    setSelectedDateFromMomentObj(momentObj) {
       this.selectedDate = {
         dayNum: momentObj.format('DD'),
         dayNumOrd: momentObj.format('Do'),
@@ -233,11 +245,6 @@ export default {
         monthName: momentObj.format('MMMM'),
         year: momentObj.year(),
       }
-
-      // Set position of pop-up
-      this.setEventPopUpPositionFromElement(eventData.el)
-
-      this.eventPopUpDisplayed = true
     },
 
 
@@ -266,7 +273,11 @@ export default {
       const thisDate = moment({ day: dayNum, months: monthNum, year: year })
       const eventsForDay = [];
 
-      this.events.concat(this.newEventPlaceholder).forEach(event => {
+      // Add the placeholder if it's there (the blue box)
+      const tmpEvents = this.newEventPlaceholder ? this.events.concat([this.newEventPlaceholder]) : this.events
+
+      // Loop through the events to see if they match this day
+      tmpEvents.forEach(event => {
         const eventDate = moment(event.startDate)
         if (thisDate.format('DD-MM-YYYY') === eventDate.format('DD-MM-YYYY')) {
           const eventData = {
@@ -291,12 +302,6 @@ export default {
     },
 
 
-
-    setEventPopUpPosition(top, left, boxHeight, boxWidth) {
-      this.eventPopUpStylePosition = `top: ${top - 201 + (boxHeight / 2)}px; left: ${left + boxWidth - 23}px;`
-    },
-
-
     setEventPopUpPositionFromElement(element) {
       const { offsetTop, offsetLeft, offsetHeight, offsetWidth } = element
       const top = offsetTop + element.offsetParent.offsetTop
@@ -307,17 +312,20 @@ export default {
 
     hidePopUpAfterClickOutsidePopUp() {
       this.eventPopUpDisplayed = false
-      this.newEventPlaceholder = []
+      this.newEventPlaceholder = null
     },
 
 
     hidePopUpAfterClickOkay() {
       this.eventPopUpDisplayed = false
+      this.newEventPlaceholder = null
     },
 
 
-    emitNewEventDataToParent(newEventData) {
+    handleClickOkayInPopUp(newEventData) {
       this.hidePopUpAfterClickOkay()
+
+      console.log("newEventData", newEventData)
 
       const newEvent = {
         startDate: moment({
@@ -331,11 +339,6 @@ export default {
         }).format('YYYY-MM-DDTHH:mm:ss.SSSZ'),
         title: 'newEvent',
       }
-
-      if (this.newEventPlaceholder.length === 0) this.newEventPlaceholder.push(newEvent)
-      console.log("newEvent", newEvent)
-
-      this.stashedEvent = newEvent
 
       this.$emit('save-new-event', newEvent)
     },
