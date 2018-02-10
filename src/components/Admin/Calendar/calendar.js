@@ -26,6 +26,8 @@ export default {
       newEventPlaceholder: [],
       selectedEventData: '',
 
+      stashedEvent: '',
+
 
       // constants
       DAY_NAMES: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
@@ -231,28 +233,35 @@ export default {
 
 
     catchDblClickOnDay: function(e) {
-      /* When the day is double-clicked, the event pop-up comes up
-      after emit function in event's mounted() method */
-      const { dayNum, monthNum, year } = this.getDateFromClickEvent(e)
-      /* The latest possible time in day ensures that new event box
-      shows up last in the event list */
-      const newEvent = {
-        startDate: moment({
-          day: dayNum,
-          month: monthNum,
-          year: year,
-          hour: 23,
-          minute: 59,
-          second: 59,
-          millisecond: 59,
-        }).format('YYYY-MM-DDTHH:mm:ss.SSSZ'),
-        title: 'newEvent',
+      if (!this.stashedEvent) {
+        this.newEventPlaceholder = []
+        /* When the day is double-clicked, the event pop-up comes up
+        after emit function in event's mounted() method */
+        const { dayNum, monthNum, year } = this.getDateFromClickEvent(e)
+        /* The latest possible time in day ensures that new event box
+        shows up last in the event list */
+        const newEvent = {
+          startDate: moment({
+            day: dayNum,
+            month: monthNum,
+            year: year,
+            hour: 23,
+            minute: 59,
+            second: 59,
+            millisecond: 59,
+          }).format('YYYY-MM-DDTHH:mm:ss.SSSZ'),
+          title: 'newEvent',
+        }
+        if (this.newEventPlaceholder.length === 0) this.newEventPlaceholder.push(newEvent)
+      } else {
+        this.openPopUpWithEventData(this.stashedEvent)
       }
-      this.newEventPlaceholder.push(newEvent)
     },
 
 
     openPopUpWithEventData(eventData) {
+      console.log("eventData",eventData)
+
       this.selectedEventData = eventData
 
       const { moment } = eventData
@@ -289,24 +298,29 @@ export default {
     },
 
 
-    hideMenus: function() {
+    hidePopUpAfterClickOutsidePopUp: function() {
       this.eventPopUpDisplayed = false
       this.newEventPlaceholder = []
+      if (this.stashedEvent) {
+        this.newEventPlaceholder.push(this.stashedEvent)
+      }
+    },
+
+
+    hidePopUpAfterClickOkay: function() {
+      this.eventPopUpDisplayed = false
     },
 
 
     emitNewEventDataToParent: function(newEventData) {
-      // Create blue-outlined event here with new event data
+      this.hidePopUpAfterClickOkay()
 
-      console.log("newEventData", newEventData);
-
-      newEventData.startTime.a === "pm"
       const newEvent = {
         startDate: moment({
           day: newEventData.date.dayNum,
           month: newEventData.date.monthNum,
           year: newEventData.date.year,
-          hour: Number(newEventData.startTime.hh) + newEventData.startTime.a === "pm" ? 12 : 0,
+          hour: Number(newEventData.startTime.hh) + (newEventData.startTime.a === 'pm' ? 12 : 0),
           minute: newEventData.startTime.mm,
           second: 0,
           millisecond: 0,
@@ -314,12 +328,12 @@ export default {
         title: 'newEvent',
       }
 
-      // TO DO: newEvent hour/min/sec is all zero -- this needs to be solved
-
       if (this.newEventPlaceholder.length === 0) this.newEventPlaceholder.push(newEvent)
-      console.log("newEvent", newEvent);
+      console.log("newEvent", newEvent)
 
-      this.$emit('save-new-event', newEventData)
+      this.stashedEvent = newEvent
+
+      this.$emit('save-new-event', newEvent)
     },
   },
 
