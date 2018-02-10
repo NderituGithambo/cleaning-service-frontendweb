@@ -15,7 +15,7 @@ export default {
 
   data () {
     return {
-      // variables
+      // Variables
       currentYear: 2018,
       currentMonth: 0,
 
@@ -30,7 +30,10 @@ export default {
 
       newEventPlaceholder: null,
 
-      // constants
+      // Store pre-saved event here
+      stashedEventData: null,
+
+      // Constants
       DAY_NAMES: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
       MONTH_NAMES: ['January', 'February', 'March', 'April', 'May', 'June', 'July',
         'August', 'September', 'October', 'November', 'December']
