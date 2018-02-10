@@ -1,5 +1,4 @@
 <div
-  v-on:click="hideMenus"
   class="wrapper no-select">
 
   <div class="calendar-header">
@@ -15,7 +14,7 @@
     </div>
   </div>
 
-  <div class="calendar-main">
+  <div class="calendar-main" v-on:click="hideMenus">
     <div class="view-month">
 
       <div

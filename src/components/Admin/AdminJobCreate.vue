@@ -23,8 +23,13 @@
 
           <calendar
             :events="jobsListProcessed"
-            @save-new-event="saveNewEvent"
+            @save-new-event="receiveEventData"
           ></calendar>
+
+          <div class="event-confirmation">
+            <div>Check job before saving:</div>
+            {{ eventData }}
+          </div>
 
           <div class="button-container">
             <v-btn
@@ -63,6 +68,8 @@ export default {
       employeesList: [],
       jobsListProcessed: [],
 
+      eventData: '',
+
       isLoading: false,
       isSubmitDisabled: false,
     }
@@ -78,7 +85,6 @@ export default {
 
   methods: {
     createJobsListProcessed(employeeData) {
-      console.log('employeeData', employeeData);
       employeeData.jobs.forEach(job => {
         const event = {
           startDate: job.confirmed_time,
@@ -93,22 +99,22 @@ export default {
     async submit() {
       this.isSubmitDisabled = true
       this.isLoading = true
-      try {
-        const request = axios.post('http://localhost:3000/admin/jobs', {
-          address: this.address,
-        })
-        const response = await request
-        if (response.status === 200) {
-          setTimeout(() => {
-            this.clear()
-            this.isLoading = false
-            this.isSubmitDisabled = false
-            this.indicateRequestReceived()
-          }, 1000)
-        }
-      } catch (e) {
-        console.log(e)
-      }
+      // try {
+      //   const request = axios.post('http://localhost:3000/admin/jobs', {
+      //     address: this.address,
+      //   })
+      //   const response = await request
+      //   if (response.status === 200) {
+      //     setTimeout(() => {
+      //       this.clear()
+      //       this.isLoading = false
+      //       this.isSubmitDisabled = false
+      //       this.indicateRequestReceived()
+      //     }, 1000)
+      //   }
+      // } catch (e) {
+      //   console.log(e)
+      // }
     },
 
     async fetchEmployees() {
@@ -131,7 +137,6 @@ export default {
       try {
         const request = axios.get(`http://localhost:3000/admin/employees/${id}`, config)
         const response = await request
-        // console.log('fetching employee', response);
         return response.data
       } catch (e) {
         console.log(e)
@@ -142,8 +147,9 @@ export default {
       this.employee = null
     },
 
-    saveNewEvent: function(newEventData) {
-      console.log("from AdminJobCreate.vue component:", newEventData);
+    receiveEventData: function(newEventData) {
+      console.log("from AdminJobCreate.vue component:", newEventData)
+      this.eventData = newEventData
     },
   },
 

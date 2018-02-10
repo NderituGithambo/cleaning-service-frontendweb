@@ -316,7 +316,7 @@ export default {
 
       // TO DO: newEvent hour/min/sec is all zero -- this needs to be solved
 
-      this.newEventPlaceholder.push(newEvent)
+      if (this.newEventPlaceholder.length === 0) this.newEventPlaceholder.push(newEvent)
       console.log("newEvent", newEvent);
 
       this.$emit('save-new-event', newEventData)

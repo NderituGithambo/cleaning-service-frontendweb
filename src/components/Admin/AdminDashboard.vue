@@ -66,9 +66,8 @@ export default {
       try {
         const request = axios.get('http://localhost:3000/admin/job_requests')
         const response = await request
-        console.log("**", response)
       } catch (error) {
-        console.log("***", error);
+        console.log(error);
       }
     }
   }

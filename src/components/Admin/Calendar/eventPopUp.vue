@@ -72,8 +72,7 @@ export default {
 
   methods: {
     emitNewEventDataToParent: function() {
-      /* This gets re-emitted in parent to outside of calendar
-      component to avoid depending on Vuex */
+      /* This gets re-emitted in parent to outside of calendar */
       this.$emit('emit-new-event-data-to-parent', {
         startTime: this.startTime,
         endTime: this.endTime,
@@ -83,7 +82,6 @@ export default {
   },
 
   mounted() {
-    console.log('from pop up:', this.eventData)
     const { startTime, endTime, content, title } = this.eventData
     if (this.eventData) {
       this.startTime = {
@@ -111,6 +109,7 @@ export default {
 .container {
   clear: both;
   position: absolute;
+  z-index: 5;
 
   $border-color: rgb(208, 208, 208);
   $fill-color: rgb(248, 248, 248);
