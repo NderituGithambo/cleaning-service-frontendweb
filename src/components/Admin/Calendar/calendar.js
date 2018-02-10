@@ -194,7 +194,6 @@ export default {
 
 
     catchDblClickOnDay(e) {
-      console.log("You double-clicked on a day", e)
       /* Creates newEventPlaceholder. When the day is double-clicked, the event pop-up
       comes up after emit function in event's mounted() method */
 
@@ -206,13 +205,16 @@ export default {
         day: dayNum,
         month: monthNum,
         year: year,
-        hour: 0,
-        minute: 0,
-        second: 0,
-        millisecond: 0,
+        // Set to max time so it is last in list
+        // (this is also req'd for the pop-up to show
+        // when there is already events that day)
+        hour: 23,
+        minute: 59,
+        second: 59,
+        millisecond: 999,
       })
 
-      const newEvent = {
+      const newEventPlaceholder = {
         startDate: momentObj.format('YYYY-MM-DDTHH:mm:ss.SSSZ'),
         title: 'Event Placeholder',
         momentObj,
@@ -221,13 +223,11 @@ export default {
 
       this.setSelectedDateFromMomentObj(momentObj)
 
-      this.newEventPlaceholder = newEvent
+      this.newEventPlaceholder = newEventPlaceholder
     },
 
 
     catchDblClickOnEvent(eventData) {
-      console.log("You double-clicked an event", eventData)
-
       this.selectedEventData = eventData
 
       // To send selected date to event pop-up
@@ -253,8 +253,6 @@ export default {
 
 
     handleNewEventPlaceholderCreation(newEventData) {
-      console.log('called this');
-      console.log("newEventData from handleNewEventPlaceholderCreation", newEventData)
       this.setEventPopUpPositionFromElement(newEventData.el)
       this.eventPopUpDisplayed = true
     },
@@ -276,10 +274,9 @@ export default {
 
 
     getEventsForDay(dayNum, monthNum, year) {
-      const thisDate = moment({ day: dayNum, months: monthNum, year: year })
+      // The day that the calendar is building
+      const thisDate = moment({ day: dayNum, months: monthNum, year: year }).format('DD-MM-YYYY')
       const eventsForDay = [];
-
-      console.log('invoking getEventsForDay');
 
       // Concat newEventPlaceholder and newEventStashed if they exist
       let tmpEvents = this.events
@@ -289,9 +286,9 @@ export default {
       /* Loop through the events to see if they match this day,
       and push them if they match */
       tmpEvents.forEach(event => {
+
         const momentObj = event.momentObj ? event.momentObj : moment(event.startDate)
-        console.log('event.startDate', event.startDate);
-        if (thisDate.format('DD-MM-YYYY') === momentObj.format('DD-MM-YYYY')) {
+        if (thisDate === momentObj.format('DD-MM-YYYY')) {
           const eventData = {
             momentObj: momentObj,
             startTime: momentObj.format('hh:mm a'),
@@ -338,9 +335,8 @@ export default {
     handleClickOkayInPopUp(newEventData) {
       this.hidePopUpAfterClickOkay()
 
-      console.log("newEventData", newEventData)
-
       // For stashing (pre-saving) event in calendar only
+      // ...and visual display of that stashed event
       const {
         dayNum,
         monthNum,
@@ -358,10 +354,11 @@ export default {
         day: dayNum,
         months: monthNum,
         year: year,
-        hour: sT.hh,
+        hour: Number(sT.hh) + (sT.a === 'am' ? 0 : 12),
         minute: sT.mm,
       })
 
+      // Format stashed event for event component
       const newEventStashed = {
         startTime: `${sT.hh}:${sT.mm} ${sT.a}`,
         endTime: `${eT.hh}:${eT.mm} ${eT.a}`,
@@ -371,10 +368,9 @@ export default {
         type: 'stashedEvent'
       }
 
-      console.log("stashing event", newEventStashed)
       this.newEventStashed = newEventStashed
 
-      // For emitting event to parent
+      // For emitting event to parent, dates converted to ISO format
       const newEvent = {
         startDate: moment({
           day: newEventData.date.dayNum,

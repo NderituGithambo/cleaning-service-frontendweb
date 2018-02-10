@@ -3,7 +3,7 @@
     v-on:dblclick.stop="catchDblClick"
     class="event"
     :class=getClassFromType()>
-    <div v-if="eventData.content">
+    <div v-if="eventData.type !== 'eventPlaceholder'">
       {{ eventData.startTime }}
     </div>
     <div v-else>
@@ -36,6 +36,8 @@ export default {
       }
     }
   },
+
+
 
   mounted() {
     console.log("eventData from event component", this.eventData)

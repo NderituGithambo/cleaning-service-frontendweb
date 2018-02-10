@@ -70,6 +70,8 @@ export default {
 
       eventData: '',
 
+      eventContentSpecified: ['', ],
+
       isLoading: false,
       isSubmitDisabled: false,
     }

@@ -164,7 +164,7 @@
             const request = axios.post('http://localhost:3000/guest/job_requests', {
               address: this.address,
               possible_times: this.availableTimes,
-              work_description: this.workDescription,
+              description: this.workDescription,
               quantity_hours: this.quantityHours,
               interview_requested: this.checkbox,
               possible_interview_times: this.availableInterviewTimes,
