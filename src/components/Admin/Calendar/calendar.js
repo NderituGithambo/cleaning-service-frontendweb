@@ -31,7 +31,7 @@ export default {
       newEventPlaceholder: null,
 
       // Store pre-saved event here
-      stashedEventData: null,
+      newEventStashed: null,
 
       // Constants
       DAY_NAMES: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
@@ -50,7 +50,7 @@ export default {
 
 
   watch: {
-    currentMonth: function() {
+    currentMonth() {
       // Adjust displayed days in calendar when changing months
       this.initializeMonthData()
     },
@@ -195,8 +195,8 @@ export default {
 
     catchDblClickOnDay(e) {
       console.log("You double-clicked on a day", e)
-      /* When the day is double-clicked, the event pop-up comes up
-      after emit function in event's mounted() method */
+      /* Creates newEventPlaceholder. When the day is double-clicked, the event pop-up
+      comes up after emit function in event's mounted() method */
 
       this.newEventPlaceholder = null
 
@@ -214,8 +214,9 @@ export default {
 
       const newEvent = {
         startDate: momentObj.format('YYYY-MM-DDTHH:mm:ss.SSSZ'),
-        title: 'newEvent',
-        momentObj: momentObj,
+        title: 'Event Placeholder',
+        momentObj,
+        type: 'eventPlaceholder',
       }
 
       this.setSelectedDateFromMomentObj(momentObj)
@@ -252,6 +253,8 @@ export default {
 
 
     handleNewEventPlaceholderCreation(newEventData) {
+      console.log('called this');
+      console.log("newEventData from handleNewEventPlaceholderCreation", newEventData)
       this.setEventPopUpPositionFromElement(newEventData.el)
       this.eventPopUpDisplayed = true
     },
@@ -276,19 +279,26 @@ export default {
       const thisDate = moment({ day: dayNum, months: monthNum, year: year })
       const eventsForDay = [];
 
-      // Add the placeholder if it's there (the blue box)
-      const tmpEvents = this.newEventPlaceholder ? this.events.concat([this.newEventPlaceholder]) : this.events
+      console.log('invoking getEventsForDay');
 
-      // Loop through the events to see if they match this day
+      // Concat newEventPlaceholder and newEventStashed if they exist
+      let tmpEvents = this.events
+      tmpEvents = this.newEventPlaceholder ? tmpEvents.concat([this.newEventPlaceholder]) : tmpEvents
+      tmpEvents = this.newEventStashed ? tmpEvents.concat([this.newEventStashed]) : tmpEvents
+
+      /* Loop through the events to see if they match this day,
+      and push them if they match */
       tmpEvents.forEach(event => {
-        const eventDate = moment(event.startDate)
-        if (thisDate.format('DD-MM-YYYY') === eventDate.format('DD-MM-YYYY')) {
+        const momentObj = event.momentObj ? event.momentObj : moment(event.startDate)
+        console.log('event.startDate', event.startDate);
+        if (thisDate.format('DD-MM-YYYY') === momentObj.format('DD-MM-YYYY')) {
           const eventData = {
-            momentObj: eventDate,
-            startTime: eventDate.format('hh:mm a'),
-            endTime: eventDate.format('hh:mm a'),
+            momentObj: momentObj,
+            startTime: momentObj.format('hh:mm a'),
+            endTime: momentObj.format('hh:mm a'),
             title: event.title,
             content: event.content,
+            type: event.type ? event.type : 'existingEvent',
           }
           eventsForDay.push(eventData)
         }
@@ -330,6 +340,41 @@ export default {
 
       console.log("newEventData", newEventData)
 
+      // For stashing (pre-saving) event in calendar only
+      const {
+        dayNum,
+        monthNum,
+        year,
+      } = newEventData.date
+
+      const {
+        startTime: sT,
+        endTime: eT,
+        content,
+        title,
+      } = newEventData
+
+      const momentObj = moment({
+        day: dayNum,
+        months: monthNum,
+        year: year,
+        hour: sT.hh,
+        minute: sT.mm,
+      })
+
+      const newEventStashed = {
+        startTime: `${sT.hh}:${sT.mm} ${sT.a}`,
+        endTime: `${eT.hh}:${eT.mm} ${eT.a}`,
+        momentObj,
+        title,
+        content,
+        type: 'stashedEvent'
+      }
+
+      console.log("stashing event", newEventStashed)
+      this.newEventStashed = newEventStashed
+
+      // For emitting event to parent
       const newEvent = {
         startDate: moment({
           day: newEventData.date.dayNum,
@@ -340,7 +385,7 @@ export default {
           second: 0,
           millisecond: 0,
         }).format('YYYY-MM-DDTHH:mm:ss.SSSZ'),
-        title: 'newEvent',
+        title: 'New event to emit to parent',
       }
 
       this.$emit('save-new-event', newEvent)

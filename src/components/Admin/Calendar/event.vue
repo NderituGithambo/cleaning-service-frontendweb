@@ -2,7 +2,7 @@
   <div
     v-on:dblclick.stop="catchDblClick"
     class="event"
-    :class="[eventData.content ? 'existing-event' : 'new-event']">
+    :class=getClassFromType()>
     <div v-if="eventData.content">
       {{ eventData.startTime }}
     </div>
@@ -17,22 +17,31 @@
 export default {
   props: ['eventData'],
 
-  data() {
-    return {
-    }
-  },
-
   methods: {
-    catchDblClick: function() {
+    catchDblClick() {
       this.eventData.el = this.$el
       this.$emit('catch-dbl-click-on-event', this.eventData)
+    },
+
+    getClassFromType() {
+      switch (this.eventData.type) {
+        case 'existingEvent':
+          return 'existing-event'
+        case 'eventPlaceholder':
+          return 'event-placeholder'
+        case 'stashedEvent':
+          return 'stashed-event'
+        default:
+          break;
+      }
     }
   },
 
   mounted() {
+    console.log("eventData from event component", this.eventData)
 
     // If this is a new event...
-    if (this.$el.classList.contains("new-event")) {
+    if (this.eventData.type === 'eventPlaceholder') {
       this.eventData.el = this.$el
       this.$emit('handle-new-event-placeholder-creation', this.eventData)
     }
@@ -64,9 +73,14 @@ div.event {
   border: 1px solid transparent;
 }
 
-.new-event {
+.event-placeholder {
   background-color: rgba(240, 248, 255, 0.5);
   border: 1px dashed blue;
+}
+
+.stashed-event {
+  background-color: rgba(240, 248, 255, 0.5);
+  border: 1px solid blue;
 }
 
 
