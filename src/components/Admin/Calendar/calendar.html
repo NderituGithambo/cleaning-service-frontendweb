@@ -42,7 +42,8 @@
             v-for="event in day.events"
             :eventData="event"
             :key="event.id"
-            @open-pop-up-with-event-data="openPopUpWithEventData"
+            @catch-dbl-click-on-event="catchDblClickOnEvent"
+            @handle-new-event-placeholder-creation="handleNewEventPlaceholderCreation"
           />
         </div>
       </div>
@@ -54,7 +55,7 @@
   <event-pop-up
     v-if="eventPopUpDisplayed"
     :style-position="eventPopUpStylePosition"
-    :date="currentDateSelected"
+    :date="selectedDate"
     :event-data="selectedEventData"
     @emit-new-event-data-to-parent="emitNewEventDataToParent"
   />

@@ -18,13 +18,17 @@ export default {
       // variables
       currentYear: 2018,
       currentMonth: 0,
+
       daysFromPrevMonth: 0,
       daysFromNextMonth: 0,
+
       eventPopUpDisplayed: false,
       eventPopUpStylePosition: '',
-      currentDateSelected: '',
-      newEventPlaceholder: [],
+
+      selectedDate: '',
       selectedEventData: '',
+
+      newEventPlaceholder: [],
 
       stashedEvent: '',
 
@@ -184,12 +188,66 @@ export default {
     =============================
     */
 
-    catchClickOnDay: function(event) {
-      const date = this.getDateFromClickEvent(event)
+    catchClickOnDay(e) {
+      const date = this.getDateFromClickEvent(e)
     },
 
 
-    getDateFromClickEvent: function(e) {
+    catchDblClickOnDay(e) {
+      console.log("You double-clicked on a day", e)
+
+      this.newEventPlaceholder = []
+      /* When the day is double-clicked, the event pop-up comes up
+      after emit function in event's mounted() method */
+      const { dayNum, monthNum, year } = this.getDateFromClickEvent(e)
+      /* The latest possible time in day ensures that new event box
+      shows up last in the event list */
+      const newEvent = {
+        startDate: moment({
+          day: dayNum,
+          month: monthNum,
+          year: year,
+          hour: 0,
+          minute: 0,
+          second: 0,
+          millisecond: 0,
+        }).format('YYYY-MM-DDTHH:mm:ss.SSSZ'),
+        title: 'newEvent',
+      }
+      if (this.newEventPlaceholder.length === 0) this.newEventPlaceholder.push(newEvent)
+    },
+
+
+    catchDblClickOnEvent(eventData) {
+      console.log("You double-clicked an event", eventData)
+
+      this.selectedEventData = eventData
+
+      // To send selected date to event pop-up
+      const { momentObj } = eventData
+      this.selectedDate = {
+        dayNum: momentObj.format('DD'),
+        dayNumOrd: momentObj.format('Do'),
+        dayName: momentObj.format('dddd'),
+        monthNum: momentObj.month(),
+        monthName: momentObj.format('MMMM'),
+        year: momentObj.year(),
+      }
+
+      // Set position of pop-up
+      this.setEventPopUpPositionFromElement(eventData.el)
+
+      this.eventPopUpDisplayed = true
+    },
+
+
+    handleNewEventPlaceholderCreation(newEventData) {
+      this.setEventPopUpPositionFromElement(newEventData.el)
+      this.eventPopUpDisplayed = true
+    },
+
+
+    getDateFromClickEvent(e) {
       const dayNum = e.currentTarget.getAttribute('dayNum')
       const monthNum = e.currentTarget.getAttribute('monthNum')
       const year = e.currentTarget.getAttribute('year')
@@ -204,14 +262,15 @@ export default {
     },
 
 
-    getEventsForDay: function(dayNum, monthNum, year) {
+    getEventsForDay(dayNum, monthNum, year) {
       const thisDate = moment({ day: dayNum, months: monthNum, year: year })
       const eventsForDay = [];
-      this.events.concat(this.newEventPlaceholder).forEach(function(event) {
+
+      this.events.concat(this.newEventPlaceholder).forEach(event => {
         const eventDate = moment(event.startDate)
         if (thisDate.format('DD-MM-YYYY') === eventDate.format('DD-MM-YYYY')) {
           const eventData = {
-            moment: eventDate,
+            momentObj: eventDate,
             startTime: eventDate.format('hh:mm a'),
             endTime: eventDate.format('hh:mm a'),
             title: event.title,
@@ -223,8 +282,8 @@ export default {
 
       // Sort by event startTime using momentjs
       eventsForDay.sort((a, b) => {
-        if (a.moment.isBefore(b.moment)) { return -1 }
-        if (a.moment.isAfter(b.moment)) { return 1 }
+        if (a.momentObj.isBefore(b.momentObj)) { return -1 }
+        if (a.momentObj.isAfter(b.momentObj)) { return 1 }
         return 0;
       })
 
@@ -232,87 +291,32 @@ export default {
     },
 
 
-    catchDblClickOnDay: function(e) {
-      if (!this.stashedEvent) {
-        this.newEventPlaceholder = []
-        /* When the day is double-clicked, the event pop-up comes up
-        after emit function in event's mounted() method */
-        const { dayNum, monthNum, year } = this.getDateFromClickEvent(e)
-        /* The latest possible time in day ensures that new event box
-        shows up last in the event list */
-        const newEvent = {
-          startDate: moment({
-            day: dayNum,
-            month: monthNum,
-            year: year,
-            hour: 23,
-            minute: 59,
-            second: 59,
-            millisecond: 59,
-          }).format('YYYY-MM-DDTHH:mm:ss.SSSZ'),
-          title: 'newEvent',
-        }
-        if (this.newEventPlaceholder.length === 0) this.newEventPlaceholder.push(newEvent)
-      } else {
-        this.openPopUpWithEventData(this.stashedEvent)
-      }
-    },
-
-
-    openPopUpWithEventData(eventData) {
-      console.log("eventData",eventData)
-
-      this.selectedEventData = eventData
-
-      const { moment } = eventData
-      this.currentDateSelected = {
-        dayNum: moment.format('DD'),
-        dayNumOrd: moment.format('Do'),
-        dayName: moment.format('dddd'),
-        monthNum: moment.month(),
-        monthName: moment.format('MMMM'),
-        year: moment.year(),
-      }
-
-      // For events about to be created...
-      if (!eventData.content) {
-        // Preferred time display on new events (0:00 am)
-        this.selectedEventData = {
-          startTime: '00:00 am',
-          endTime: '00:00 am',
-        }
-      }
-
-      // Set position of pop-up
-      const { offsetTop, offsetLeft, offsetHeight, offsetWidth } = eventData.el
-      const top = offsetTop + eventData.el.offsetParent.offsetTop
-      const left = offsetLeft + eventData.el.offsetParent.offsetLeft
-      this.setEventPopUpPosition(top, left, offsetHeight, offsetWidth)
-
-      this.eventPopUpDisplayed = true
-    },
-
 
     setEventPopUpPosition(top, left, boxHeight, boxWidth) {
       this.eventPopUpStylePosition = `top: ${top - 201 + (boxHeight / 2)}px; left: ${left + boxWidth - 23}px;`
     },
 
 
-    hidePopUpAfterClickOutsidePopUp: function() {
+    setEventPopUpPositionFromElement(element) {
+      const { offsetTop, offsetLeft, offsetHeight, offsetWidth } = element
+      const top = offsetTop + element.offsetParent.offsetTop
+      const left = offsetLeft + element.offsetParent.offsetLeft
+      this.eventPopUpStylePosition = `top: ${top - 201 + (offsetHeight / 2)}px; left: ${left + offsetWidth - 23}px;`
+    },
+
+
+    hidePopUpAfterClickOutsidePopUp() {
       this.eventPopUpDisplayed = false
       this.newEventPlaceholder = []
-      if (this.stashedEvent) {
-        this.newEventPlaceholder.push(this.stashedEvent)
-      }
     },
 
 
-    hidePopUpAfterClickOkay: function() {
+    hidePopUpAfterClickOkay() {
       this.eventPopUpDisplayed = false
     },
 
 
-    emitNewEventDataToParent: function(newEventData) {
+    emitNewEventDataToParent(newEventData) {
       this.hidePopUpAfterClickOkay()
 
       const newEvent = {

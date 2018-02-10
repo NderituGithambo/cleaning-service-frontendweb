@@ -25,14 +25,16 @@ export default {
   methods: {
     catchDblClick: function() {
       this.eventData.el = this.$el
-      this.$emit('open-pop-up-with-event-data', this.eventData)
+      this.$emit('catch-dbl-click-on-event', this.eventData)
     }
   },
 
   mounted() {
+
+    // If this is a new event...
     if (this.$el.classList.contains("new-event")) {
       this.eventData.el = this.$el
-      this.$emit('open-pop-up-with-event-data', this.eventData)
+      this.$emit('handle-new-event-placeholder-creation', this.eventData)
     }
   }
 };
