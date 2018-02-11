@@ -13,44 +13,46 @@
       <h1>{{ date.monthName }} {{ date.dayNum }}, {{ date.year }}</h1>
       <br/>
 
-      <div class="row">
-        <div class="col col-label">
-          Start Time:
+      <div class="event-info">
+        <div class="row">
+          <div class="col col-label">
+            Start Time:
+          </div>
+          <div class="col col-content">
+            <vue-timepicker
+              v-model="startTime"
+              hide-clear-button
+              :format="timeFormat"
+              :minute-interval="minuteInterval">
+            </vue-timepicker>
+          </div>
         </div>
-        <div class="col col-content">
-          <vue-timepicker
-            v-model="startTime"
-            hide-clear-button
-            :format="timeFormat"
-            :minute-interval="minuteInterval">
-          </vue-timepicker>
-        </div>
-      </div>
 
-      <div class="row">
-        <div class="col col-label">
-          End Time:
+        <div class="row">
+          <div class="col col-label">
+            End Time:
+          </div>
+          <div class="col col-content">
+            <vue-timepicker
+              v-model="endTime"
+              hide-clear-button
+              :format="timeFormat"
+              :minute-interval="minuteInterval">
+            </vue-timepicker>
+          </div>
         </div>
-        <div class="col col-content">
-          <vue-timepicker
-            v-model="endTime"
-            hide-clear-button
-            :format="timeFormat"
-            :minute-interval="minuteInterval">
-          </vue-timepicker>
-        </div>
-      </div>
 
-      <div class="row" v-for="(item, key) in filteredContent">
-        <div class="col col-label">
-          {{ key | underscoresAreSpaces | capitalize }}
+        <div class="row" v-for="(item, key) in filteredContent">
+          <div class="col col-label">
+            {{ key | underscoresAreSpaces | capitalize }}
+          </div>
+          <div class="col col-content">
+            {{ item }}
+          </div>
         </div>
-        <div class="col col-content">
-          {{ item }}
-        </div>
-      </div>
 
-      <v-btn color="primary" v-on:click="handleClickOkay">OK</v-btn>
+        <v-btn color="primary" v-if="!eventData.content" v-on:click="handleClickOkay">OK</v-btn>
+      </div>
 
     </div>
 
@@ -118,6 +120,8 @@ export default {
   },
 
   mounted() {
+    console.log("eventData", this.eventData)
+
     const { startTime, endTime, content, title } = this.eventData
     if (this.eventData) {
       this.startTime = {
@@ -182,8 +186,7 @@ export default {
 
   .content {
     width: 400px;
-    height: 400px;
-    max-height: 400px;
+    height: min-content;
     border: 1px solid $border-color;
     background-color: $fill-color;
     border: 1px solid $border-color;
@@ -203,27 +206,35 @@ export default {
       font-size: 1em;
     }
 
-    .row {
-      width: 100%;
-      display: grid;
-      grid-template-columns: [col] 25% [col] 75%;
+    .event-info {
+      height: fit-content;
+      // border: 1px dashed red;
 
-      .col {
-        padding: 0.5em;
-      }
+      .row {
+        width: 100%;
+        display: grid;
+        grid-template-columns: [col] 25% [col] 75%;
 
-      .col-label {
-        text-align: right;
-        font-weight: bold;
-      }
+        // border: 1px dashed blue;
 
-      .col-content {
-        text-align: left;
+        .col {
+          padding: 0.5em;
+        }
+
+        .col-label {
+          text-align: right;
+          font-weight: bold;
+        }
+
+        .col-content {
+          text-align: left;
+        }
       }
     }
   }
 
   button {
+    // margin-top: auto;
     float: right;
   }
 }

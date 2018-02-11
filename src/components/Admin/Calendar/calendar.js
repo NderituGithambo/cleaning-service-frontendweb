@@ -198,6 +198,7 @@ export default {
       comes up after emit function in event's mounted() method */
 
       this.newEventPlaceholder = null
+      this.selectedEventData = {}
 
       const { dayNum, monthNum, year } = this.getDateFromClickEvent(e)
 

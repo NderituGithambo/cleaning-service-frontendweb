@@ -73,15 +73,8 @@ div.event {
   border: 1px solid transparent;
 }
 
-.event-placeholder {
+.event-placeholder, .stashed-event {
   background-color: rgba(240, 248, 255, 0.5);
   border: 1px dashed blue;
 }
-
-.stashed-event {
-  background-color: rgba(240, 248, 255, 0.5);
-  border: 1px solid blue;
-}
-
-
 </style>

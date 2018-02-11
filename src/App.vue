@@ -40,7 +40,7 @@ export default {
   text-align: center;
   color: #2c3e50;
   // background: linear-gradient(to bottom right, white, $blue);
-  background-image: url("assets/jazflower4_med.jpg");
+  // background-image: url("assets/jazflower4_med.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
