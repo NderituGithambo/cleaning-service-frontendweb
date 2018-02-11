@@ -42,7 +42,8 @@
           </div>
         </div>
 
-        <div class="row" v-for="(item, key) in filteredContent">
+        <!-- For existing events -->
+        <div class="row" v-if="eventData.content" v-for="(item, key) in filteredContent">
           <div class="col col-label">
             {{ key | underscoresAreSpaces | capitalize }}
           </div>
@@ -51,6 +52,20 @@
           </div>
         </div>
 
+        <!-- For creating new events -->
+        <div class="row" v-if="!eventData.content" v-for="key in infoRequiredForJob">
+          <div class="col col-label">
+            {{ key | underscoresAreSpaces | capitalize }}
+          </div>
+          <div class="col col-content">
+            <v-text-field
+              :v-model="key"
+              required
+            ></v-text-field>
+          </div>
+        </div>
+
+        <!-- Submit button displayed when creating new events -->
         <v-btn color="primary" v-if="!eventData.content" v-on:click="handleClickOkay">OK</v-btn>
       </div>
 
@@ -81,11 +96,27 @@ export default {
         mm: '00',
         a: 'am'
       },
+      infoRequiredForJob: [
+        'description',
+        'address',
+        'admin_notes',
+        'employee_notes',
+        'phone',
+        'email',
+      ],
+      description: '',
+      address: '',
+      admin_notes: '',
+      employee_notes: '',
+      phone: '',
+      email: '',
     }
   },
 
   methods: {
     handleClickOkay: function() {
+
+
       /* This gets re-emitted in parent to outside of calendar */
       this.$emit('handle-click-okay-in-pop-up', {
         startTime: this.startTime,
@@ -123,7 +154,7 @@ export default {
     console.log("eventData", this.eventData)
 
     const { startTime, endTime, content, title } = this.eventData
-    if (this.eventData) {
+    if (this.eventData.content) {
       this.startTime = {
         hh: startTime.slice(0, 2),
         mm: startTime.slice(3, 5),
@@ -148,7 +179,7 @@ export default {
   position: absolute;
   z-index: 5;
 
-  $border-color: rgb(0, 0, 0);
+  $border-color: gainsboro;
   $fill-color: rgb(248, 248, 248);
   $border-radius: 4px;
 
@@ -222,12 +253,17 @@ export default {
         }
 
         .col-label {
-          text-align: right;
           font-weight: bold;
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          text-align: right;
         }
 
         .col-content {
-          text-align: left;
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
         }
       }
     }
