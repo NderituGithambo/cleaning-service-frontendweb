@@ -10,35 +10,47 @@
 
     <div class="content">
 
-      <div class="event-info">
-        <h1>{{ date.monthName }} {{ date.dayNum }}, {{ date.year }}</h1>
-        <br/>
-        <div class="input-area">
-          <div class="label">
-            Start Time:
-          </div>
-          <div>
-            <vue-timepicker
-              v-model="startTime"
-              hide-clear-button
-              :format="timeFormat"
-              :minute-interval="minuteInterval">
-            </vue-timepicker>
-          </div>
-          <div class="label">
-            End Time:
-          </div>
-          <div>
-            <vue-timepicker
-              v-model="endTime"
-              hide-clear-button
-              :format="timeFormat"
-              :minute-interval="minuteInterval">
-            </vue-timepicker>
-          </div>
+      <h1>{{ date.monthName }} {{ date.dayNum }}, {{ date.year }}</h1>
+      <br/>
+
+      <div class="row">
+        <div class="col col-label">
+          Start Time:
         </div>
-        <v-btn color="primary" v-on:click="handleClickOkay">OK</v-btn>
+        <div class="col col-content">
+          <vue-timepicker
+            v-model="startTime"
+            hide-clear-button
+            :format="timeFormat"
+            :minute-interval="minuteInterval">
+          </vue-timepicker>
+        </div>
       </div>
+
+      <div class="row">
+        <div class="col col-label">
+          End Time:
+        </div>
+        <div class="col col-content">
+          <vue-timepicker
+            v-model="endTime"
+            hide-clear-button
+            :format="timeFormat"
+            :minute-interval="minuteInterval">
+          </vue-timepicker>
+        </div>
+      </div>
+
+      <div class="row" v-for="(item, key) in filteredContent">
+        <div class="col col-label">
+          {{ key | underscoresAreSpaces | capitalize }}
+        </div>
+        <div class="col col-content">
+          {{ item }}
+        </div>
+      </div>
+
+      <v-btn color="primary" v-on:click="handleClickOkay">OK</v-btn>
 
     </div>
 
@@ -81,6 +93,30 @@ export default {
     }
   },
 
+  computed: {
+    filteredContent: function() {
+      if (this.eventData.content) {
+        const {
+          description,
+          address,
+          admin_notes,
+          employee_notes,
+          phone,
+          email,
+        } = this.eventData.content
+
+        return {
+          description,
+          address,
+          admin_notes,
+          employee_notes,
+          phone,
+          email,
+        }
+      }
+    }
+  },
+
   mounted() {
     const { startTime, endTime, content, title } = this.eventData
     if (this.eventData) {
@@ -96,24 +132,21 @@ export default {
       }
     }
   },
-
-
-};
+}
 </script>
 
 
 <style lang="scss" scoped>
 @import "../../../colors.scss";
 
-/* Message box starts here */
 .container {
   clear: both;
   position: absolute;
   z-index: 5;
 
-  $border-color: rgb(208, 208, 208);
+  $border-color: rgb(0, 0, 0);
   $fill-color: rgb(248, 248, 248);
-  $border-radius: 0;
+  $border-radius: 4px;
 
   .arrow {
     width: 12px;
@@ -148,8 +181,7 @@ export default {
   }
 
   .content {
-    float: left;
-    width: 300px;
+    width: 400px;
     height: 400px;
     max-height: 400px;
     border: 1px solid $border-color;
@@ -161,6 +193,8 @@ export default {
     -o-border-radius: $border-radius;
     border-radius: $border-radius;
 
+    overflow-y: scroll;
+
     h1 {
       font-size: 1.2em;
     }
@@ -169,75 +203,28 @@ export default {
       font-size: 1em;
     }
 
-    .event-info {
-      .input-area {
-        width: 100%;
-        display: grid;
-        grid-template-columns: [col] 40% [col] 60%;
-        grid-template-rows: [row] auto;
+    .row {
+      width: 100%;
+      display: grid;
+      grid-template-columns: [col] 25% [col] 75%;
 
-        .label {
-          display: flex;
-          align-items: center;
-          justify-content: flex-end;
-        }
+      .col {
+        padding: 0.5em;
       }
 
-      button {
-        float: right;
+      .col-label {
+        text-align: right;
+        font-weight: bold;
+      }
+
+      .col-content {
+        text-align: left;
       }
     }
   }
-}
 
-  hr {
-    position: absolute;
-    top: 200px;
-    width: 100%;
+  button {
+    float: right;
   }
-
-
-
-//  ** old pop-up **
-// .pop-up {
-//   // border: 1px dashed rgb(74, 161, 74);
-//   position: absolute;
-//   height: 500px;
-//   width: 415px;
-//   padding-left: 20px;
-
-//   .content {
-//     // border: 1px dashed teal;
-//     position: absolute;
-//     height: 490px;
-//     width: 390px;
-//     margin-top: 5px;
-//     margin-right: 5px;
-//     margin-bottom: 5px;
-//     padding-top: 1em;
-
-//     z-index: 4;
-//     background-color: white;
-
-//     // display: flex;
-//     // flex-direction: column;
-//     // align-items: center;
-//     // justify-content: center;
-
-
-
-
-//     button {
-//       margin-top: 2em;
-//       margin-left: auto;
-//     }
-//   }
-
-//   canvas {
-//     z-index: 3;
-//     position: absolute;
-//     top: 0;
-//     left: 0;
-//   }
-// }
+}
 </style>

@@ -40,8 +40,6 @@ export default {
 
 
   mounted() {
-    console.log("eventData from event component", this.eventData)
-
     // If this is a new event...
     if (this.eventData.type === 'eventPlaceholder') {
       this.eventData.el = this.$el

@@ -150,7 +150,6 @@ export default {
     },
 
     receiveEventData: function(newEventData) {
-      console.log("from AdminJobCreate.vue component:", newEventData)
       this.eventData = newEventData
     },
   },

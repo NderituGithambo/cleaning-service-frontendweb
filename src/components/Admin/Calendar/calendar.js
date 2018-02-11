@@ -335,8 +335,8 @@ export default {
     handleClickOkayInPopUp(newEventData) {
       this.hidePopUpAfterClickOkay()
 
-      // For stashing (pre-saving) event in calendar only
-      // ...and visual display of that stashed event
+      // For stashing (pre-saving) event in calendar and
+      // visual display of that stashed event
       const {
         dayNum,
         monthNum,
@@ -370,7 +370,7 @@ export default {
 
       this.newEventStashed = newEventStashed
 
-      // For emitting event to parent, dates converted to ISO format
+      // For emitting event to parent, date is converted to ISO format
       const newEvent = {
         startDate: moment({
           day: newEventData.date.dayNum,
