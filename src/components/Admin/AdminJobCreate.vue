@@ -22,7 +22,7 @@
           </v-select>
 
           <calendar
-            :events="jobsListProcessed"
+            :events="jobsList"
             @emit-event-data="receiveEventData"
           ></calendar>
 
@@ -75,7 +75,7 @@ export default {
       employeeIdSelected: null,
       employeeData: null,
       employeesList: [],
-      jobsListProcessed: [],
+      jobsList: [],
 
       infoToConfirm: [
         'startDate',
@@ -89,31 +89,33 @@ export default {
 
       eventData: '',
 
-      eventContentSpecified: ['', ],
-
       isLoading: false,
       isSubmitDisabled: false,
     }
   },
 
   watch: {
-    employeeIdSelected: async function(employeeId) {
-      const employeeData = await this.fetchEmployee(employeeId)
-      this.jobsListProcessed = []
-      this.createJobsListProcessed(employeeData)
+    employeeIdSelected: function(employeeId) {
+      this.loadEmployeeJobsIntoJobsList(employeeId)
     }
   },
 
   methods: {
-    createJobsListProcessed(employeeData) {
+    makeJobsList(employeeData) {
       employeeData.jobs.forEach(job => {
         const event = {
           startDate: job.confirmed_time,
           endDate: '',
           content: job,
         }
-        this.jobsListProcessed.push(event)
+        this.jobsList.push(event)
       })
+    },
+
+    async loadEmployeeJobsIntoJobsList(employeeId) {
+      const employeeData = await this.fetchEmployee(employeeId)
+      this.jobsList = []
+      this.makeJobsList(employeeData)
     },
 
     async submit() {
@@ -139,9 +141,9 @@ export default {
         const response = await request
         if (response.status === 200) {
           setTimeout(() => {
-            this.clear()
             this.isLoading = false
             this.isSubmitDisabled = false
+            this.loadEmployeeJobsIntoJobsList(this.employeeIdSelected)
           }, 1000)
         } else {
           this.isLoading= false
