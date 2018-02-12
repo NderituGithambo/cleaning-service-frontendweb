@@ -58,10 +58,11 @@
             {{ item.key | underscoresAreSpaces | capitalize }}
           </div>
           <div class="col col-content">
-            <v-text-field
+            <input
+              type="text"
               v-model="content[index].value"
               required
-            ></v-text-field>
+            ></input>
           </div>
         </div>
 
@@ -100,7 +101,6 @@ export default {
         { key: 'description', value: '' },
         { key: 'address', value: '' },
         { key: 'admin_notes', value: '' },
-        { key: 'employee_notes', value: '' },
         { key: 'phone', value: '' },
         { key: 'email', value: '' },
       ],
@@ -154,7 +154,7 @@ export default {
   mounted() {
     console.log("eventData", this.eventData)
 
-    const { startTime, endTime, content, title } = this.eventData
+    const { startTime, endTime, content } = this.eventData
     if (this.eventData.content) {
       this.startTime = {
         hh: startTime.slice(0, 2),
@@ -256,15 +256,25 @@ export default {
         .col-label {
           font-weight: bold;
           display: flex;
-          align-items: center;
+          align-items: flex-start;
           justify-content: flex-end;
           text-align: right;
+          padding: 0.5em;
+          border-right: 1px solid #d2d2d2
         }
 
         .col-content {
           display: flex;
           align-items: center;
           justify-content: flex-start;
+          text-align: left;
+
+          input {
+            padding: 0.25em;
+            margin: 0;
+            border: 1px solid #d2d2d2;
+            width: 100%;
+          }
         }
       }
     }

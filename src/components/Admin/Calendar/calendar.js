@@ -3,11 +3,13 @@ import moment from 'moment'
 import eventPopUp from './eventPopUp.vue'
 import event from './event.vue'
 
+const dateToday = new Date()
+
 export default {
   props: ['events'],
   /* 'Events' prop must be an array of objects
   with the following attributes:
-  Start date, end date, title,
+  Start date, end date,
   and a custom 'content' object inside,
   that contains whatever other key-attribute pairs
   are desired to be displayed in the pop-up.
@@ -16,8 +18,8 @@ export default {
   data () {
     return {
       // Variables
-      currentYear: 2018,
-      currentMonth: 0,
+      currentYear: dateToday.getFullYear(),
+      currentMonth: dateToday.getMonth(),
 
       daysFromPrevMonth: 0,
       daysFromNextMonth: 0,
@@ -217,7 +219,6 @@ export default {
 
       const newEventPlaceholder = {
         startDate: momentObj.format('YYYY-MM-DDTHH:mm:ss.SSSZ'),
-        title: 'Event Placeholder',
         momentObj,
         type: 'eventPlaceholder',
       }
@@ -294,7 +295,6 @@ export default {
             momentObj: momentObj,
             startTime: momentObj.format('hh:mm a'),
             endTime: momentObj.format('hh:mm a'),
-            title: event.title,
             content: event.content,
             type: event.type ? event.type : 'existingEvent',
           }
@@ -348,7 +348,6 @@ export default {
         startTime: sT,
         endTime: eT,
         content,
-        title,
       } = newEventData
 
       const momentObj = moment({
@@ -364,7 +363,6 @@ export default {
         startTime: `${sT.hh}:${sT.mm} ${sT.a}`,
         endTime: `${eT.hh}:${eT.mm} ${eT.a}`,
         momentObj,
-        title,
         content,
         type: 'stashedEvent'
       }

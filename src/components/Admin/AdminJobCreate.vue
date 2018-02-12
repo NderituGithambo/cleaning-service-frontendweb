@@ -91,7 +91,6 @@ export default {
         const event = {
           startDate: job.confirmed_time,
           endDate: '',
-          title: job.address,
           content: job,
         }
         this.jobsListProcessed.push(event)
