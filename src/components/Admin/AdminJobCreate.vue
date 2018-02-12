@@ -5,7 +5,16 @@
     <v-card>
       <v-card-text>
         <form>
+          <!-- Calendar -->
+          <calendar
+            :events="jobsList"
+            @emit-event-data="receiveEventData"
+            ref="calendar"
+          ></calendar>
+
+          <!-- Employee selector -->
           <v-select
+            class="employee-selector"
             label="Assign employee"
             v-model="employeeIdSelected"
             :items="employeesList"
@@ -21,12 +30,7 @@
             </template>
           </v-select>
 
-          <calendar
-            :events="jobsList"
-            @emit-event-data="receiveEventData"
-            ref="calendar"
-          ></calendar>
-
+          <!-- Confirmation section -->
           <div v-if="eventData" class="event-confirmation">
             <h2>Confirm before saving:</h2>
 
@@ -145,8 +149,9 @@ export default {
           // Re-fetch the employee's jobs from database
           await this.loadEmployeeJobsIntoJobsList(this.employeeIdSelected)
           // Clear the stashed event from calendar component
-          // so displays like a fresh page refresh
           this.$refs.calendar.clearStashedEvent()
+          // Clear the new event data so page goes back to initial state
+          this.eventData = ''
         } else {
           this.isLoading= false
           this.isSubmitDisabled = false
@@ -220,6 +225,10 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    .employee-selector {
+      max-width: 500px;
+    }
 
     .input-group {
       width: 100%;
