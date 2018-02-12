@@ -52,7 +52,7 @@ export default {
 
 
   watch: {
-    currentMonth() {
+    currentMonth: function() {
       // Adjust displayed days in calendar when changing months
       this.initializeMonthData()
     },
@@ -404,6 +404,10 @@ export default {
       }
 
       this.$emit('emit-event-data', newEvent)
+    },
+
+    clearStashedEvent() {
+      this.newEventStashed = null
     },
   },
 

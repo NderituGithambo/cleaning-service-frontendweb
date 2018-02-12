@@ -24,6 +24,7 @@
           <calendar
             :events="jobsList"
             @emit-event-data="receiveEventData"
+            ref="calendar"
           ></calendar>
 
           <div v-if="eventData" class="event-confirmation">
@@ -115,19 +116,16 @@ export default {
     async loadEmployeeJobsIntoJobsList(employeeId) {
       const employeeData = await this.fetchEmployee(employeeId)
       this.jobsList = []
-      this.makeJobsList(employeeData)
+      return this.makeJobsList(employeeData)
     },
 
     async submit() {
       this.isSubmitDisabled = true
       this.isLoading = true
       try {
-
         const config = {
           headers: { Authorization: localStorage.getItem("token") }
         }
-
-        console.log("sending post request...", this.eventData)
 
         const request = axios.post('http://localhost:3000/admin/jobs', {
           employee_id: this.employeeIdSelected,
@@ -138,13 +136,17 @@ export default {
           phone: this.eventData.phone,
           email: this.eventData.email,
         }, config)
+
         const response = await request
         if (response.status === 200) {
-          setTimeout(() => {
-            this.isLoading = false
-            this.isSubmitDisabled = false
-            this.loadEmployeeJobsIntoJobsList(this.employeeIdSelected)
-          }, 1000)
+          // Reset buttons to normal
+          this.isLoading = false
+          this.isSubmitDisabled = false
+          // Re-fetch the employee's jobs from database
+          await this.loadEmployeeJobsIntoJobsList(this.employeeIdSelected)
+          // Clear the stashed event from calendar component
+          // so displays like a fresh page refresh
+          this.$refs.calendar.clearStashedEvent()
         } else {
           this.isLoading= false
           this.isSubmitDisabled = false
