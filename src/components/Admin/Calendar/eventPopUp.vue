@@ -106,14 +106,14 @@ export default {
       // Handling new event data inputted by admin
       // This gets re-emitted in parent to outside of calendar
       this.$emit('handle-click-okay-in-pop-up', {
+        date: this.date,
         startTime: this.startTime,
         endTime: this.endTime,
-        date: this.date,
-        [this.content[0].key]: this.content[0].value,
-        [this.content[1].key]: this.content[1].value,
-        [this.content[2].key]: this.content[2].value,
-        [this.content[3].key]: this.content[3].value,
-        [this.content[4].key]: this.content[4].value,
+        description: this.content[0].value,
+        address: this.content[1].value,
+        adminNotes: this.content[2].value,
+        phone: this.content[3].value,
+        email: this.content[4].value,
       })
     }
   },
@@ -144,8 +144,6 @@ export default {
   },
 
   mounted() {
-    console.log("eventData", this.eventData)
-
     const { startTime, endTime, content } = this.eventData
     if (this.eventData.content) {
       this.startTime = {

@@ -317,7 +317,7 @@ export default {
       const { offsetTop, offsetLeft, offsetHeight, offsetWidth } = element
       const top = offsetTop + element.offsetParent.offsetTop
       const left = offsetLeft + element.offsetParent.offsetLeft
-      this.eventPopUpStylePosition = `top: ${top - 201 + (offsetHeight / 2)}px; left: ${left + offsetWidth - 23}px;`
+      this.eventPopUpStylePosition = `top: ${top - 201 + (offsetHeight / 2)}px; left: ${left + offsetWidth}px;`
     },
 
 
@@ -398,8 +398,7 @@ export default {
         date: newEventData.date,
         description: newEventData.description,
         address: newEventData.address,
-        admin_notes: newEventData.admin_notes,
-        employee_notes: newEventData.employee_notes,
+        adminNotes: newEventData.adminNotes,
         phone: newEventData.phone,
         email: newEventData.email,
       }

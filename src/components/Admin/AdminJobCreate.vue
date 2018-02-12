@@ -26,22 +26,31 @@
             @emit-event-data="receiveEventData"
           ></calendar>
 
-          <div class="event-confirmation">
-            <div>Check job before saving:</div>
-            {{ eventData }}
+          <div v-if="eventData" class="event-confirmation">
+            <h2>Confirm before saving:</h2>
+
+            <div class="row" v-for="item in infoToConfirm">
+              <div class="col col-label">
+                {{ item }}
+              </div>
+              <div class="col col-content">
+                {{ eventData[item] }}
+              </div>
+            </div>
+
+            <div class="button-container">
+              <v-btn
+                @click="clear"
+              >clear</v-btn>
+
+              <v-btn
+                @click="submit"
+                :loading="isLoading"
+                :disabled="isSubmitDisabled"
+              >submit</v-btn>
+            </div>
           </div>
 
-          <div class="button-container">
-            <v-btn
-              @click="clear"
-            >clear</v-btn>
-
-            <v-btn
-              @click="submit"
-              :loading="isLoading"
-              :disabled="isSubmitDisabled"
-            >submit</v-btn>
-          </div>
         </form>
       </v-card-text>
     </v-card>
@@ -67,6 +76,16 @@ export default {
       employeeData: null,
       employeesList: [],
       jobsListProcessed: [],
+
+      infoToConfirm: [
+        'startDate',
+        'endDate',
+        'description',
+        'address',
+        'adminNotes',
+        'phone',
+        'email',
+      ],
 
       eventData: '',
 
@@ -100,22 +119,37 @@ export default {
     async submit() {
       this.isSubmitDisabled = true
       this.isLoading = true
-      // try {
-      //   const request = axios.post('http://localhost:3000/admin/jobs', {
-      //     address: this.address,
-      //   })
-      //   const response = await request
-      //   if (response.status === 200) {
-      //     setTimeout(() => {
-      //       this.clear()
-      //       this.isLoading = false
-      //       this.isSubmitDisabled = false
-      //       this.indicateRequestReceived()
-      //     }, 1000)
-      //   }
-      // } catch (e) {
-      //   console.log(e)
-      // }
+      try {
+
+        const config = {
+          headers: { Authorization: localStorage.getItem("token") }
+        }
+
+        console.log("sending post request...", this.eventData)
+
+        const request = axios.post('http://localhost:3000/admin/jobs', {
+          employee_id: this.employeeIdSelected,
+          confirmed_time: this.eventData.startDate,
+          admin_notes: this.eventData.adminNotes,
+          address: this.eventData.address,
+          description: this.eventData.description,
+          phone: this.eventData.phone,
+          email: this.eventData.email,
+        }, config)
+        const response = await request
+        if (response.status === 200) {
+          setTimeout(() => {
+            this.clear()
+            this.isLoading = false
+            this.isSubmitDisabled = false
+          }, 1000)
+        } else {
+          this.isLoading= false
+          this.isSubmitDisabled = false
+        }
+      } catch (e) {
+        console.log(e)
+      }
     },
 
     async fetchEmployees() {
@@ -170,10 +204,7 @@ export default {
   width: 100%;
 
   h2 {
-    text-align: left;
-    font-size: 1em;
-    word-break: keep-all;
-    padding: 0.5em;
+    font-size: 1.5em;
   }
 
   a {
@@ -196,6 +227,42 @@ export default {
       width: 100%;
       display: flex;
       justify-content: flex-end;
+    }
+  }
+
+  .event-confirmation {
+    .row {
+      width: 100%;
+      display: grid;
+      grid-template-columns: [col] 25% [col] 75%;
+
+      .col {
+        padding: 0.5em;
+      }
+
+      .col-label {
+        font-weight: bold;
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-end;
+        text-align: right;
+        padding: 0.5em;
+        border-right: 1px solid #d2d2d2
+      }
+
+      .col-content {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        text-align: left;
+
+        input {
+          padding: 0.25em;
+          margin: 0;
+          border: 1px solid #d2d2d2;
+          width: 100%;
+        }
+      }
     }
   }
 }
