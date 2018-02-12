@@ -1,12 +1,5 @@
 <template>
-  <div
-    class="container"
-    :style="stylePosition">
-
-    <div class="arrow">
-      <div class="outer"></div>
-      <div class="inner"></div>
-    </div>
+  <div class="arrow-box" :style="stylePosition">
 
     <div class="content">
 
@@ -110,9 +103,8 @@ export default {
   methods: {
     handleClickOkay: function() {
 
-      console.log("this in pop-up", this)
-
-      /* This gets re-emitted in parent to outside of calendar */
+      // Handling new event data inputted by admin
+      // This gets re-emitted in parent to outside of calendar
       this.$emit('handle-click-okay-in-pop-up', {
         startTime: this.startTime,
         endTime: this.endTime,
@@ -122,12 +114,12 @@ export default {
         [this.content[2].key]: this.content[2].value,
         [this.content[3].key]: this.content[3].value,
         [this.content[4].key]: this.content[4].value,
-        [this.content[5].key]: this.content[5].value,
       })
     }
   },
 
   computed: {
+    // For getting data from an existing event
     filteredContent: function() {
       if (this.eventData.content) {
         const {
@@ -175,57 +167,50 @@ export default {
 <style lang="scss" scoped>
 @import "../../../colors.scss";
 
-.container {
-  clear: both;
-  position: absolute;
-  z-index: 5;
 
+
+
+.arrow-box {
   $border-color: gainsboro;
   $fill-color: rgb(248, 248, 248);
   $border-radius: 4px;
 
-  .arrow {
-    width: 12px;
-    height: 20px;
-    overflow: hidden;
-    position: relative;
-    float: left;
-    top: 175px;
-    right: -1px;
+	position: absolute;
+	background: $fill-color;
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
 
-    .outer {
-      width: 0;
-      height: 0;
-      border-right: 20px solid $border-color;
-      border-top: 10px solid transparent;
-      border-bottom: 10px solid transparent;
-      position: absolute;
-      top: 0;
-      left: 0;
-    }
-
-    .inner {
-      width: 0;
-      height: 0;
-      border-right: 20px solid $fill-color;
-      border-top: 10px solid transparent;
-      border-bottom: 10px solid transparent;
-      position: absolute;
-      top: 0;
-      left: 2px;
-    }
+  &:after, &:before {
+    right: 100%;
+    top: 200px;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
   }
 
+  &:after {
+    border-color: rgba(0, 0, 0, 0);
+    border-right-color: $fill-color;
+    border-width: 10px;
+    margin-top: -10px;
+  }
+
+  &:before {
+    border-color: rgba(0, 0, 0, 0);
+    border-right-color: $border-color;
+    border-width: 11px;
+    margin-top: -11px;
+  }
+
+
   .content {
-    width: 400px;
+    width: 500px;
     height: min-content;
-    border: 1px solid $border-color;
-    background-color: $fill-color;
-    border: 1px solid $border-color;
+    background-color: transparent;
     padding: 6px 8px;
-    -webkit-border-radius: $border-radius;
-    -moz-border-radius: $border-radius;
-    -o-border-radius: $border-radius;
     border-radius: $border-radius;
 
     overflow-y: scroll;
@@ -239,15 +224,11 @@ export default {
     }
 
     .event-info {
-      height: fit-content;
-      // border: 1px dashed red;
 
       .row {
         width: 100%;
         display: grid;
         grid-template-columns: [col] 25% [col] 75%;
-
-        // border: 1px dashed blue;
 
         .col {
           padding: 0.5em;
@@ -281,7 +262,6 @@ export default {
   }
 
   button {
-    // margin-top: auto;
     float: right;
   }
 }
