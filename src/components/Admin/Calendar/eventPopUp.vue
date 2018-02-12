@@ -53,13 +53,13 @@
         </div>
 
         <!-- For creating new events -->
-        <div class="row" v-if="!eventData.content" v-for="key in infoRequiredForJob">
+        <div class="row" v-if="!eventData.content" v-for="(item, index) in content">
           <div class="col col-label">
-            {{ key | underscoresAreSpaces | capitalize }}
+            {{ item.key | underscoresAreSpaces | capitalize }}
           </div>
           <div class="col col-content">
             <v-text-field
-              :v-model="key"
+              v-model="content[index].value"
               required
             ></v-text-field>
           </div>
@@ -96,32 +96,33 @@ export default {
         mm: '00',
         a: 'am'
       },
-      infoRequiredForJob: [
-        'description',
-        'address',
-        'admin_notes',
-        'employee_notes',
-        'phone',
-        'email',
+      content: [
+        { key: 'description', value: '' },
+        { key: 'address', value: '' },
+        { key: 'admin_notes', value: '' },
+        { key: 'employee_notes', value: '' },
+        { key: 'phone', value: '' },
+        { key: 'email', value: '' },
       ],
-      description: '',
-      address: '',
-      admin_notes: '',
-      employee_notes: '',
-      phone: '',
-      email: '',
     }
   },
 
   methods: {
     handleClickOkay: function() {
 
+      console.log("this in pop-up", this)
 
       /* This gets re-emitted in parent to outside of calendar */
       this.$emit('handle-click-okay-in-pop-up', {
         startTime: this.startTime,
         endTime: this.endTime,
         date: this.date,
+        [this.content[0].key]: this.content[0].value,
+        [this.content[1].key]: this.content[1].value,
+        [this.content[2].key]: this.content[2].value,
+        [this.content[3].key]: this.content[3].value,
+        [this.content[4].key]: this.content[4].value,
+        [this.content[5].key]: this.content[5].value,
       })
     }
   },

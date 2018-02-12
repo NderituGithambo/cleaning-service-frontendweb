@@ -371,7 +371,9 @@ export default {
 
       this.newEventStashed = newEventStashed
 
-      // For emitting event to parent, date is converted to ISO format
+      // For emitting event to parent, start/end dates are converted to ISO format
+      console.log("newEventData", newEventData)
+
       const newEvent = {
         startDate: moment({
           day: newEventData.date.dayNum,
@@ -382,10 +384,29 @@ export default {
           second: 0,
           millisecond: 0,
         }).format('YYYY-MM-DDTHH:mm:ss.SSSZ'),
-        title: 'New event to emit to parent',
+
+
+        endDate: moment({
+          day: newEventData.date.dayNum,
+          month: newEventData.date.monthNum,
+          year: newEventData.date.year,
+          hour: Number(newEventData.endTime.hh) + (newEventData.endTime.a === 'pm' ? 12 : 0),
+          minute: newEventData.endTime.mm,
+          second: 0,
+          millisecond: 0,
+        }).format('YYYY-MM-DDTHH:mm:ss.SSSZ'),
+
+
+        date: newEventData.date,
+        description: newEventData.description,
+        address: newEventData.address,
+        admin_notes: newEventData.admin_notes,
+        employee_notes: newEventData.employee_notes,
+        phone: newEventData.phone,
+        email: newEventData.email,
       }
 
-      this.$emit('save-new-event', newEvent)
+      this.$emit('emit-event-data', newEvent)
     },
   },
 

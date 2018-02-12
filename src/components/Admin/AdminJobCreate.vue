@@ -23,7 +23,7 @@
 
           <calendar
             :events="jobsListProcessed"
-            @save-new-event="receiveEventData"
+            @emit-event-data="receiveEventData"
           ></calendar>
 
           <div class="event-confirmation">
