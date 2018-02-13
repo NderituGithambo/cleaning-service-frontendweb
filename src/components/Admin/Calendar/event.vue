@@ -37,6 +37,12 @@ export default {
     }
   },
 
+  watch: {
+    eventData: function() {
+      console.log("***", this.eventData)
+    }
+  },
+
 
 
   mounted() {

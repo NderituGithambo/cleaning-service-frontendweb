@@ -192,6 +192,7 @@ export default {
 
     catchClickOnDay(e) {
       const date = this.getDateFromClickEvent(e)
+      console.log("you clicked", e)
     },
 
 
