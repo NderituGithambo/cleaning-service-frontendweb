@@ -67,6 +67,7 @@
 <script>
 import axios from 'axios'
 import calendar from './Calendar/calendar.vue'
+import store from './store'
 
 export default {
   props: ['indicateRequestReceived'],
@@ -198,6 +199,9 @@ export default {
 
   mounted() {
     this.fetchEmployees()
+
+    console.log("loading from store jobRequestData...", store.state.jobRequestData)
+    console.log('params', this.$route.params)
   },
 }
 </script>

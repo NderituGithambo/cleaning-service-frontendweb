@@ -58,6 +58,15 @@ export default {
       loading: false,
       error: null,
       jobRequests: null,
+
+
+      /*
+        1. Have function in component at /admin/jobs that can emit the job request data
+        to  this parent and save in jobRequestData.
+
+        2. Then, send that data to AdminJobCreate which will pre-load the component with that data.
+      */
+      jobRequestData: null,
     };
   },
 
@@ -69,7 +78,11 @@ export default {
       } catch (error) {
         console.log(error);
       }
-    }
+    },
+
+    saveJobRequestDataForJob(jobRequestData) {
+      this.jobRequestData = jobRequestData
+    },
   }
 };
 </script>

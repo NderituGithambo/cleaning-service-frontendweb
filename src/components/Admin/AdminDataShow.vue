@@ -57,7 +57,15 @@
         </v-list>
       </v-card-text>
 
-      <v-btn v-if="dataModel === 'job_request'" color="primary" dark large>Make this a job</v-btn>
+      <v-btn
+        v-if="dataModel === 'job_request'"
+        color="primary"
+        dark
+        large
+        v-on:click="makeJobRequestAJob"
+      >
+        Make this a job
+      </v-btn>
 
     </v-card>
   </div>
@@ -65,7 +73,10 @@
 
 <script>
 import axios from 'axios'
-const uuidv4 = require('uuid/v4');
+import uuidv4 from 'uuid/v4'
+
+import store from './store'
+
 
 export default {
   props: {
@@ -103,9 +114,15 @@ export default {
       }
       this.loading = false
     },
-    uuid: function() {
+
+    uuid() {
       return uuidv4();
-    }
+    },
+
+    makeJobRequestAJob() {
+      // store.setJobRequestData(this.items.job_request)
+      this.$router.push({ name: 'adminJobCreate', params: { isFromJobRequest: true, jobRequest: this.items.job_request }})
+    },
   }
 }
 </script>
