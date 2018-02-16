@@ -174,7 +174,6 @@ export default {
       }
     }
 
-    console.log("from pop-up", this.jobRequestData)
     const { jobRequestData } = this
     if (jobRequestData) {
       this.content[0].value = jobRequestData.description

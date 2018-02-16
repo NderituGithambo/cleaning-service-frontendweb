@@ -37,13 +37,6 @@ export default {
     }
   },
 
-  watch: {
-    eventData: function() {
-      console.log("***", this.eventData)
-    }
-  },
-
-
 
   mounted() {
     // If this is a new event...
