@@ -75,8 +75,6 @@
 import axios from 'axios'
 import uuidv4 from 'uuid/v4'
 
-import store from './store'
-
 
 export default {
   props: {
@@ -120,8 +118,7 @@ export default {
     },
 
     makeJobRequestAJob() {
-      // store.setJobRequestData(this.items.job_request)
-      this.$router.push({ name: 'adminJobCreate', params: { isFromJobRequest: true, jobRequest: this.items.job_request }})
+      this.$router.push({ name: 'adminJobCreate', params: { jobRequest: this.items.job_request }})
     },
   }
 }

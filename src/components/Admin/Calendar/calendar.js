@@ -6,7 +6,7 @@ import event from './event.vue'
 const dateToday = new Date()
 
 export default {
-  props: ['events'],
+  props: ['events', 'jobRequestData'],
   /* 'Events' prop must be an array of objects
   with the following attributes:
   Start date, end date,

@@ -73,7 +73,7 @@
 import VueTimepicker from 'vue2-timepicker'
 
 export default {
-  props: ['stylePosition', 'date', 'eventData'],
+  props: ['stylePosition', 'date', 'eventData', 'jobRequestData'],
   components: { VueTimepicker },
 
   data() {
@@ -172,6 +172,15 @@ export default {
         mm: endTime.slice(3, 5),
         a: endTime.slice(-2),
       }
+    }
+
+    console.log("from pop-up", this.jobRequestData)
+    const { jobRequestData } = this
+    if (jobRequestData) {
+      this.content[0].value = jobRequestData.description
+      this.content[1].value = jobRequestData.address
+      this.content[3].value = jobRequestData.guest_phone
+      this.content[4].value = jobRequestData.guest_email
     }
   },
 }

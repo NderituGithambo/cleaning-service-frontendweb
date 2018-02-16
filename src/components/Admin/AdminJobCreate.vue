@@ -10,6 +10,7 @@
             :events="jobsList"
             @emit-event-data="receiveEventData"
             ref="calendar"
+            :job-request-data="jobRequestData"
           ></calendar>
 
           <!-- Employee selector -->
@@ -67,7 +68,6 @@
 <script>
 import axios from 'axios'
 import calendar from './Calendar/calendar.vue'
-import store from './store'
 
 export default {
   props: ['indicateRequestReceived'],
@@ -97,6 +97,8 @@ export default {
 
       isLoading: false,
       isSubmitDisabled: false,
+
+      jobRequestData: this.$route.params.jobRequest
     }
   },
 
@@ -200,7 +202,6 @@ export default {
   mounted() {
     this.fetchEmployees()
 
-    console.log("loading from store jobRequestData...", store.state.jobRequestData)
     console.log('params', this.$route.params)
   },
 }
