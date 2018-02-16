@@ -155,12 +155,10 @@ export default {
           this.$refs.calendar.clearStashedEvent()
           // Clear the new event data so page goes back to initial state
           this.eventData = ''
-        } else {
-          this.isLoading= false
-          this.isSubmitDisabled = false
         }
       } catch (e) {
-        console.log(e)
+        this.isLoading = false
+        this.isSubmitDisabled = false
       }
     },
 
