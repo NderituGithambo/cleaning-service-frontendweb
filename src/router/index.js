@@ -8,7 +8,9 @@ import AdminLogin from '@/components/Admin/AdminLogin';
 import AdminDashboard from '@/components/Admin/AdminDashboard';
 import AdminActions from '@/components/Admin/AdminActions';
 import AdminDataIndex from '@/components/Admin/AdminDataIndex';
+import AdminJobIndex from '@/components/Admin/AdminJobIndex';
 import AdminDataShow from '@/components/Admin/AdminDataShow';
+import AdminJobShow from '@/components/Admin/AdminJobShow';
 import AdminDataCreate from '@/components/Admin/AdminDataCreate';
 import AdminJobCreate from '@/components/Admin/AdminJobCreate';
 
@@ -57,7 +59,7 @@ export default new Router({
         },
         {
           path: 'jobs',
-          component: AdminDataIndex,
+          component: AdminJobIndex,
           name: 'adminJobs',
           props: { dataModel: 'job' }
         },
@@ -70,7 +72,7 @@ export default new Router({
           // This path needs to be below create
           // to prevent misfiring
           path: 'jobs/:id',
-          component: AdminDataShow,
+          component: AdminJobShow,
           name: 'adminJob',
           props: { dataModel: 'job' }
         },

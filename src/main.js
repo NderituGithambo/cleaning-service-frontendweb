@@ -18,6 +18,7 @@ Vue.config.productionTip = false;
 
 import moment from 'moment'
 Vue.filter('moment', (date) => {
+  if (!date) return '-';
   return moment(date).format('MMMM Do YYYY, h:mm:ss a');
 })
 

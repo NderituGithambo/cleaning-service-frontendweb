@@ -73,7 +73,7 @@ export default {
         descending: true,
         page: 1,
         rowsPerPage: 10,
-        sortBy: "created_at"
+        sortBy: "confirmed_time"
       },
       rowsPerPageItems: [
         { text: 5, value: 5 },
