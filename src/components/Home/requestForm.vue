@@ -97,13 +97,6 @@
         email,
         maxLength: maxLength(255),
       },
-      phoneNumber: {
-        required,
-        maxLength: maxLength(16),
-      },
-      preferredContact: {
-        required: false,
-      },
       address: {
         required,
         maxLength: maxLength(255),
@@ -112,22 +105,6 @@
         required,
         maxLength: maxLength(65536),
       },
-      availableTimes: {
-        maxLength: maxLength(255),
-      },
-      quantityHours: {
-        numeric,
-        maxLength: maxLength(2),
-      },
-      checkbox: {
-        required: false,
-      },
-      availableInterviewTimes: {
-        maxLength: maxLength(255),
-      },
-      interviewNotes: {
-        maxLength: maxLength(255),
-      },
     },
 
     data () {
@@ -135,17 +112,9 @@
         firstName: 'Fake',
         lastName: 'Person',
         email: 'fake@person.com',
-        phoneNumber: '1234567890',
-        preferredContact: null,
         address: '123 Fake St.',
-        availableTimes: '',
         workDescription: 'sadasdasdsadasd',
-        quantityHours: '',
-        checkbox: false,
-        availableInterviewTimes: '',
-        interviewNotes: '',
 
-        maskPhone: 'phone',
         isLoading: false,
         isSubmitDisabled: false,
       }
@@ -163,17 +132,10 @@
           try {
             const request = axios.post('http://localhost:3000/guest/job_requests', {
               address: this.address,
-              possible_times: this.availableTimes,
               description: this.workDescription,
-              quantity_hours: this.quantityHours,
-              interview_requested: this.checkbox,
-              possible_interview_times: this.availableInterviewTimes,
-              interview_notes: this.interviewNotes,
               guest_first_name: this.firstName,
               guest_last_name: this.lastName,
               guest_email: this.email,
-              guest_phone_number: this.phoneNumber,
-              guest_preferred_contact: this.preferredContact,
             })
             const response = await request
             if (response.status === 200) {
@@ -195,15 +157,8 @@
         this.firstName = ''
         this.lastName = ''
         this.email = ''
-        this.phoneNumber = ''
-        this.preferredContact = null
         this.address = ''
-        this.availableTimes = ''
         this.workDescription = ''
-        this.quantityHours = ''
-        this.checkbox = false
-        this.availableInterviewTimes = ''
-        this.interviewNotes = ''
       },
     },
 
@@ -229,12 +184,6 @@
         !this.$v.email.required && errors.push('E-mail is required')
         return errors
       },
-      phoneNumberErrors () {
-        const errors = []
-        if (!this.$v.phoneNumber.$dirty) return errors
-        !this.$v.phoneNumber.required && errors.push('Phone number is required')
-        return errors
-      },
       addressErrors () {
         const errors = []
         if (!this.$v.address.$dirty) return errors
@@ -247,31 +196,6 @@
         if (!this.$v.workDescription.$dirty) return errors
         !this.$v.workDescription.maxLength && errors.push('Work description must be at most 65536 characters long')
         !this.$v.workDescription.required && errors.push('Work description is required')
-        return errors
-      },
-      availableTimesErrors () {
-        const errors = []
-        if (!this.$v.availableTimes.$dirty) return errors
-        !this.$v.availableTimes.maxLength && errors.push('Available times must be at most 255 characters long')
-        return errors
-      },
-      quantityHoursErrors () {
-        const errors = []
-        if (!this.$v.quantityHours.$dirty) return errors
-        !this.$v.quantityHours.maxLength && errors.push('Quantity of hours must be at most 2 characters long')
-        !this.$v.quantityHours.numeric && errors.push('Quantity of hours must be a number')
-        return errors
-      },
-      availableInterviewTimesErrors () {
-        const errors = []
-        if (!this.$v.availableInterviewTimes.$dirty) return errors
-        !this.$v.availableInterviewTimes.maxLength && errors.push('Available interview times must be at most 255 characters long')
-        return errors
-      },
-      interviewNotesErrors () {
-        const errors = []
-        if (!this.$v.interviewNotes.$dirty) return errors
-        !this.$v.interviewNotes.maxLength && errors.push('Interview notes must be at most 255 characters long')
         return errors
       },
     }

@@ -7,8 +7,6 @@
 
 
 <script>
-// import requestForm from './requestForm.vue'
-// import requestReceived from './requestReceived.vue'
 
 export default {
   name: 'Request',

@@ -192,7 +192,6 @@ export default {
 
     catchClickOnDay(e) {
       const date = this.getDateFromClickEvent(e)
-      console.log("you clicked", e)
     },
 
 
@@ -315,10 +314,25 @@ export default {
 
 
     setEventPopUpPositionFromElement(element) {
+      function whichSideOfCalendar(centerX) {
+        const calendar = document.querySelector('#calendar-main')
+        const halfCalendarWidth = calendar.clientWidth / 2
+        return centerX > halfCalendarWidth ? 'left' : 'right'
+      }
+
       const { offsetTop, offsetLeft, offsetHeight, offsetWidth } = element
       const top = offsetTop + element.offsetParent.offsetTop
       const left = offsetLeft + element.offsetParent.offsetLeft
-      this.eventPopUpStylePosition = `top: ${top - 201 + (offsetHeight / 2)}px; left: ${left + offsetWidth}px;`
+
+      // const popUpWidth = document.querySelector('#event-pop-up')
+      // console.log("popUp", popUpWidth)
+
+      this.eventPopUpStylePosition = {
+        top: top - 201 + (offsetHeight / 2),
+        // left: left + offsetWidth,
+        left: left + (whichSideOfCalendar(left) === 'right' ? offsetWidth : -500),
+        sideToDisplay: whichSideOfCalendar(left),
+      }
     },
 
 
@@ -371,7 +385,6 @@ export default {
       this.newEventStashed = newEventStashed
 
       // For emitting event to parent, start/end dates are converted to ISO format
-      console.log("newEventData", newEventData)
 
       const newEvent = {
         startDate: moment({

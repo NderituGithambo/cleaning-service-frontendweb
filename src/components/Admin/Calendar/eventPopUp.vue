@@ -1,5 +1,5 @@
 <template>
-  <div class="arrow-box" :style="stylePosition">
+  <div id="event-pop-up" :class="popUpStyleClass()" :style="stylePositionString">
 
     <div class="content">
 
@@ -115,8 +115,19 @@ export default {
         phone: this.content[3].value,
         email: this.content[4].value,
       })
+    },
+
+    popUpStyleClass: function() {
+      const { sideToDisplay } = this.stylePosition
+      // For left or right side styling
+      switch (sideToDisplay) {
+        case ('right'): return 'arrow-box-on-right'
+        case ('left'): return 'arrow-box-on-left'
+        default: break
+      }
     }
   },
+
 
   computed: {
     // For getting data from an existing event
@@ -140,6 +151,11 @@ export default {
           email,
         }
       }
+    },
+
+    stylePositionString: function() {
+      const { top, left } = this.stylePosition
+      return `top: ${top}px; left: ${left}px;`
     }
   },
 
@@ -165,14 +181,12 @@ export default {
 <style lang="scss" scoped>
 @import "../../../colors.scss";
 
+$border-color: gainsboro;
+$fill-color: rgb(248, 248, 248);
+$border-radius: 4px;
 
 
-
-.arrow-box {
-  $border-color: gainsboro;
-  $fill-color: rgb(248, 248, 248);
-  $border-radius: 4px;
-
+.arrow-box-on-right {
 	position: absolute;
 	background: $fill-color;
   border: 1px solid $border-color;
@@ -202,65 +216,96 @@ export default {
     border-width: 11px;
     margin-top: -11px;
   }
+}
 
+.arrow-box-on-left {
+	position: absolute;
+	background: $fill-color;
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
 
-  .content {
-    width: 500px;
-    height: min-content;
-    background-color: transparent;
-    padding: 6px 8px;
-    border-radius: $border-radius;
+  &:after, &:before {
+    left: 100%;
+    top: 200px;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+  }
 
-    overflow-y: scroll;
+  &:after {
+    border-color: rgba(0, 0, 0, 0);
+    border-left-color: $fill-color;
+    border-width: 10px;
+    margin-top: -10px;
+  }
 
-    h1 {
-      font-size: 1.2em;
-    }
+  &:before {
+    border-color: rgba(0, 0, 0, 0);
+    border-left-color: $border-color;
+    border-width: 11px;
+    margin-top: -11px;
+  }
+}
 
-    h2 {
-      font-size: 1em;
-    }
+.content {
+  width: 500px;
+  height: min-content;
+  background-color: transparent;
+  padding: 6px 8px;
+  border-radius: $border-radius;
 
-    .event-info {
+  overflow-y: scroll;
 
-      .row {
-        width: 100%;
-        display: grid;
-        grid-template-columns: [col] 25% [col] 75%;
+  h1 {
+    font-size: 1.2em;
+  }
 
-        .col {
-          padding: 0.5em;
-        }
+  h2 {
+    font-size: 1em;
+  }
 
-        .col-label {
-          font-weight: bold;
-          display: flex;
-          align-items: flex-start;
-          justify-content: flex-end;
-          text-align: right;
-          padding: 0.5em;
-          border-right: 1px solid #d2d2d2
-        }
+  .event-info {
 
-        .col-content {
-          display: flex;
-          align-items: center;
-          justify-content: flex-start;
-          text-align: left;
+    .row {
+      width: 100%;
+      display: grid;
+      grid-template-columns: [col] 25% [col] 75%;
 
-          input {
-            padding: 0.25em;
-            margin: 0;
-            border: 1px solid #d2d2d2;
-            width: 100%;
-          }
+      .col {
+        padding: 0.5em;
+      }
+
+      .col-label {
+        font-weight: bold;
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-end;
+        text-align: right;
+        padding: 0.5em;
+        border-right: 1px solid #d2d2d2
+      }
+
+      .col-content {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        text-align: left;
+
+        input {
+          padding: 0.25em;
+          margin: 0;
+          border: 1px solid #d2d2d2;
+          width: 100%;
         }
       }
     }
   }
+}
 
-  button {
-    float: right;
-  }
+button {
+  float: right;
 }
 </style>

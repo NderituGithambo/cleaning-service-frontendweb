@@ -23,7 +23,7 @@
           <router-link v-if="key === 'id'" v-bind:to="itemURL(attribute)" class="id-link">
             {{ attribute }}
           </router-link>
-          <span v-else-if="key === 'created_at' || key === 'updated_at' ">
+          <span v-else-if="key === 'created_at' || key === 'updated_at' || key === 'confirmed_time' ">
             {{ attribute | moment }}
           </span>
           <span v-else>
@@ -106,7 +106,7 @@ export default {
   },
 
   methods: {
-    async fetchItems() { // Not using this
+    async fetchItems() {
       this.loading = true
       try {
         const { page, rowsPerPage } = this.pagination
@@ -123,6 +123,8 @@ export default {
         Object.keys(this.items[0]).forEach(key => {
           this.headers.push({ text: key, value: key, sortable: false })
         })
+
+        console.log("Response:", reponse)
 
       } catch (error) {
         console.log(error);
