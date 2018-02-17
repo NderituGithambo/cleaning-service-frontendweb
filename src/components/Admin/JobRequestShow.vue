@@ -57,7 +57,7 @@
       </v-card-text>
 
       <v-btn
-        v-if="dataModel === 'job_request'"
+        v-if="items.job_request.is_active"
         color="primary"
         dark
         large
@@ -83,7 +83,6 @@
         </div>
       </div>
     </div>
-
 
   </div>
 </template>
@@ -178,6 +177,7 @@ h2 {
 
 .card {
   margin-top: 2em;
+  padding-bottom: 2em;
 }
 
 li {
