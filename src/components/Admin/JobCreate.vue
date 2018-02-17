@@ -33,6 +33,7 @@
             </v-select>
             <v-btn
               @click="showModal"
+              :disabled="!eventData || !employeeIdSelected"
             >ok</v-btn>
           </div>
 
@@ -192,6 +193,7 @@ export default {
       try {
         const request = axios.get(`http://localhost:3000/admin/employees/${id}`, config)
         const response = await request
+        console.log("employee data", response.data)
         return response.data
       } catch (e) {
         console.log(e)
