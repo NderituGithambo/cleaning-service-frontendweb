@@ -21,7 +21,7 @@
         <div class="nav-btn">Job Requests</div>
       </router-link>
       <router-link to="/admin/jobs">
-        <div class="nav-btn">Jobs</div>
+        <div class="nav-btn">Jobs ({{ numJobsReadyToBill }} finished)</div>
       </router-link>
       <router-link to="/admin/employees">
         <div class="nav-btn">Employees</div>
@@ -98,15 +98,17 @@ export default {
 
         // Snackbar options
         if (data.type ==='started') {
-          console.log('in started, data.type = ', data.type)
           parent.snackbar.text = data.message
           parent.snackbar.color = 'info'
+          parent.snackbar.show = true
         } else if (data.type ==='completed') {
-          console.log('in completed, data.type = ', data.type)
           parent.snackbar.text = data.message
           parent.snackbar.color = 'success'
+          parent.snackbar.show = true
         }
-        parent.snackbar.show = true
+
+        // Set # jobs ready to bill
+        parent.numJobsReadyToBill = data.numJobsReadyToBill
       }
     })
   },
