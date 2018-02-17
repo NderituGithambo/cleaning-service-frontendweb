@@ -101,22 +101,26 @@ export default {
   },
 
   methods: {
-    async fetchItems() { // Not using this
-      this.loading = true
+    async fetchItems() {
       try {
-        const config = {
-          headers: { Authorization: localStorage.getItem("token") }
-        }
+        const config = { headers: { Authorization: localStorage.getItem("token") }}
         const request = axios.get(`http://localhost:3000/admin/${this.dataModel}s/${this.$route.params.id}`, config)
         const response = await request
         this.items = response.data
-
-        console.log(response)
-
       } catch (error) {
-        console.log(error);
+        console.log(error)
       }
-      this.loading = false
+    },
+
+    async setBillSentAsTrue() {
+      try {
+        const config = { headers: { Authorization: localStorage.getItem("token") }}
+        const request = axios.patch(`http://localhost:3000/admin/jobs/${this.$route.params.id}`, {
+          bill_sent: true,
+        }, config)
+      } catch (error) {
+        console.log(error)
+      }
     },
 
     uuid() {
@@ -124,12 +128,12 @@ export default {
     },
 
     sendBillInEmail() {
+      this.setBillSentAsTrue()
       alert("sending bill in email")
     },
 
     isJobComplete() {
       const { time_work_completed: workComplete } = this.items.job
-      console.log('***', this.items.job)
       if (workComplete) return true
     },
   }

@@ -42,13 +42,15 @@ export default {
       const {
         time_work_started: workStarted,
         time_work_completed: workCompleted,
+        bill_sent: billSent,
         is_paid: isPaid,
       } = content
 
-      if (!workStarted && !workCompleted && !isPaid) return 'NEW'
-      if (workStarted && !workCompleted && !isPaid) return 'IN_PROGRESS'
-      if (workStarted && workCompleted && !isPaid) return 'NEEDS_BILLING'
-      if (workStarted && workCompleted && isPaid) return 'ALL_COMPLETE'
+      if (!workStarted && !workCompleted && !billSent && !isPaid) return 'NEW'
+      if (workStarted && !workCompleted && !billSent && !isPaid) return 'IN_PROGRESS'
+      if (workStarted && workCompleted && !billSent && !isPaid) return 'NEEDS_BILLING'
+      if (workStarted && workCompleted && billSent && !isPaid) return 'BILL_SENT'
+      if (workStarted && workCompleted && billSent && isPaid) return 'ALL_COMPLETE'
     },
 
     getEventColorClassFromStatus(content) {
@@ -57,6 +59,7 @@ export default {
         case 'NEW': return 'color-new'
         case 'IN_PROGRESS': return 'color-in-progress'
         case 'NEEDS_BILLING': return 'color-needs-billing'
+        case 'BILL_SENT': return 'color-bill-sent'
         case 'ALL_COMPLETE': return 'color-all-complete'
         default: break
       }
@@ -106,18 +109,22 @@ div.event {
 
 
 .color-new {
-  background-color: cyan;
+  background-color: rgba(0, 255, 255, 0.74);
 }
 
 .color-in-progress {
-  background-color: orange;
+  background-color: rgba(255, 166, 0, 0.75);
 }
 
 .color-needs-billing {
-  background-color: red;
+  background-color: rgba(255, 0, 0, 0.75);
+}
+
+.color-bill-sent {
+  background-color: rgba(0, 255, 0, 0.75);
 }
 
 .color-all-complete {
-  background-color: green;
+  background-color: rgba(128, 128, 128, 0.75);
 }
 </style>
