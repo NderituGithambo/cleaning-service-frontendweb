@@ -11,7 +11,7 @@
         </div>
       </div>
 
-      <nav>
+      <!-- <nav>
         <div class="info-buttons">
           <router-link to="/">
             <v-btn large class="ma-0" flat :ripple="false">Home</v-btn>
@@ -25,7 +25,7 @@
             <v-btn large class="ma-0" flat :ripple="false">Log in</v-btn>
           </router-link>
         </div>
-      </nav>
+      </nav> -->
     </div>
 
   </header>
