@@ -62,6 +62,9 @@
 <script>
 import axios from 'axios'
 
+import EventBus from './EventBus'
+
+
 export default {
   props: {
     dataModel: {
@@ -101,21 +104,25 @@ export default {
   watch: {
     pagination: {
       handler: function() {
-        this.fetchItems()
+        this.fetchJobs()
       },
       deep: true
     },
     dataModel: function(value) {
-      this.fetchItems()
+      this.fetchJobs()
     }
   },
 
   mounted() {
-    this.fetchItems()
+    this.fetchJobs()
+
+    EventBus.$on('refresh-jobs', () => {
+      this.fetchJobs()
+    });
   },
 
   methods: {
-    async fetchItems() {
+    async fetchJobs() {
       this.loading = true
       try {
         const { page, rowsPerPage } = this.pagination

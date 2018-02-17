@@ -37,17 +37,10 @@ import axios from 'axios'
 import ActionCable from 'actioncable'
 const cable = ActionCable.createConsumer('ws://192.168.1.69:3000/cable')
 
+import EventBus from './EventBus'
+
 
 export default {
-  mounted() {
-    cable.subscriptions.create('AdminChannel', {
-      received(data) {
-        console.log("Received from action cable:", data)
-      }
-    });
-  },
-
-
   async beforeRouteEnter(to, from, next) {
     // Authenticates for admin here
     const config = {
@@ -60,43 +53,18 @@ export default {
       next()
     } catch (error) {
       console.log(error)
-      // Clear token even if user logged in as employee or client
-      // localStorage.removeItem('token');
       next('/admin/login')
     }
   },
 
-  data() {
-    return {
-      loading: false,
-      error: null,
-      jobRequests: null,
-
-
-      /*
-        1. Have function in component at /admin/jobs that can emit the job request data
-        to  this parent and save in jobRequestData.
-
-        2. Then, send that data to AdminJobCreate which will pre-load the component with that data.
-      */
-      jobRequestData: null,
-    };
-  },
-
-  methods: {
-    async fetchJobRequests() { // Not using this
-      try {
-        const request = axios.get('http://localhost:3000/admin/job_requests')
-        const response = await request
-      } catch (error) {
-        console.log(error);
+  mounted() {
+    cable.subscriptions.create('AdminChannel', {
+      received(data) {
+        console.log("Received from action cable:", data)
+        EventBus.$emit('refresh-jobs')
       }
-    },
-
-    saveJobRequestDataForJob(jobRequestData) {
-      this.jobRequestData = jobRequestData
-    },
-  }
+    });
+  },
 };
 </script>
 
