@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <div id="app">
+    <div id="app" :class="appStyle">
       <app-header v-if="showHeader()"></app-header>
       <router-view/>
       <app-footer></app-footer>
@@ -19,8 +19,14 @@ export default {
     return {
       showHeader: () => {
         return !/^admin.*/.test(this.$route.name)
-      }
+      },
     }
+  },
+
+  computed: {
+    appStyle: function() {
+      return this.showHeader() ? 'bg-sunflower' : 'bg-gradient'
+    },
   },
 
   components: {
@@ -40,7 +46,7 @@ export default {
   text-align: center;
   color: #2c3e50;
   // background: linear-gradient(to bottom right, white, $blue);
-  background-image: url("assets/jazflower4_med.jpg");
+  // background-image: url("assets/jazflower4_med.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
@@ -51,6 +57,14 @@ export default {
   flex-direction: column;
   min-height: 100vh;
   position: relative;
+}
+
+.bg-sunflower {
+  background-image: url("assets/jazflower4_med.jpg");
+}
+
+.bg-gradient {
+  background: linear-gradient(to bottom right, white, $blue);
 }
 
 main {
