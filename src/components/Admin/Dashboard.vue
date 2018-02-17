@@ -168,7 +168,7 @@ nav {
   left: 0;
   top: 0;
 
-  z-index: 6;
+  z-index: 2;
 
   width: 12vw;
   min-width: 120px;

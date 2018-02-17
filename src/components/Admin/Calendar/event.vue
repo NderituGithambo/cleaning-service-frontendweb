@@ -81,7 +81,7 @@ export default {
 div.event {
   font-size: 0.8em;
   margin: 1px 2px;
-  z-index: 4;
+  z-index: 1;
   text-align: left;
   padding-left: 0.25em;
   max-height: 1.3em;

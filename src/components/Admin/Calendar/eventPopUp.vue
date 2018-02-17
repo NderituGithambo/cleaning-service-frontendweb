@@ -11,7 +11,8 @@
           <div class="col col-label">
             Start Time:
           </div>
-          <div class="col col-content">
+          <!-- Adjust time for new events -->
+          <div v-if="!eventData.content" class="col col-content">
             <vue-timepicker
               v-model="startTime"
               hide-clear-button
@@ -19,9 +20,13 @@
               :minute-interval="minuteInterval">
             </vue-timepicker>
           </div>
+          <!-- Display non-adjustable time on existing events -->
+          <div v-if="eventData.content" class="col col-content">
+            {{ eventData.content.confirmed_time | momentOnlyTime }}
+          </div>
         </div>
 
-        <!-- For existing events -->
+        <!-- Rows existing events -->
         <div class="row" v-if="eventData.content" v-for="(item, key) in filteredContent">
           <div class="col col-label">
             {{ key | underscoresAreSpaces | capitalize }}
@@ -42,7 +47,7 @@
           </div>
         </div>
 
-        <!-- For creating new events -->
+        <!-- Rows creating new events -->
         <div class="row" v-if="!eventData.content" v-for="(item, index) in content">
           <div class="col col-label">
             {{ item.key | underscoresAreSpaces | capitalize }}
@@ -194,6 +199,10 @@ $border-color: gainsboro;
 $fill-color: rgb(248, 248, 248);
 $border-radius: 4px;
 
+
+#event-pop-up {
+  z-index: 3;
+}
 
 .arrow-box-on-right {
 	position: absolute;

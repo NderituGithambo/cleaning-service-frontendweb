@@ -22,6 +22,11 @@ Vue.filter('moment', (date) => {
   return moment(date).format('MMMM Do YYYY, h:mm:ss a');
 })
 
+Vue.filter('momentOnlyTime', (date) => {
+  if (!date) return '-';
+  return moment(date).format('h:mm a');
+})
+
 Vue.filter('phone', (phone) => {
   if (!phone) return;
   return phone
