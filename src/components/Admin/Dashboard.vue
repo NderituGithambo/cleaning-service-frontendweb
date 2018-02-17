@@ -21,7 +21,7 @@
         <div class="nav-btn">Job Requests</div>
       </router-link>
       <router-link to="/admin/jobs">
-        <div class="nav-btn">Jobs ({{ numJobsReadyToBill }} finished)</div>
+        <div class="nav-btn">Jobs ({{ numJobsReadyToBill }} need billing)</div>
       </router-link>
       <router-link to="/admin/employees">
         <div class="nav-btn">Employees</div>

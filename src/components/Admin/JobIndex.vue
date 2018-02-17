@@ -40,7 +40,7 @@
         <td class="text-xs-right">
           {{ props.item.confirmed_time | moment}}
         </td>
-        <td class="text-xs-right">
+        <td class="text-xs-right" :class="getStatusColumnClass(props.item)">
           {{ getJobStatusFromData(props.item) }}
         </td>
 
@@ -165,6 +165,18 @@ export default {
       if (workStarted && workCompleted && !isPaid) return 'Ready to send bill'
       if (workStarted && workCompleted && isPaid) return 'Work complete, payment received'
     },
+
+    getStatusColumnClass(jobData) {
+      const status = this.getJobStatusFromData(jobData)
+      console.log("job status:", status)
+      switch (status) {
+        case 'Ready to send bill': return 'status-bill'
+        case 'New': return 'status-new'
+        case 'In progress': return 'status-in-progress'
+        case 'Work complete, payment received': return 'status-done'
+        default: break
+      }
+    },
   },
 };
 </script>
@@ -197,6 +209,22 @@ h1 {
 
 .text-left {
   display: flex;
+}
+
+.status-done {
+  color: green;
+}
+
+.status-in-progress {
+  color: goldenrod;
+}
+
+.status-new {
+  color: blue
+}
+
+.status-bill {
+  color: red
 }
 
 </style>
