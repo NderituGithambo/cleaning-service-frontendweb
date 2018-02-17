@@ -113,17 +113,16 @@ export default {
   },
 
   mounted() {
-    const parent = this
 
+    const parent = this
     cable.subscriptions.create('AdminChannel', {
       received(data) {
         console.log("Received from action cable:", data)
 
         switch (data.type) {
-
           case 'EMPLOYEE_STARTED_JOB':
             parent.snackbar.text = data.message
-            parent.snackbar.color = 'info'
+            parent.snackbar.color = 'success'
             parent.snackbar.show = true
             // Re-fetch job list if job page open
             EventBus.$emit('refresh-jobs')
@@ -131,7 +130,7 @@ export default {
 
           case 'EMPLOYEE_COMPLETED_JOB':
             parent.snackbar.text = data.message
-            parent.snackbar.color = 'success'
+            parent.snackbar.color = 'error'
             parent.snackbar.show = true
             // Re-fetch job list if job page open
             EventBus.$emit('refresh-jobs')

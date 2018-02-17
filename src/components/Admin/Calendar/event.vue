@@ -2,7 +2,7 @@
   <div
     v-on:dblclick.stop="catchDblClick"
     class="event"
-    :class=getClassFromType()>
+    :class="getClassFromType()">
     <div v-if="eventData.type !== 'eventPlaceholder'">
       {{ eventData.startTime }}
     </div>
@@ -26,7 +26,7 @@ export default {
     getClassFromType() {
       switch (this.eventData.type) {
         case 'existingEvent':
-          return 'existing-event'
+          return `existing-event ${this.getEventColorClassFromStatus(this.eventData.content)}`
         case 'eventPlaceholder':
           return 'event-placeholder'
         case 'stashedEvent':
@@ -34,7 +34,33 @@ export default {
         default:
           break;
       }
-    }
+    },
+
+
+    // For color-coding existing events
+    getJobStatusFromContent(content) {
+      const {
+        time_work_started: workStarted,
+        time_work_completed: workCompleted,
+        is_paid: isPaid,
+      } = content
+
+      if (!workStarted && !workCompleted && !isPaid) return 'NEW'
+      if (workStarted && !workCompleted && !isPaid) return 'IN_PROGRESS'
+      if (workStarted && workCompleted && !isPaid) return 'NEEDS_BILLING'
+      if (workStarted && workCompleted && isPaid) return 'ALL_COMPLETE'
+    },
+
+    getEventColorClassFromStatus(content) {
+      const status = this.getJobStatusFromContent(content)
+      switch (status) {
+        case 'NEW': return 'color-new'
+        case 'IN_PROGRESS': return 'color-in-progress'
+        case 'NEEDS_BILLING': return 'color-needs-billing'
+        case 'ALL_COMPLETE': return 'color-all-complete'
+        default: break
+      }
+    },
   },
 
 
@@ -69,12 +95,29 @@ div.event {
 }
 
 .existing-event {
-  background-color: rgb(255, 154, 136);
+  // background-color: rgb(255, 154, 136);
   border: 1px solid transparent;
 }
 
 .event-placeholder, .stashed-event {
   background-color: rgba(240, 248, 255, 0.5);
   border: 1px dashed blue;
+}
+
+
+.color-new {
+  background-color: cyan;
+}
+
+.color-in-progress {
+  background-color: orange;
+}
+
+.color-needs-billing {
+  background-color: red;
+}
+
+.color-all-complete {
+  background-color: green;
 }
 </style>

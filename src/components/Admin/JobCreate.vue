@@ -76,6 +76,7 @@
 <script>
 import axios from 'axios'
 import calendar from './Calendar/calendar.vue'
+import EventBus from './EventBus'
 
 export default {
   props: ['indicateRequestReceived'],
@@ -193,7 +194,6 @@ export default {
       try {
         const request = axios.get(`http://localhost:3000/admin/employees/${id}`, config)
         const response = await request
-        console.log("employee data", response.data)
         return response.data
       } catch (e) {
         console.log(e)
@@ -220,7 +220,10 @@ export default {
   mounted() {
     this.fetchEmployees()
 
-    console.log('params', this.$route.params)
+    // const parent = this
+    EventBus.$on('refresh-jobs', () => {
+      this.loadEmployeeJobsIntoJobsList(this.employeeIdSelected)
+    })
   },
 }
 </script>
