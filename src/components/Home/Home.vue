@@ -47,13 +47,13 @@ export default {
 
 section {
   display: grid;
-  grid-template-columns: [col] 33% [col] 33% [col] 33%;
-  grid-template-rows: [row] auto [row] auto [row];
+  grid-template-columns: [col] 60% [col] 40%;
+  grid-template-rows: [row] auto;
 
 }
 
 article {
-  grid-column: col / span 2;
+  grid-column: col / span 1;
   grid-row: row;
 
   display: flex;
@@ -74,8 +74,8 @@ article {
 }
 
 aside {
-  grid-column: col 3 / span 2;
-  grid-row: row;
+  grid-column: col 2 / span 1;
+  height: min-content;
 
   display: flex;
   align-items: flex-start;
