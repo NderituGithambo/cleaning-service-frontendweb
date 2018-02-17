@@ -11,6 +11,7 @@ import AdminDataIndex from '@/components/Admin/DataIndex';
 import AdminJobIndex from '@/components/Admin/JobIndex';
 import AdminDataShow from '@/components/Admin/DataShow';
 import AdminJobShow from '@/components/Admin/JobShow';
+import AdminJobRequestShow from '@/components/Admin/JobRequestShow';
 import AdminDataCreate from '@/components/Admin/DataCreate';
 import AdminJobCreate from '@/components/Admin/JobCreate';
 
@@ -53,7 +54,7 @@ export default new Router({
         },
         {
           path: 'job_requests/:id',
-          component: AdminDataShow,
+          component: AdminJobRequestShow,
           name: 'adminJobRequest',
           props: { dataModel: 'job_request' }
         },

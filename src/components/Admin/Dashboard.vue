@@ -4,28 +4,53 @@
     <!-- Nav Panel -->
     <nav>
       <router-link to="/admin">
-        <div class="nav-btn"><h1>Dashboard</h1></div>
+
+        <div class="nav-btn">
+          <h1>
+            Dashboard
+          </h1>
+        </div>
       </router-link>
+
       <hr/>
+
       <div class="section-title no-select">
         Create
       </div>
+
       <router-link to="/admin/jobs/create">
-        <div class="nav-btn">Job</div>
+        <div class="nav-btn">
+          Job
+          </div>
       </router-link>
+
       <hr/>
+
+
       <div class="section-title no-select">
         View
       </div>
+
       <router-link to="/admin/job_requests">
-        <div class="nav-btn">Job Requests</div>
+        <div class="nav-btn">
+          Job Requests
+          <div class="bubble">{{ numActiveJobRequests }}</div>
+        </div>
       </router-link>
+
       <router-link to="/admin/jobs">
-        <div class="nav-btn">Jobs ({{ numJobsReadyToBill }} need billing)</div>
+        <div class="nav-btn">
+          Jobs
+          <div class="bubble">{{ numJobsReadyToBill }}</div>
+        </div>
       </router-link>
+
       <router-link to="/admin/employees">
-        <div class="nav-btn">Employees</div>
+        <div class="nav-btn">
+          Employees
+        </div>
       </router-link>
+
     </nav>
 
     <!-- Main view -->
@@ -83,6 +108,7 @@ export default {
       },
 
       numJobsReadyToBill: 0,
+      numActiveJobRequests: 0,
     }
   },
 
@@ -105,10 +131,15 @@ export default {
           parent.snackbar.text = data.message
           parent.snackbar.color = 'success'
           parent.snackbar.show = true
+        } else if (data.type === 'new_job_request') {
+          parent.snackbar.text = 'New job request received'
+          parent.snackbar.color = 'info'
+          parent.snackbar.show = true
         }
 
         // Set # jobs ready to bill
-        parent.numJobsReadyToBill = data.numJobsReadyToBill
+        if (data.num_jobs_ready_to_bill) parent.numJobsReadyToBill = data.num_jobs_ready_to_bill
+        if (data.num_active_job_requests) parent.numActiveJobRequests = data.num_active_job_requests
       }
     })
   },
@@ -151,6 +182,7 @@ nav {
 
   .nav-btn {
     display: flex;
+    align-items: center;
     justify-content: flex-start;
     padding: 0.25em 0.5em;
 
@@ -170,6 +202,20 @@ nav {
     padding: 0.25em 0.5em;
     font-style: italic;
     color: $light-grey;
+  }
+
+  .bubble {
+    position: relative;
+    padding: 0;
+    margin-left: 4px;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    color: black;
+    font-family: 'Ubuntu Mono';
   }
 }
 
