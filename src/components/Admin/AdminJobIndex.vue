@@ -13,8 +13,8 @@
       ></v-select>
     </div>
     <v-data-table
-      v-bind:headers="headers"
-      v-bind:items="items"
+      :headers="headers"
+      :items="jobs"
       :loading="loading"
       class="elevation-1"
       hide-actions
@@ -29,17 +29,21 @@
       </template>
 
       <template slot="items" slot-scope="props">
-        <td class="text-xs-right" v-for="(attribute, key) in props.item">
-          <router-link v-if="key === 'id'" v-bind:to="itemURL(attribute)" class="id-link">
-            {{ attribute }}
+        <td class="text-xs-right">
+          <router-link :to="itemURL(props.item.id)" class="id-link">
+            {{ props.item.id }}
           </router-link>
-          <span v-else-if="key === 'created_at' || key === 'updated_at' || key === 'confirmed_time' ">
-            {{ attribute | moment }}
-          </span>
-          <span v-else>
-            {{ attribute }}
-          </span>
         </td>
+        <td class="text-xs-right">
+          {{ props.item.created_at | moment }}
+        </td>
+        <td class="text-xs-right">
+          {{ props.item.confirmed_time | moment}}
+        </td>
+        <td class="text-xs-right">
+          {{ getJobStatusFromData(props.item) }}
+        </td>
+
       </template>
 
     </v-data-table>
@@ -83,9 +87,14 @@ export default {
         { text: 100, value: 100 },
       ],
       selected: [],
-      items: [],
+      jobs: [],
       loading: true,
-      headers: [],
+      headers: [
+        { text: 'Job ID', value: 'id', sortable: false },
+        { text: 'Created At', value: 'created_at', sortable: false },
+        { text: 'Scheduled Time', value: 'confirmed_time', sortable: false },
+        { text: 'Status', value: '', sortable: false },
+      ],
     }
   },
 
@@ -115,28 +124,38 @@ export default {
         }
         const request = axios.get(`http://localhost:3000/admin/${this.dataModel}s?p=${page}&npp=${rowsPerPage}`, config)
         const response = await request
-        this.items = response.data[`${this.dataModel}s`]
+        this.jobs = response.data.jobs
+
         this.totalRows = response.data.total_rows
 
-        // Generate headers for table
-        this.headers = []
-        Object.keys(this.items[0]).forEach(key => {
-          this.headers.push({ text: key, value: key, sortable: false })
-        })
-
-        console.log("Response:", reponse)
+        console.log('jobs:', this.jobs);
 
       } catch (error) {
         console.log(error);
       }
       this.loading = false
     },
-    itemURL: function(id) {
+
+    itemURL(id) {
       return `/admin/${this.dataModel}s/${id}`
     },
-    numPages: function() {
+
+    numPages() {
       const numPages = Math.ceil(this.totalRows / this.pagination.rowsPerPage)
       return numPages
+    },
+
+    getJobStatusFromData(data) {
+      const {
+        time_work_started: workStarted,
+        time_work_completed: workCompleted,
+        is_paid: isPaid,
+      } = data
+
+      if (!workStarted && !workCompleted && !isPaid) return 'New'
+      if (workStarted && !workCompleted && !isPaid) return 'In progress'
+      if (workStarted && workCompleted && !isPaid) return 'Ready to send bill'
+      if (workStarted && workCompleted && isPaid) return 'Work complete, payment received'
     },
   },
 };

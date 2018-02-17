@@ -38,6 +38,10 @@ Vue.filter('capitalize', (string) => {
   return string.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 })
 
+Vue.filter('snakeCaseFix', (string) => {
+  return string.replace(/_/g, " ").replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();})
+})
+
 
 
 

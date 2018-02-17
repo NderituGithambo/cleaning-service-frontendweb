@@ -34,7 +34,20 @@
 <script>
 import axios from 'axios'
 
+import ActionCable from 'actioncable'
+const cable = ActionCable.createConsumer('ws://192.168.1.69:3000/cable')
+
+
 export default {
+  mounted() {
+    cable.subscriptions.create('AdminChannel', {
+      received(data) {
+        console.log("Received from action cable:", data)
+      }
+    });
+  },
+
+
   async beforeRouteEnter(to, from, next) {
     // Authenticates for admin here
     const config = {
