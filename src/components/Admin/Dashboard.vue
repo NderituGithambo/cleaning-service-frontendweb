@@ -1,5 +1,7 @@
 <template>
   <div>
+
+    <!-- Nav Panel -->
     <nav>
       <router-link to="/admin">
         <div class="nav-btn"><h1>Dashboard</h1></div>
@@ -25,9 +27,22 @@
         <div class="nav-btn">Employees</div>
       </router-link>
     </nav>
+
+    <!-- Main view -->
     <main>
       <router-view/>
     </main>
+
+    <!-- Notifications -->
+    <v-snackbar
+      :timeout="snackbar.timeout"
+      :color="snackbar.color"
+      v-model="snackbar.show"
+    >
+      {{ snackbar.text }}
+      <v-btn dark flat @click.native="snackbar.show = false">Close</v-btn>
+    </v-snackbar>
+
   </div>
 </template>
 
@@ -57,13 +72,43 @@ export default {
     }
   },
 
+  data() {
+    return {
+      snackbar: {
+        show: false,
+        color: 'info',
+        mode: 'text',
+        timeout: 6000,
+        text: '',
+      },
+
+      numJobsReadyToBill: 0,
+    }
+  },
+
   mounted() {
+    const parent = this
+
     cable.subscriptions.create('AdminChannel', {
       received(data) {
         console.log("Received from action cable:", data)
+
+        // Re-fetch job list
         EventBus.$emit('refresh-jobs')
+
+        // Snackbar options
+        if (data.type ==='started') {
+          console.log('in started, data.type = ', data.type)
+          parent.snackbar.text = data.message
+          parent.snackbar.color = 'info'
+        } else if (data.type ==='completed') {
+          console.log('in completed, data.type = ', data.type)
+          parent.snackbar.text = data.message
+          parent.snackbar.color = 'success'
+        }
+        parent.snackbar.show = true
       }
-    });
+    })
   },
 };
 </script>

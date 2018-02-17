@@ -108,9 +108,10 @@ export default {
       },
       deep: true
     },
+
     dataModel: function(value) {
       this.fetchJobs()
-    }
+    },
   },
 
   mounted() {
@@ -118,7 +119,7 @@ export default {
 
     EventBus.$on('refresh-jobs', () => {
       this.fetchJobs()
-    });
+    })
   },
 
   methods: {
