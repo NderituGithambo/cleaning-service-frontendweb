@@ -117,9 +117,9 @@ export default {
   mounted() {
     this.fetchJobRequests()
 
-    // EventBus.$on('refresh-jobs', () => {
-    //   this.fetchJobRequests()
-    // })
+    EventBus.$on('refresh-job-requests', () => {
+      this.fetchJobRequests()
+    })
   },
 
   methods: {

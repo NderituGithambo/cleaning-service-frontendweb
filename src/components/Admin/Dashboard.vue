@@ -119,25 +119,37 @@ export default {
       received(data) {
         console.log("Received from action cable:", data)
 
-        // Re-fetch job list
-        EventBus.$emit('refresh-jobs')
+        switch (data.type) {
 
-        // Snackbar options
-        if (data.type ==='started') {
-          parent.snackbar.text = data.message
-          parent.snackbar.color = 'info'
-          parent.snackbar.show = true
-        } else if (data.type ==='completed') {
-          parent.snackbar.text = data.message
-          parent.snackbar.color = 'success'
-          parent.snackbar.show = true
-        } else if (data.type === 'new_job_request') {
-          parent.snackbar.text = 'New job request received'
-          parent.snackbar.color = 'info'
-          parent.snackbar.show = true
+          case 'EMPLOYEE_STARTED_JOB':
+            parent.snackbar.text = data.message
+            parent.snackbar.color = 'info'
+            parent.snackbar.show = true
+            // Re-fetch job list if job page open
+            EventBus.$emit('refresh-jobs')
+            break
+
+          case 'EMPLOYEE_COMPLETED_JOB':
+            parent.snackbar.text = data.message
+            parent.snackbar.color = 'success'
+            parent.snackbar.show = true
+            // Re-fetch job list if job page open
+            EventBus.$emit('refresh-jobs')
+            break
+
+          case 'NEW_JOB_REQUEST':
+            parent.snackbar.text = 'New job request received'
+            parent.snackbar.color = 'error'
+            parent.snackbar.show = true
+            // Re-fetch job list if job page open
+            EventBus.$emit('refresh-job-requests')
+            break
+
+          default:
+            break
         }
 
-        // Set # jobs ready to bill
+        // Set variables for sidebar numbers
         if (data.num_jobs_ready_to_bill) parent.numJobsReadyToBill = data.num_jobs_ready_to_bill
         if (data.num_active_job_requests) parent.numActiveJobRequests = data.num_active_job_requests
       }

@@ -21,20 +21,6 @@
           </div>
         </div>
 
-        <div class="row">
-          <div class="col col-label">
-            End Time:
-          </div>
-          <div class="col col-content">
-            <vue-timepicker
-              v-model="endTime"
-              hide-clear-button
-              :format="timeFormat"
-              :minute-interval="minuteInterval">
-            </vue-timepicker>
-          </div>
-        </div>
-
         <!-- For existing events -->
         <div class="row" v-if="eventData.content" v-for="(item, key) in filteredContent">
           <div class="col col-label">
