@@ -6,9 +6,12 @@
 
   .calendar-header {
     display: flex;
+    width: 90%;
+    margin: 0 auto;
 
     .date-nav {
-      margin: 1em;
+      display: flex;
+      align-items: center;
       margin-left: auto;
 
       .date-nav-btn {

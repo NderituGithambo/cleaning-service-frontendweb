@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <div id="app" :class="appStyle">
+    <div id="app" :class="appClass">
       <app-header v-if="showHeader()"></app-header>
       <router-view/>
       <app-footer></app-footer>
@@ -24,7 +24,7 @@ export default {
   },
 
   computed: {
-    appStyle: function() {
+    appClass: function() {
       return this.showHeader() ? 'bg-sunflower' : 'bg-gradient'
     },
   },

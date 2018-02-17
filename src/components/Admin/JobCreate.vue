@@ -14,46 +14,53 @@
           ></calendar>
 
           <!-- Employee selector -->
-          <v-select
-            class="employee-selector"
-            label="Assign employee"
-            v-model="employeeIdSelected"
-            :items="employeesList"
-            item-text="first_name"
-            item-value="id"
-            required
-          >
-            <template slot="item" slot-scope="data">
-              {{ data.item.last_name }}, {{ data.item.first_name }}
-            </template>
-            <template slot="selection" slot-scope="data">
-              {{ data.item.last_name }}, {{ data.item.first_name }}
-            </template>
-          </v-select>
+          <div class="section-below-calendar">
+            <v-select
+              class="employee-selector"
+              label="Assign employee"
+              v-model="employeeIdSelected"
+              :items="employeesList"
+              item-text="first_name"
+              item-value="id"
+              required
+            >
+              <template slot="item" slot-scope="data">
+                {{ data.item.last_name }}, {{ data.item.first_name }}
+              </template>
+              <template slot="selection" slot-scope="data">
+                {{ data.item.last_name }}, {{ data.item.first_name }}
+              </template>
+            </v-select>
+            <v-btn
+              @click="showModal"
+            >ok</v-btn>
+          </div>
 
           <!-- Confirmation section -->
-          <div v-if="eventData" class="event-confirmation">
-            <h2>Confirm before saving:</h2>
+          <div v-if="showConfirmationModal" class="event-confirmation-container">
+            <div class="event-confirmation">
+              <h2>Confirm before saving:</h2>
 
-            <div class="row" v-for="item in infoToConfirm">
-              <div class="col col-label">
-                {{ item }}
+              <div class="row" v-for="item in infoToConfirm">
+                <div class="col col-label">
+                  {{ item }}
+                </div>
+                <div class="col col-content">
+                  {{ eventData[item] }}
+                </div>
               </div>
-              <div class="col col-content">
-                {{ eventData[item] }}
+
+              <div class="button-container">
+                <v-btn
+                  @click="closeModal"
+                >cancel</v-btn>
+
+                <v-btn
+                  @click="submit"
+                  :loading="isLoading"
+                  :disabled="isSubmitDisabled"
+                >submit</v-btn>
               </div>
-            </div>
-
-            <div class="button-container">
-              <v-btn
-                @click="clear"
-              >clear</v-btn>
-
-              <v-btn
-                @click="submit"
-                :loading="isLoading"
-                :disabled="isSubmitDisabled"
-              >submit</v-btn>
             </div>
           </div>
 
@@ -98,7 +105,9 @@ export default {
       isLoading: false,
       isSubmitDisabled: false,
 
-      jobRequestData: this.$route.params.jobRequest
+      jobRequestData: this.$route.params.jobRequest,
+
+      showConfirmationModal: false,
     }
   },
 
@@ -155,6 +164,7 @@ export default {
           this.$refs.calendar.clearStashedEvent()
           // Clear the new event data so page goes back to initial state
           this.eventData = ''
+          this.showConfirmationModal = false
         }
       } catch (e) {
         this.isLoading = false
@@ -188,12 +198,20 @@ export default {
       }
     },
 
-    clear: function() {
+    clear() {
       this.employee = null
     },
 
-    receiveEventData: function(newEventData) {
+    receiveEventData(newEventData) {
       this.eventData = newEventData
+    },
+
+    showModal() {
+      this.showConfirmationModal = true
+    },
+
+    closeModal() {
+      this.showConfirmationModal = false
     },
   },
 
@@ -246,40 +264,66 @@ export default {
     }
   }
 
-  .event-confirmation {
-    .row {
-      width: 100%;
-      display: grid;
-      grid-template-columns: [col] 25% [col] 75%;
+  .event-confirmation-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
 
-      .col {
-        padding: 0.5em;
-      }
+    .event-confirmation {
+      position: relative;
+      background-color: white;
+      min-width: fit-content;
+      min-height: fit-content;
+      padding: 32px 64px;
+      border: 1px solid gainsboro;
+      border-radius: 8px;
 
-      .col-label {
-        font-weight: bold;
-        display: flex;
-        align-items: flex-start;
-        justify-content: flex-end;
-        text-align: right;
-        padding: 0.5em;
-        border-right: 1px solid #d2d2d2
-      }
+      .row {
+        width: 100%;
+        display: grid;
+        grid-template-columns: [col] 25% [col] 75%;
 
-      .col-content {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        text-align: left;
+        .col {
+          padding: 0.5em;
+        }
 
-        input {
-          padding: 0.25em;
-          margin: 0;
-          border: 1px solid #d2d2d2;
-          width: 100%;
+        .col-label {
+          font-weight: bold;
+          display: flex;
+          align-items: flex-start;
+          justify-content: flex-end;
+          text-align: right;
+          padding: 0.5em;
+          border-right: 1px solid #d2d2d2
+        }
+
+        .col-content {
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          text-align: left;
+
+          input {
+            padding: 0.25em;
+            margin: 0;
+            border: 1px solid #d2d2d2;
+            width: 100%;
+          }
         }
       }
     }
+  }
+
+  .section-below-calendar {
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
   }
 }
 </style>
