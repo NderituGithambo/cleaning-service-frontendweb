@@ -14,7 +14,7 @@
     </div>
     <v-data-table
       :headers="headers"
-      :items="jobs"
+      :items="jobRequests"
       :loading="loading"
       class="elevation-1"
       hide-actions
@@ -35,13 +35,13 @@
           </router-link>
         </td>
         <td class="text-xs-right">
-          {{ props.item.created_at | moment }}
+          {{ props.item.address }}
         </td>
         <td class="text-xs-right">
-          {{ props.item.confirmed_time | moment}}
+          {{ props.item.guest_first_name }} {{ props.item.guest_last_name }}
         </td>
-        <td class="text-xs-right" :class="getStatusColumnClass(props.item)">
-          {{ getJobStatusFromData(props.item) }}
+        <td class="text-xs-right" :class="getStatusColumnClass(props.item.is_active)">
+          {{ getStatusDisplayText(props.item.is_active) }}
         </td>
 
       </template>
@@ -90,13 +90,13 @@ export default {
         { text: 100, value: 100 },
       ],
       selected: [],
-      jobs: [],
+      jobRequests: [],
       loading: true,
       headers: [
         { text: 'Job ID', value: 'id', sortable: false },
-        { text: 'Created At', value: 'created_at', sortable: false },
-        { text: 'Scheduled Time', value: 'confirmed_time', sortable: false },
-        { text: 'Status', value: '', sortable: false },
+        { text: 'Address', value: 'address', sortable: false },
+        { text: 'Customer Name', value: 'confirmed_time', sortable: false },
+        { text: 'Status', value: 'is_active', sortable: false },
       ],
     }
   },
@@ -104,26 +104,26 @@ export default {
   watch: {
     pagination: {
       handler: function() {
-        this.fetchJobs()
+        this.fetchJobRequests()
       },
       deep: true
     },
 
     dataModel: function(value) {
-      this.fetchJobs()
+      this.fetchJobRequests()
     },
   },
 
   mounted() {
-    this.fetchJobs()
+    this.fetchJobRequests()
 
-    EventBus.$on('refresh-jobs', () => {
-      this.fetchJobs()
-    })
+    // EventBus.$on('refresh-jobs', () => {
+    //   this.fetchJobRequests()
+    // })
   },
 
   methods: {
-    async fetchJobs() {
+    async fetchJobRequests() {
       this.loading = true
       try {
         const { page, rowsPerPage } = this.pagination
@@ -132,11 +132,11 @@ export default {
         }
         const request = axios.get(`http://localhost:3000/admin/${this.dataModel}s?p=${page}&npp=${rowsPerPage}`, config)
         const response = await request
-        this.jobs = response.data.jobs
+        this.jobRequests = response.data.job_requests
 
         this.totalRows = response.data.total_rows
 
-        console.log('jobs:', this.jobs);
+        console.log('job requests:', this.jobRequests);
 
       } catch (error) {
         console.log(error);
@@ -153,29 +153,12 @@ export default {
       return numPages
     },
 
-    getJobStatusFromData(data) {
-      const {
-        time_work_started: workStarted,
-        time_work_completed: workCompleted,
-        is_paid: isPaid,
-      } = data
-
-      if (!workStarted && !workCompleted && !isPaid) return 'New'
-      if (workStarted && !workCompleted && !isPaid) return 'In progress'
-      if (workStarted && workCompleted && !isPaid) return 'Ready to send bill'
-      if (workStarted && workCompleted && isPaid) return 'Work complete, payment received'
+    getStatusColumnClass(status) {
+      return status ? 'status-active' : 'status-inactive'
     },
 
-    getStatusColumnClass(jobData) {
-      const status = this.getJobStatusFromData(jobData)
-      console.log("job status:", status)
-      switch (status) {
-        case 'Ready to send bill': return 'status-bill'
-        case 'New': return 'status-new'
-        case 'In progress': return 'status-in-progress'
-        case 'Work complete, payment received': return 'status-done'
-        default: break
-      }
+    getStatusDisplayText(status) {
+      return status ? 'Active' : 'Inactive'
     },
   },
 };
@@ -211,20 +194,11 @@ h1 {
   display: flex;
 }
 
-.status-done {
+.status-active {
   color: green;
 }
 
-.status-in-progress {
-  color: goldenrod;
+.status-inactive {
+  color: grey;
 }
-
-.status-new {
-  color: blue
-}
-
-.status-bill {
-  color: red
-}
-
 </style>

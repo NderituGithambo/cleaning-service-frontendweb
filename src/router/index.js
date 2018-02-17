@@ -7,11 +7,15 @@ import Register from '@/components/Register/Register';
 import AdminLogin from '@/components/Admin/Login';
 import AdminDashboard from '@/components/Admin/Dashboard';
 import AdminActions from '@/components/Admin/Actions';
+
 import AdminDataIndex from '@/components/Admin/DataIndex';
 import AdminJobIndex from '@/components/Admin/JobIndex';
+import AdminJobRequestIndex from '@/components/Admin/JobRequestIndex';
+
 import AdminDataShow from '@/components/Admin/DataShow';
 import AdminJobShow from '@/components/Admin/JobShow';
 import AdminJobRequestShow from '@/components/Admin/JobRequestShow';
+
 import AdminDataCreate from '@/components/Admin/DataCreate';
 import AdminJobCreate from '@/components/Admin/JobCreate';
 
@@ -48,7 +52,7 @@ export default new Router({
         },
         {
           path: 'job_requests',
-          component: AdminDataIndex,
+          component: AdminJobRequestIndex,
           name: 'adminJobRequests',
           props: { dataModel: 'job_request' }
         },
