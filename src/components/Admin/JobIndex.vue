@@ -40,8 +40,8 @@
         <td class="text-xs-right">
           {{ props.item.confirmed_time | moment}}
         </td>
-        <td class="text-xs-right" :class="getStatusColumnClass(props.item)">
-          {{ getJobStatusFromData(props.item) }}
+        <td class="text-xs-right" :class="getEventColorClassFromStatus(props.item, true)">
+          {{ getJobStatusFromJobData(props.item) }}
         </td>
 
       </template>
@@ -62,7 +62,7 @@
 <script>
 import axios from 'axios'
 import EventBus from './EventBus'
-
+import { getJobStatusFromJobData, getEventColorClassFromStatus } from './helpers.js'
 
 export default {
   props: {
@@ -152,36 +152,17 @@ export default {
       return numPages
     },
 
-    getJobStatusFromData(data) {
-      const {
-        time_work_started: workStarted,
-        time_work_completed: workCompleted,
-        is_paid: isPaid,
-      } = data
-
-      if (!workStarted && !workCompleted && !isPaid) return 'New'
-      if (workStarted && !workCompleted && !isPaid) return 'In progress'
-      if (workStarted && workCompleted && !isPaid) return 'Ready to send bill'
-      if (workStarted && workCompleted && isPaid) return 'Work complete, payment received'
-    },
-
-    getStatusColumnClass(jobData) {
-      const status = this.getJobStatusFromData(jobData)
-      console.log("job status:", status)
-      switch (status) {
-        case 'Ready to send bill': return 'status-bill'
-        case 'New': return 'status-new'
-        case 'In progress': return 'status-in-progress'
-        case 'Work complete, payment received': return 'status-done'
-        default: break
-      }
-    },
+    getEventColorClassFromStatus: getEventColorClassFromStatus,
+    getJobStatusFromJobData: getJobStatusFromJobData,
   },
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+
+
 <style lang="scss" scoped>
+@import "./job-color-classes.scss";
+
 h1 {
   font-weight: normal;
 }
@@ -209,21 +190,4 @@ h1 {
 .text-left {
   display: flex;
 }
-
-.status-done {
-  color: green;
-}
-
-.status-in-progress {
-  color: goldenrod;
-}
-
-.status-new {
-  color: blue
-}
-
-.status-bill {
-  color: red
-}
-
 </style>

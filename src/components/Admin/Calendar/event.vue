@@ -14,6 +14,8 @@
 
 
 <script>
+import { getJobStatusFromJobData, getEventColorClassFromStatus } from '../helpers.js'
+
 export default {
   props: ['eventData'],
 
@@ -26,42 +28,13 @@ export default {
     getClassFromType() {
       switch (this.eventData.type) {
         case 'existingEvent':
-          return `existing-event ${this.getEventColorClassFromStatus(this.eventData.content)}`
+          return `existing-event ${getEventColorClassFromStatus(this.eventData.content)}`
         case 'eventPlaceholder':
           return 'event-placeholder'
         case 'stashedEvent':
           return 'stashed-event'
         default:
           break;
-      }
-    },
-
-
-    // For color-coding existing events
-    getJobStatusFromContent(content) {
-      const {
-        time_work_started: workStarted,
-        time_work_completed: workCompleted,
-        bill_sent: billSent,
-        is_paid: isPaid,
-      } = content
-
-      if (!workStarted && !workCompleted && !billSent && !isPaid) return 'NEW'
-      if (workStarted && !workCompleted && !billSent && !isPaid) return 'IN_PROGRESS'
-      if (workStarted && workCompleted && !billSent && !isPaid) return 'NEEDS_BILLING'
-      if (workStarted && workCompleted && billSent && !isPaid) return 'BILL_SENT'
-      if (workStarted && workCompleted && billSent && isPaid) return 'ALL_COMPLETE'
-    },
-
-    getEventColorClassFromStatus(content) {
-      const status = this.getJobStatusFromContent(content)
-      switch (status) {
-        case 'NEW': return 'color-new'
-        case 'IN_PROGRESS': return 'color-in-progress'
-        case 'NEEDS_BILLING': return 'color-needs-billing'
-        case 'BILL_SENT': return 'color-bill-sent'
-        case 'ALL_COMPLETE': return 'color-all-complete'
-        default: break
       }
     },
   },
@@ -80,6 +53,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "../../../colors.scss";
+@import "../job-color-classes.scss";
 
 div.event {
   font-size: 0.8em;
@@ -105,26 +79,5 @@ div.event {
 .event-placeholder, .stashed-event {
   background-color: rgba(240, 248, 255, 0.5);
   border: 1px dashed blue;
-}
-
-
-.color-new {
-  background-color: rgba(0, 255, 255, 0.74);
-}
-
-.color-in-progress {
-  background-color: rgba(255, 166, 0, 0.75);
-}
-
-.color-needs-billing {
-  background-color: rgba(255, 0, 0, 0.75);
-}
-
-.color-bill-sent {
-  background-color: rgba(0, 255, 0, 0.75);
-}
-
-.color-all-complete {
-  background-color: rgba(128, 128, 128, 0.75);
 }
 </style>
