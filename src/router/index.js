@@ -4,15 +4,15 @@ import Home from '@/components/Home/Home';
 import Login from '@/components/Login/Login';
 import Register from '@/components/Register/Register';
 
-import AdminLogin from '@/components/Admin/AdminLogin';
-import AdminDashboard from '@/components/Admin/AdminDashboard';
-import AdminActions from '@/components/Admin/AdminActions';
-import AdminDataIndex from '@/components/Admin/AdminDataIndex';
-import AdminJobIndex from '@/components/Admin/AdminJobIndex';
-import AdminDataShow from '@/components/Admin/AdminDataShow';
-import AdminJobShow from '@/components/Admin/AdminJobShow';
-import AdminDataCreate from '@/components/Admin/AdminDataCreate';
-import AdminJobCreate from '@/components/Admin/AdminJobCreate';
+import AdminLogin from '@/components/Admin/Login';
+import AdminDashboard from '@/components/Admin/Dashboard';
+import AdminActions from '@/components/Admin/Actions';
+import AdminDataIndex from '@/components/Admin/DataIndex';
+import AdminJobIndex from '@/components/Admin/JobIndex';
+import AdminDataShow from '@/components/Admin/DataShow';
+import AdminJobShow from '@/components/Admin/JobShow';
+import AdminDataCreate from '@/components/Admin/DataCreate';
+import AdminJobCreate from '@/components/Admin/JobCreate';
 
 Vue.use(Router);
 
