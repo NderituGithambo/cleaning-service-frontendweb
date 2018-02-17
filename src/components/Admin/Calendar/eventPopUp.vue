@@ -31,6 +31,17 @@
           </div>
         </div>
 
+        <div class="row" v-if="eventData.content">
+          <div class="col col-label">
+            Link
+          </div>
+          <div class="col col-content">
+            <router-link :to=jobURL>
+              {{ jobURL }}
+            </router-link>
+          </div>
+        </div>
+
         <!-- For creating new events -->
         <div class="row" v-if="!eventData.content" v-for="(item, index) in content">
           <div class="col col-label">
@@ -142,7 +153,11 @@ export default {
     stylePositionString: function() {
       const { top, left } = this.stylePosition
       return `top: ${top}px; left: ${left}px;`
-    }
+    },
+
+    jobURL() {
+      return `/admin/jobs/${this.eventData.content.id}`
+    },
   },
 
   mounted() {
