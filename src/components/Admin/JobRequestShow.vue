@@ -2,11 +2,11 @@
   <div>
     <h1>Showing {{ dataModel | underscoresAreSpaces }} with id {{ $route.params.id }}</h1>
     <br/>
-    <v-card v-for="(section, title) in items" v-bind:key="uuid()">
+    <v-card v-for="(section, title) in items" v-bind:key="title">
       <v-card-text>
         <v-list two-line>
           <template v-for="(item, key, index) in section">
-            <v-list-tile v-bind:key="uuid()">
+            <v-list-tile v-bind:key="index">
               <v-list-tile-content>
 
                 <v-list-tile-title v-html="$options.filters.snakeCaseFix(key)"></v-list-tile-title>
@@ -89,7 +89,6 @@
 
 <script>
 import axios from 'axios'
-import uuidv4 from 'uuid/v4'
 
 
 export default {
@@ -126,10 +125,6 @@ export default {
       } catch (error) {
         console.log(error);
       }
-    },
-
-    uuid() {
-      return uuidv4();
     },
 
     makeJobRequestAJob() {

@@ -2,11 +2,11 @@
   <div>
     <h1>Showing {{ dataModel | underscoresAreSpaces }} with id {{ $route.params.id }}</h1>
     <br/>
-    <v-card v-for="(section, title) in items" v-bind:key="uuid()">
+    <v-card v-for="(section, title) in items" v-bind:key="title">
       <v-card-text>
         <v-list two-line>
           <template v-for="(item, key, index) in section">
-            <v-list-tile v-bind:key="uuid()">
+            <v-list-tile v-bind:key="index">
               <v-list-tile-content>
 
                 <v-list-tile-title v-html="$options.filters.snakeCaseFix(key)"></v-list-tile-title>
@@ -68,7 +68,7 @@
             color="primary"
             dark
             large
-            v-on:click="sendBillInEmail"
+            v-on:click="showBillModal"
           >
             Send bill to customer's email
           </v-btn>
@@ -80,12 +80,27 @@
       </v-card-text>
 
     </v-card>
+
+    <div class="outer-modal" v-if="isBillModalVisible">
+      <div class="inner-modal">
+        <div class="close-button" v-on:click="closeBillModal">[X]</div>
+        Send bill for {{ items.job.bill_amount }} to {{ items.job.guest_first_name }} {{ items.job.guest_last_name }} ?
+        <div class="buttons">
+          <div class="btn btn-no" v-on:click="closeBillModal">
+            Cancel
+          </div>
+          <div class="btn btn-yes" v-on:click="sendBillInEmail">
+            Send
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
 <script>
 import axios from 'axios'
-import uuidv4 from 'uuid/v4'
 
 
 export default {
@@ -99,6 +114,7 @@ export default {
   data() {
     return {
       items: [],
+      isBillModalVisible: false,
     }
   },
 
@@ -130,10 +146,6 @@ export default {
       }
     },
 
-    uuid() {
-      return uuidv4();
-    },
-
     sendBillInEmail() {
       this.setBillSentAsTrue()
       .then((response) => {
@@ -141,6 +153,14 @@ export default {
         if (response.status === 200) this.fetchItems()
       })
       alert("sending bill in email")
+    },
+
+    showBillModal() {
+      this.isBillModalVisible = true
+    },
+
+    closeBillModal() {
+      this.isBillModalVisible = false
     },
   },
 
@@ -169,5 +189,47 @@ li {
 .billing-section {
   margin-top: 4em;
   margin-bottom: 2em;
+}
+
+.outer-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+
+  .inner-modal {
+    position: relative;
+    border: 1px solid gainsboro;
+    border-radius: 8px;
+    width: 320px;
+    height: 240px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    padding: 64px;
+
+    .buttons {
+      margin-top: 32px;
+      display: flex;
+      min-width: fit-content;
+      min-height: fit-content;
+    }
+
+    .close-button {
+      cursor: pointer;
+      position: absolute;
+      top: 0;
+      right: 0;
+      font-family: 'Ubuntu Mono'
+
+    }
+  }
 }
 </style>

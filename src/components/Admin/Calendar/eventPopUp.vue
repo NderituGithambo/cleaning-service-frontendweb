@@ -27,7 +27,7 @@
         </div>
 
         <!-- Rows existing events -->
-        <div class="row" v-if="eventData.content" v-for="(item, key) in filteredContent">
+        <div class="row" v-if="eventData.content" v-for="(item, key) in filteredContent" :key="key">
           <div class="col col-label">
             {{ key | underscoresAreSpaces | capitalize }}
           </div>
@@ -48,7 +48,7 @@
         </div>
 
         <!-- Rows creating new events -->
-        <div class="row" v-if="!eventData.content" v-for="(item, index) in content">
+        <div class="row" v-if="!eventData.content" v-for="(item, index) in content" :key="index">
           <div class="col col-label">
             {{ item.key | underscoresAreSpaces | capitalize }}
           </div>
@@ -73,6 +73,7 @@
 
 <script>
 import VueTimepicker from 'vue2-timepicker'
+import uuidv4 from 'uuid'
 
 export default {
   props: ['stylePosition', 'date', 'eventData', 'jobRequestData'],
@@ -98,11 +99,17 @@ export default {
         { key: 'admin_notes', value: '' },
         { key: 'phone', value: '' },
         { key: 'email', value: '' },
+        { key: 'customer_first_name', value: '' },
+        { key: 'customer_last_name', value: '' },
       ],
     }
   },
 
   methods: {
+    uuidv4() {
+      return uuidv4()
+    },
+
     handleClickOkay: function() {
 
       // Handling new event data inputted by admin
@@ -116,6 +123,8 @@ export default {
         adminNotes: this.content[2].value,
         phone: this.content[3].value,
         email: this.content[4].value,
+        customerFirstName: this.content[5].value,
+        customerLastName: this.content[6].value,
       })
     },
 
@@ -142,6 +151,8 @@ export default {
           employee_notes,
           phone,
           email,
+          customer_first_name,
+          customer_last_name,
         } = this.eventData.content
 
         return {
@@ -151,6 +162,8 @@ export default {
           employee_notes,
           phone,
           email,
+          customer_first_name,
+          customer_last_name,
         }
       }
     },
@@ -166,6 +179,8 @@ export default {
   },
 
   mounted() {
+    console.log("Event Data", eventData)
+
     const { startTime, endTime, content } = this.eventData
     if (this.eventData.content) {
       this.startTime = {

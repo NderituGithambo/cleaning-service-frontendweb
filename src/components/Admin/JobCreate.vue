@@ -42,7 +42,7 @@
             <div class="event-confirmation">
               <h2>Confirm before saving:</h2>
 
-              <div class="row" v-for="item in infoToConfirm">
+              <div class="row" v-for="(item, index) in infoToConfirm" :key="index">
                 <div class="col col-label">
                   {{ item }}
                 </div>
@@ -100,6 +100,8 @@ export default {
         'adminNotes',
         'phone',
         'email',
+        'customerFirstName',
+        'customerLastName',
       ],
 
       eventData: '',
@@ -153,6 +155,8 @@ export default {
           description: this.eventData.description,
           phone: this.eventData.phone,
           email: this.eventData.email,
+          customer_first_name: this.eventData.customerFirstName,
+          customer_last_name: this.eventData.customerLastName,
         }, config)
 
         const response = await request

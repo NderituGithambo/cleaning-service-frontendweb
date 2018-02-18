@@ -415,6 +415,8 @@ export default {
         adminNotes: newEventData.adminNotes,
         phone: newEventData.phone,
         email: newEventData.email,
+        customerFirstName: newEventData.customerFirstName,
+        customerLastName: newEventData.customerLastName,
       }
 
       this.$emit('emit-event-data', newEvent)
