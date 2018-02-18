@@ -179,7 +179,7 @@ export default {
   },
 
   mounted() {
-    console.log("Event Data", eventData)
+    console.log("Event Data", this.jobRequestData)
 
     const { startTime, endTime, content } = this.eventData
     if (this.eventData.content) {
@@ -201,6 +201,8 @@ export default {
       this.content[1].value = jobRequestData.address
       this.content[3].value = jobRequestData.guest_phone
       this.content[4].value = jobRequestData.guest_email
+      this.content[5].value = jobRequestData.guest_first_name
+      this.content[6].value = jobRequestData.guest_last_name
     }
   },
 }

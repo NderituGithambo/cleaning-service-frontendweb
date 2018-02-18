@@ -125,8 +125,6 @@ export default {
     const parent = this
     cable.subscriptions.create('AdminChannel', {
       received(data) {
-        console.log("Received from action cable:", data)
-
         switch (data.type) {
           case 'EMPLOYEE_STARTED_JOB':
             parent.snackbar.text = data.message
