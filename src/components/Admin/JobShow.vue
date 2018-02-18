@@ -84,7 +84,7 @@
     <div class="outer-modal" v-if="isBillModalVisible">
       <div class="inner-modal">
         <div class="close-button" v-on:click="closeBillModal">[X]</div>
-        Send bill for {{ items.job.bill_amount }} to {{ items.job.guest_first_name }} {{ items.job.guest_last_name }} ?
+        Send bill for {{ items.job.bill_amount }} to {{ items.job.customer_first_name }} {{ items.job.customer_last_name }} ?
         <div class="buttons">
           <div class="btn btn-no" v-on:click="closeBillModal">
             Cancel

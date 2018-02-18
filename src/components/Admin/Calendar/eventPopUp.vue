@@ -94,6 +94,7 @@ export default {
         a: 'am'
       },
       content: [
+        // TO DO: externalize list of wanted columns so don't have to duplicate these everywhere
         { key: 'description', value: '' },
         { key: 'address', value: '' },
         { key: 'admin_notes', value: '' },
