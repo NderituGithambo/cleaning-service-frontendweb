@@ -47,8 +47,8 @@ export default new Router({
       children: [
         {
           path: '',
-          component: AdminActions,
-          name: 'adminActions',
+          component: AdminJobCreate,
+          name: 'adminJobCreate',
         },
         {
           path: 'job_requests',

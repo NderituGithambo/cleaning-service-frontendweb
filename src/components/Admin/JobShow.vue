@@ -51,25 +51,31 @@
                   key === 'address' ||
                   key === 'is_paid'
                 "
-                fab
                 small
+                depressed
                 dark
                 color="orange"
-              ><v-icon dark>edit</v-icon></v-btn>
+              >Edit</v-btn>
 
             </v-list-tile>
           </template>
         </v-list>
 
-        <v-btn
-          v-if="isJobComplete()"
-          color="primary"
-          dark
-          large
-          v-on:click="sendBillInEmail"
-        >
-          Send bill to customer's email
-        </v-btn>
+        <!-- Send bill button / 'bill has been sent' text -->
+        <div class="billing-section">
+          <v-btn
+            v-if="isSendBillButtonVisible"
+            color="primary"
+            dark
+            large
+            v-on:click="sendBillInEmail"
+          >
+            Send bill to customer's email
+          </v-btn>
+          <div v-else-if="items.job.bill_sent">
+            Bill has been sent to customer
+          </div>
+        </div>
 
       </v-card-text>
 
@@ -118,6 +124,7 @@ export default {
         const request = axios.patch(`http://localhost:3000/admin/jobs/${this.$route.params.id}`, {
           bill_sent: true,
         }, config)
+        return await request
       } catch (error) {
         console.log(error)
       }
@@ -129,14 +136,20 @@ export default {
 
     sendBillInEmail() {
       this.setBillSentAsTrue()
+      .then((response) => {
+        console.log("response from setBillSentAsTrue", response)
+        if (response.status === 200) this.fetchItems()
+      })
       alert("sending bill in email")
     },
+  },
 
-    isJobComplete() {
-      const { time_work_completed: workComplete } = this.items.job
-      if (workComplete) return true
+  computed: {
+    isSendBillButtonVisible: function() {
+      const { time_work_completed: workComplete, bill_sent: billSent } = this.items.job
+      if (workComplete && !billSent) return true
     },
-  }
+  },
 }
 </script>
 
@@ -151,5 +164,10 @@ h2 {
 
 li {
   border-bottom: 1px solid silver;
+}
+
+.billing-section {
+  margin-top: 4em;
+  margin-bottom: 2em;
 }
 </style>

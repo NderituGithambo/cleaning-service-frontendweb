@@ -17,6 +17,7 @@ Vue.config.productionTip = false;
 //
 
 import moment from 'moment'
+
 Vue.filter('moment', (date) => {
   if (!date) return '-';
   return moment(date).format('MMMM Do YYYY, h:mm:ss a');
@@ -35,7 +36,6 @@ Vue.filter('phone', (phone) => {
 });
 
 Vue.filter('underscoresAreSpaces', (string) => {
-  // if (!string) return;
   return string.replace(/_/g, " ")
 });
 
@@ -45,6 +45,11 @@ Vue.filter('capitalize', (string) => {
 
 Vue.filter('snakeCaseFix', (string) => {
   return string.replace(/_/g, " ").replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();})
+})
+
+Vue.filter('screamingSnakeCaseFix', (string) => {
+  string = string.replace(/_/g, " ").toLowerCase()
+  return string[0].toUpperCase() + string.substring(1)
 })
 
 

@@ -41,7 +41,7 @@
           {{ props.item.confirmed_time | moment}}
         </td>
         <td class="text-xs-right" :class="getEventColorClassFromStatus(props.item, true)">
-          {{ getJobStatusFromJobData(props.item) }}
+          {{ getJobStatusFromJobData(props.item) | screamingSnakeCaseFix }}
         </td>
 
       </template>

@@ -12,7 +12,7 @@
         </div>
       </router-link>
 
-      <hr/>
+      <div class="horiz-line"/>
 
       <div class="section-title no-select">
         Create
@@ -24,7 +24,7 @@
           </div>
       </router-link>
 
-      <hr/>
+      <div class="horiz-line"/>
 
 
       <div class="section-title no-select">
@@ -51,6 +51,14 @@
         </div>
       </router-link>
 
+      <div class="horiz-line"/>
+
+      <a v-on:click="logout">
+        <div class="nav-btn">
+          Log out
+        </div>
+      </a>
+
     </nav>
 
     <!-- Main view -->
@@ -73,11 +81,11 @@
 
 <script>
 import axios from 'axios'
-
 import ActionCable from 'actioncable'
 const cable = ActionCable.createConsumer('ws://192.168.1.69:3000/cable')
-
 import EventBus from './EventBus'
+// Wrapper for promise to avoid try/catch blocks
+import to from '../../to.js'
 
 
 export default {
@@ -154,6 +162,13 @@ export default {
       }
     })
   },
+
+  methods: {
+    logout() {
+      localStorage.removeItem('token')
+      location.reload()
+    },
+  }
 };
 </script>
 
@@ -236,5 +251,12 @@ main {
   a {
     color: $blue;
   }
+}
+
+.horiz-line {
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.25);
+  width: 100%;
+  margin: 10px 0;
 }
 </style>

@@ -14,8 +14,9 @@ export function getJobStatusFromJobData(jobData) {
   if (workStarted && workCompleted && billSent && isPaid) return 'ALL_COMPLETE'
 }
 
-export function getEventColorClassFromStatus(JobData, isText) {
-  const status = getJobStatusFromJobData(JobData)
+
+export function getEventColorClassFromStatus(jobData, isText) {
+  const status = getJobStatusFromJobData(jobData)
   let classToReturn
   switch (status) {
     case 'NEW':
