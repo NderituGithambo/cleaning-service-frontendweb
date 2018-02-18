@@ -152,13 +152,22 @@ export default {
             EventBus.$emit('refresh-job-requests')
             break
 
+          case 'JOB_REQUEST_MADE_INACTIVE':
+            // Re-fetch job list if job page open
+            EventBus.$emit('refresh-job-requests')
+            break
+
           default:
             break
         }
 
         // Set variables for sidebar numbers
-        if (data.num_jobs_ready_to_bill) parent.numJobsReadyToBill = data.num_jobs_ready_to_bill
-        if (data.num_active_job_requests) parent.numActiveJobRequests = data.num_active_job_requests
+        if (data.num_jobs_ready_to_bill === 0 || data.num_jobs_ready_to_bill) {
+          parent.numJobsReadyToBill = data.num_jobs_ready_to_bill
+        }
+        if (data.num_active_job_requests === 0 || data.num_active_job_requests) {
+          parent.numActiveJobRequests = data.num_active_job_requests
+        }
       }
     })
   },
