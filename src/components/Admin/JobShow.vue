@@ -9,7 +9,7 @@
             <v-list-tile v-bind:key="uuid()">
               <v-list-tile-content>
 
-                <v-list-tile-title v-html="key"></v-list-tile-title>
+                <v-list-tile-title v-html="$options.filters.snakeCaseFix(key)"></v-list-tile-title>
 
                 <!-- Format dates -->
                 <v-list-tile-sub-title
