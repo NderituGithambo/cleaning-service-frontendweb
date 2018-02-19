@@ -3,7 +3,8 @@
     <h1>Pay your bill</h1>
     <br/>
     <article>
-      <div class="billing-form">
+
+      <div class="table">
         <div class="row">
           <div class="col label">
             Amount:
@@ -12,14 +13,22 @@
             {{ product.amount | toDollarsFromCents }}
           </div>
         </div>
+        <div class="row">
+          <div class="col label">
+            Status:
+          </div>
+          <div class="col content">
+            {{ billStatus }}
+          </div>
+        </div>
       </div>
 
-      <form>
-        <stripe-checkout
-          stripe-key="pk_test_HIh09nVUrjsvmETgIB6I0Lex"
-          :product="product">
-        </stripe-checkout>
-      </form>
+      <stripe-checkout
+        stripe-key="pk_test_HIh09nVUrjsvmETgIB6I0Lex"
+        :product="product"
+        on-success="broadcast"
+      >
+      </stripe-checkout>
 
     </article>
   </main>
@@ -28,8 +37,8 @@
 <script>
 import axios from 'axios'
 import to from '../../to'
+import { StripeCheckout, Bus } from 'vue-stripe'
 
-import { StripeCheckout } from 'vue-stripe'
 
 export default {
   name: 'Billing',
@@ -45,23 +54,46 @@ export default {
         name: 'VanCleaning',
         description: 'Bill payment',
         amount: 0, // 100$ in cents
-      }
+      },
+      isPaid: null,
     };
   },
 
+  computed: {
+    billStatus: function() {
+      return this.isPaid ? 'Paid' : 'Not paid'
+    }
+  },
+
   methods: {
-    async fetchBillAmount() {
+    async fetchBillingInfo() {
       const config = { headers: { Authorization: localStorage.getItem("token") }}
       const request = axios.get(`http://localhost:3000/guest/billing/${this.uuid}`, config)
       const [error, response] = await to(request)
-      if (error) console.log(error)
-      const { amount } = response.data
+      if (error) return console.log(error)
+      console.log(response.data);
+      const { amount, is_paid: isPaid } = response.data
       this.product.amount = Number(amount) * 100
+      this.isPaid = isPaid
     },
+
+    async setBillAsPaidAndReload() {
+      const config = { headers: { Authorization: localStorage.getItem("token") }}
+      const request = axios.patch(`http://localhost:3000/guest/billing/${this.uuid}`, config)
+      const [error, response] = await to(request)
+      if (error) return console.log(error)
+      // Reloads the info
+      this.fetchBillingInfo()
+    },
+
   },
 
   mounted() {
-    this.fetchBillAmount()
+    this.fetchBillingInfo()
+
+    Bus.$on('vue-stripe.success', () => {
+      this.setBillAsPaidAndReload()
+    });
   },
 };
 </script>
@@ -82,30 +114,31 @@ article {
   align-items: center;
   flex-direction: column;
 
-  .billing-form {
+  .table {
     // border: 1px solid lime;
     width: 60%;
     min-width: 500px;
     background-color: white;
+    margin-bottom: 3em;
 
     .row {
       width: 100%;
       display: flex;
 
       .col {
-        padding: 1em;
+        padding: 2em;
       }
 
       .label {
         text-align: right;
-        width: 20%;
+        width: 50%;
         // border: 1px dashed red;
         font-weight: bold;
       }
 
       .content {
         text-align: left;
-        width: 80%;
+        width: 50%;
         // border: 1px dashed orange;
       }
     }
