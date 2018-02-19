@@ -56,6 +56,10 @@ Vue.filter('toDollars', (number) => {
   return '$' + Number(number).toFixed(2)
 })
 
+Vue.filter('toDollarsFromCents', (number) => {
+  return '$' + (Number(number) / 100).toFixed(2)
+})
+
 
 
 

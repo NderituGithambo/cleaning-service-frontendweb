@@ -9,10 +9,18 @@
             Amount:
           </div>
           <div class="col content">
-            {{ amount | toDollars }}
+            {{ product.amount | toDollarsFromCents }}
           </div>
         </div>
       </div>
+
+      <form>
+        <stripe-checkout
+          stripe-key="pk_test_HIh09nVUrjsvmETgIB6I0Lex"
+          :product="product">
+        </stripe-checkout>
+      </form>
+
     </article>
   </main>
 </template>
@@ -21,12 +29,23 @@
 import axios from 'axios'
 import to from '../../to'
 
+import { StripeCheckout } from 'vue-stripe'
+
 export default {
   name: 'Billing',
+
+  components: {
+    'stripe-checkout': StripeCheckout
+  },
+
   data() {
     return {
       uuid: this.$route.query.uuid,
-      amount: '',
+      product: {
+        name: 'VanCleaning',
+        description: 'Bill payment',
+        amount: 0, // 100$ in cents
+      }
     };
   },
 
@@ -37,7 +56,7 @@ export default {
       const [error, response] = await to(request)
       if (error) console.log(error)
       const { amount } = response.data
-      this.amount = amount
+      this.product.amount = Number(amount) * 100
     },
   },
 
@@ -60,6 +79,8 @@ article {
   padding: 3em;
   display: flex;
   justify-content: center;
+  align-items: center;
+  flex-direction: column;
 
   .billing-form {
     // border: 1px solid lime;
