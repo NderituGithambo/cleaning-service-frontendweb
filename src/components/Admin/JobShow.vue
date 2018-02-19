@@ -78,6 +78,9 @@
     </v-card>
 
 
+
+    <!-- Modals -->
+
     <div class="outer-modal" v-if="isEditModalVisible">
       <div class="inner-modal">
         <div class="close-button" @click="closeModal">[X]</div>
@@ -150,6 +153,7 @@ export default {
     async fetchItems() {
       const config = { headers: { Authorization: localStorage.getItem("token") }}
       const request = axios.get(`http://localhost:3000/admin/${this.dataModel}s/${this.$route.params.id}`, config)
+
       const [error, response] = await to(request)
       if (error) console.log(error)
       this.items = response.data
@@ -172,11 +176,11 @@ export default {
       const request = axios.patch(`http://localhost:3000/admin/jobs/${this.$route.params.id}`, {
         bill_sent: true,
       }, config)
+
       const [error, response] = await to(request)
       if (error) return console.log(error)
       this.fetchItems()
       this.closeModal()
-      alert("sending bill in email")
     },
 
     showBillModal() {

@@ -4,6 +4,8 @@ import Home from '@/components/Home/Home';
 import Login from '@/components/Login/Login';
 import Register from '@/components/Register/Register';
 
+import Billing from '@/components/Billing/Billing';
+
 import AdminLogin from '@/components/Admin/Login';
 import AdminDashboard from '@/components/Admin/Dashboard';
 import AdminActions from '@/components/Admin/Actions';
@@ -101,6 +103,11 @@ export default new Router({
           props: { dataModel: 'employee' }
         },
       ]
+    },
+    {
+      path: '/billing',
+      component: Billing,
+      name: 'billing',
     },
   ],
 });
