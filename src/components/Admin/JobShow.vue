@@ -42,19 +42,12 @@
 
               <!-- Put buttons on certain properties -->
               <v-btn
-                v-if="
-                  key === 'confirmed_time' ||
-                  key === 'time_work_started' ||
-                  key === 'time_work_completed' ||
-                  key === 'admin_notes' ||
-                  key === 'description' ||
-                  key === 'address' ||
-                  key === 'is_paid'
-                "
+                v-if="key === 'bill_amount'"
                 small
                 depressed
                 dark
                 color="orange"
+                @click="showEditModal"
               >Edit</v-btn>
 
             </v-list-tile>
@@ -63,17 +56,20 @@
 
         <!-- Send bill button / 'bill has been sent' text -->
         <div class="billing-section">
+          <div v-if="isSendBillButtonVisible && !items.job.bill_amount">
+            You can send the bill once you've entered an amount.
+          </div>
           <v-btn
-            v-if="isSendBillButtonVisible"
+            v-else-if="isSendBillButtonVisible"
             color="primary"
             dark
             large
-            v-on:click="showBillModal"
+            @click="showBillModal"
           >
             Send bill to customer's email
           </v-btn>
           <div v-else-if="items.job.bill_sent">
-            Bill has been sent to customer
+            Bill has been sent to customer.
           </div>
         </div>
 
@@ -81,27 +77,53 @@
 
     </v-card>
 
-    <div class="outer-modal" v-if="isBillModalVisible">
+
+    <div class="outer-modal" v-if="isEditModalVisible">
       <div class="inner-modal">
-        <div class="close-button" v-on:click="closeBillModal">[X]</div>
-        Send bill for {{ items.job.bill_amount }} to {{ items.job.customer_first_name }} {{ items.job.customer_last_name }} ?
+        <div class="close-button" @click="closeModal">[X]</div>
+        Enter amount to bill customer
+
+        <v-text-field
+          label="Amount"
+          v-model="billAmount"
+        />
+        <br/>
+
         <div class="buttons">
-          <div class="btn btn-no" v-on:click="closeBillModal">
+          <div class="btn btn-no" @click="closeModal">
             Cancel
           </div>
-          <div class="btn btn-yes" v-on:click="sendBillInEmail">
+          <div class="btn btn-yes" @click="setBillAmount">
+            Save
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="outer-modal" v-if="isBillModalVisible">
+      <div class="inner-modal">
+        <div class="close-button" @click="closeModal">[X]</div>
+        Send bill for {{ items.job.bill_amount }} to {{ items.job.customer_first_name }} {{ items.job.customer_last_name }} ?
+        <div class="buttons">
+          <div class="btn btn-no" @click="closeModal">
+            Cancel
+          </div>
+          <div class="btn btn-yes" @click="sendBillInEmail">
             Send
           </div>
         </div>
       </div>
     </div>
 
+
   </div>
 </template>
 
 <script>
 import axios from 'axios'
-
+import { isDecimal, unmask, mask } from './helpers'
+import to from '../../to'
 
 export default {
   props: {
@@ -115,6 +137,8 @@ export default {
     return {
       items: [],
       isBillModalVisible: false,
+      isEditModalVisible: false,
+      billAmount: '',
     }
   },
 
@@ -124,43 +148,49 @@ export default {
 
   methods: {
     async fetchItems() {
-      try {
-        const config = { headers: { Authorization: localStorage.getItem("token") }}
-        const request = axios.get(`http://localhost:3000/admin/${this.dataModel}s/${this.$route.params.id}`, config)
-        const response = await request
-        this.items = response.data
-      } catch (error) {
-        console.log(error)
-      }
+      const config = { headers: { Authorization: localStorage.getItem("token") }}
+      const request = axios.get(`http://localhost:3000/admin/${this.dataModel}s/${this.$route.params.id}`, config)
+      const [error, response] = await to(request)
+      if (error) console.log(error)
+      this.items = response.data
     },
 
-    async setBillSentAsTrue() {
-      try {
-        const config = { headers: { Authorization: localStorage.getItem("token") }}
-        const request = axios.patch(`http://localhost:3000/admin/jobs/${this.$route.params.id}`, {
-          bill_sent: true,
-        }, config)
-        return await request
-      } catch (error) {
-        console.log(error)
-      }
+    async setBillAmount() {
+      const config = { headers: { Authorization: localStorage.getItem("token") }}
+      const request = axios.patch(`http://localhost:3000/admin/jobs/${this.$route.params.id}`, {
+        bill_amount: this.billAmount,
+      }, config)
+
+      const [error, response] = await to(request)
+      if (error) return console.log(error)
+      this.fetchItems()
+      this.closeModal()
     },
 
-    sendBillInEmail() {
-      this.setBillSentAsTrue()
-      .then((response) => {
-        console.log("response from setBillSentAsTrue", response)
-        if (response.status === 200) this.fetchItems()
-      })
+    async sendBillInEmail() {
+      const config = { headers: { Authorization: localStorage.getItem("token") }}
+      const request = axios.patch(`http://localhost:3000/admin/jobs/${this.$route.params.id}`, {
+        bill_sent: true,
+      }, config)
+      const [error, response] = await to(request)
+      if (error) return console.log(error)
+      this.fetchItems()
+      this.closeModal()
       alert("sending bill in email")
     },
 
     showBillModal() {
+      if (!this.items.job.bill_amount) return alert("Bill amount can't be zero")
       this.isBillModalVisible = true
     },
 
-    closeBillModal() {
+    showEditModal() {
+      this.isEditModalVisible = true
+    },
+
+    closeModal() {
       this.isBillModalVisible = false
+      this.isEditModalVisible = false
     },
   },
 
