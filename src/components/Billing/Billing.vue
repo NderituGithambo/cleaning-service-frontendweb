@@ -23,12 +23,14 @@
         </div>
       </div>
 
-      <stripe-checkout
-        stripe-key="pk_test_HIh09nVUrjsvmETgIB6I0Lex"
-        :product="product"
-        on-success="broadcast"
-      >
-      </stripe-checkout>
+      <div v-if="!isPaid" class="stripe-button-container">
+        <stripe-checkout
+          stripe-key="pk_test_HIh09nVUrjsvmETgIB6I0Lex"
+          :product="product"
+          on-success="broadcast"
+        >
+        </stripe-checkout>
+      </div>
 
     </article>
   </main>
@@ -119,7 +121,6 @@ article {
     width: 60%;
     min-width: 500px;
     background-color: white;
-    margin-bottom: 3em;
 
     .row {
       width: 100%;
@@ -142,6 +143,10 @@ article {
         // border: 1px dashed orange;
       }
     }
+  }
+
+  .stripe-button-container {
+    margin-top: 3em;
   }
 }
 </style>
