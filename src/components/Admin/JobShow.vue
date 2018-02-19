@@ -125,7 +125,6 @@
 
 <script>
 import axios from 'axios'
-import { isDecimal, unmask, mask } from './helpers'
 import to from '../../to'
 
 export default {
