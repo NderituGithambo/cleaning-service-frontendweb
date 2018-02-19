@@ -1,6 +1,8 @@
 <template>
   <header class="pa-0">
-    <h1>VanCleaning</h1>
+    <router-link to="/">
+      <h1>VanCleaning</h1>
+    </router-link>
 
     <div class="header-aside">
       <div class="headlines">
@@ -10,22 +12,6 @@
           <h4>Or click below to request online!</h4>
         </div>
       </div>
-
-      <!-- <nav>
-        <div class="info-buttons">
-          <router-link to="/">
-            <v-btn large class="ma-0" flat :ripple="false">Home</v-btn>
-          </router-link>
-        </div>
-        <div class="action-buttons">
-          <router-link to="/signup">
-            <v-btn large class="ma-0" flat :ripple="false">Sign up</v-btn>
-          </router-link>
-          <router-link to="/login">
-            <v-btn large class="ma-0" flat :ripple="false">Log in</v-btn>
-          </router-link>
-        </div>
-      </nav> -->
     </div>
 
   </header>
@@ -92,18 +78,18 @@ header {
       display: flex;
       width: 100%;
       height: 25%;
-
-      a {
-        text-decoration: none;
-        button {
-          color: $blue;
-          height: 100%;
-        }
-      }
       .action-buttons {
         margin-left: auto;
       }
     }
+  }
+}
+
+a {
+  text-decoration: none;
+  button {
+    color: $blue;
+    height: 100%;
   }
 }
 
