@@ -5,11 +5,11 @@
     <article>
       <div class="billing-form">
         <div class="row">
-          <div class="label">
+          <div class="col label">
             Amount:
           </div>
-          <div class="content">
-            {{ amount }}
+          <div class="col content">
+            {{ amount | toDollars }}
           </div>
         </div>
       </div>
@@ -62,24 +62,30 @@ article {
   justify-content: center;
 
   .billing-form {
-    border: 1px solid lime;
+    // border: 1px solid lime;
     width: 60%;
     min-width: 500px;
+    background-color: white;
 
     .row {
       width: 100%;
       display: flex;
 
+      .col {
+        padding: 1em;
+      }
+
       .label {
         text-align: right;
         width: 20%;
-        border: 1px dashed red;
+        // border: 1px dashed red;
+        font-weight: bold;
       }
 
       .content {
         text-align: left;
         width: 80%;
-        border: 1px dashed orange;
+        // border: 1px dashed orange;
       }
     }
   }
