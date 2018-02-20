@@ -79,6 +79,12 @@ export default {
       this.isPaid = isPaid
     },
 
+
+    /*
+      Important:
+      When deployed, setting bill as 'paid' MUST be done w/ stripe webhooks so people
+      can't set bill as 'paid' themselves
+    */
     async setBillAsPaidAndReload() {
       const config = { headers: { Authorization: localStorage.getItem("token") }}
       const request = axios.patch(`http://localhost:3000/guest/billing/${this.uuid}`, config)
