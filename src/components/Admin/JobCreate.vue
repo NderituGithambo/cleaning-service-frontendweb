@@ -34,8 +34,6 @@
             <div class="custom-btn ok-btn"
               @click="showModal"
               :disabled="!eventData || !employeeIdSelected"
-              color="primary"
-              flat
             >Ok</div>
           </div>
 
@@ -44,25 +42,95 @@
             <div class="event-confirmation">
               <h2>Confirm before saving:</h2>
 
-              <div class="row" v-for="(item, index) in infoToConfirm" :key="index">
+              <div class="row">
                 <div class="col col-label">
-                  {{ item }}
+                  Start date
                 </div>
                 <div class="col col-content">
-                  {{ eventData[item] }}
+                  {{ eventData.startDate | moment }}
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col col-label">
+                  End date
+                </div>
+                <div class="col col-content">
+                  {{ eventData.endDate | moment }}
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col col-label">
+                  Description
+                </div>
+                <div class="col col-content">
+                  {{ eventData.description }}
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col col-label">
+                  Address
+                </div>
+                <div class="col col-content">
+                  {{ eventData.address }}
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col col-label">
+                  Admin notes
+                </div>
+                <div class="col col-content">
+                  {{ eventData.adminNotes }}
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col col-label">
+                  Phone
+                </div>
+                <div class="col col-content">
+                  {{ eventData.phone }}
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col col-label">
+                  E-mail
+                </div>
+                <div class="col col-content">
+                  {{ eventData.email }}
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col col-label">
+                  Customer First Name
+                </div>
+                <div class="col col-content">
+                  {{ eventData.customer_first_name }}
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col col-label">
+                  Customer Last Name
+                </div>
+                <div class="col col-content">
+                  {{ eventData.customer_last_name }}
                 </div>
               </div>
 
               <div class="button-container">
-                <div class="custom-btn cancel-btn"
+                <div class="custom-btn cancel-btn2"
                   @click="closeModal"
-                  flat
                   color="primary"
                 >Cancel</div>
 
                 <div class="custom-btn submit-btn"
                   @click="submit"
-                  flat
                   :disabled="isSubmitDisabled"
                 >Submit</div>
               </div>
@@ -274,6 +342,7 @@ export default {
       width: 100%;
       display: flex;
       justify-content: flex-end;
+      margin-top: 1em;
     }
   }
 
@@ -291,16 +360,15 @@ export default {
     .event-confirmation {
       position: relative;
       background-color: white;
-      min-width: fit-content;
+      min-width: 600px;
       min-height: fit-content;
-      padding: 32px 64px;
+      padding: 1em;
       border: 1px solid gainsboro;
       border-radius: 8px;
 
       .row {
         width: 100%;
-        display: grid;
-        grid-template-columns: [col] 25% [col] 75%;
+        display: flex;
 
         .col {
           padding: 0.5em;
@@ -312,8 +380,7 @@ export default {
           align-items: flex-start;
           justify-content: flex-end;
           text-align: right;
-          padding: 0.5em;
-          border-right: 1px solid #d2d2d2
+          width: 35%;
         }
 
         .col-content {
@@ -321,6 +388,7 @@ export default {
           align-items: center;
           justify-content: flex-start;
           text-align: left;
+          width: 65%;
 
           input {
             padding: 0.25em;
@@ -343,21 +411,24 @@ export default {
 .ok-btn {
   background-color: gainsboro;
   height: fit-content;
-  padding: 1em;
+  padding: 0.5em 1em;
   width: 6em;
+  cursor: pointer;
 }
 
-.cancel-btn {
+.cancel-btn2 {
   background-color: gainsboro;
   height: fit-content;
-  padding: 1em;
+  padding: 0.5em 1em;
   width: 6em;
+  cursor: pointer;
 }
 
 .submit-btn {
   background-color: gainsboro;
   height: fit-content;
-  padding: 1em;
+  padding: 0.5em 1em;
   width: 6em;
+  cursor: pointer;
 }
 </style>
