@@ -119,7 +119,7 @@
 
 
       <!-- Send bill button / 'bill has been sent' text -->
-      <div class="billing-section">
+      <div class="bottom-section">
         <div v-if="isSendBillButtonVisible && !jobData.bill_amount">
           You can send the bill once you've entered an amount.
         </div>
@@ -345,7 +345,7 @@ h2 {
   }
 }
 
-.billing-section {
+.bottom-section {
   margin-top: 4em;
   margin-bottom: 2em;
 }
