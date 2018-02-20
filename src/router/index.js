@@ -50,6 +50,7 @@ export default new Router({
         {
           path: '',
           component: AdminJobCreate,
+          name: 'adminDashboard',
         },
         {
           path: 'job_requests',

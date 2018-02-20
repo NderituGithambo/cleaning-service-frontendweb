@@ -20,7 +20,7 @@ import moment from 'moment'
 
 Vue.filter('moment', (date) => {
   if (!date) return '-';
-  return moment(date).format('MMMM Do YYYY, h:mm:ss a');
+  return moment(date).format('MMMM Do YYYY, h:mm a');
 })
 
 Vue.filter('momentOnlyTime', (date) => {

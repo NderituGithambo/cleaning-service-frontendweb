@@ -16,12 +16,14 @@
 
       .date-nav-btn {
         cursor: pointer;
-        &:hover {
-          background-color: lime;
-        }
-        &:active {
-          background-color: green;
-        }
+      }
+
+      .arrow-left {
+        margin-right: 1em;
+      }
+
+      .arrow-right {
+        margin-left: 1em;
       }
     }
   }

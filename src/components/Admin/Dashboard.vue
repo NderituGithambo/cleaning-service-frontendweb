@@ -198,8 +198,7 @@ nav {
 
   padding: 1em 0 1em 0;
 
-  background-color: white;
-  background: linear-gradient(to right, $darker-blue, $dark-blue);
+  background-color: $darker-blue;
 
   hr {
     margin-bottom: 0.2em;
@@ -261,9 +260,11 @@ main {
 }
 
 .horiz-line {
-  height: 1px;
-  background-color: rgba(255, 255, 255, 0.25);
-  width: 100%;
+  height: 3px;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  background-color: rgba(255, 255, 255, 0.1);
+  width: 75%;
   margin: 10px 0;
 }
 </style>

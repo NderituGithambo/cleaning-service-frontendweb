@@ -64,7 +64,11 @@ export default {
 }
 
 .bg-gradient {
-  background: linear-gradient(to bottom right, white, $blue);
+  background: linear-gradient(to bottom, white, gainsboro);
+}
+
+.bg-white {
+  background: white;
 }
 
 main {
