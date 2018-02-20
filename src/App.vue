@@ -86,4 +86,16 @@ main {
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
 }
+
+.custom-btn {
+  width: min-content;
+  margin-left: 1em;
+  padding: 0 1em;
+  cursor: pointer;
+  border-radius: 4px;
+
+  &:hover {
+    filter: brightness(102.5%);
+  }
+}
 </style>

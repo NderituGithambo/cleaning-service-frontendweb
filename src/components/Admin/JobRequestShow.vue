@@ -147,7 +147,7 @@ export default {
     makeJobRequestAJob() {
       // Sends the jobRequest data to JobCreate, which then passes it all the way down to the calendar pop-up
       // (Could refactor this to use an external store, maybe Vuex)
-      this.$router.push({ name: 'adminJobCreate', params: { jobRequest: this.items.job_request }})
+      this.$router.push({ name: 'adminJobCreate', params: { jobRequest: this.jobRequestData }})
     },
 
     onPressYesToMakeInactive() {

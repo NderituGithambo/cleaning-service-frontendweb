@@ -31,10 +31,12 @@
                 {{ data.item.last_name }}, {{ data.item.first_name }}
               </template>
             </v-select>
-            <v-btn
+            <div class="custom-btn ok-btn"
               @click="showModal"
               :disabled="!eventData || !employeeIdSelected"
-            >ok</v-btn>
+              color="primary"
+              flat
+            >Ok</div>
           </div>
 
           <!-- Confirmation section -->
@@ -52,15 +54,17 @@
               </div>
 
               <div class="button-container">
-                <v-btn
+                <div class="custom-btn cancel-btn"
                   @click="closeModal"
-                >cancel</v-btn>
+                  flat
+                  color="primary"
+                >Cancel</div>
 
-                <v-btn
+                <div class="custom-btn submit-btn"
                   @click="submit"
-                  :loading="isLoading"
+                  flat
                   :disabled="isSubmitDisabled"
-                >submit</v-btn>
+                >Submit</div>
               </div>
             </div>
           </div>
@@ -334,5 +338,26 @@ export default {
     display: flex;
     justify-content: space-between;
   }
+}
+
+.ok-btn {
+  background-color: gainsboro;
+  height: fit-content;
+  padding: 1em;
+  width: 6em;
+}
+
+.cancel-btn {
+  background-color: gainsboro;
+  height: fit-content;
+  padding: 1em;
+  width: 6em;
+}
+
+.submit-btn {
+  background-color: gainsboro;
+  height: fit-content;
+  padding: 1em;
+  width: 6em;
 }
 </style>
