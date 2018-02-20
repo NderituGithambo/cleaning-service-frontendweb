@@ -1,7 +1,7 @@
 <template>
   <header class="pa-0">
     <router-link to="/">
-      <h1>VanCleaning</h1>
+      <img src="../assets/heading_logo.png" class="heading-logo"/>
     </router-link>
 
     <div class="header-aside">
@@ -35,7 +35,14 @@ header {
   display: flex;
   align-items: center;
   height: 160px;
-  background-color: $zero-opacity;
+  background-color: white;
+  opacity: 0.9;
+
+  .heading-logo {
+    max-width: 225px;
+    min-width: 225px;
+    margin-left: 50px;
+  }
 
   h1 {
     font-family: 'Open Sans', Helvetica, Arial, sans-serif;
@@ -65,6 +72,7 @@ header {
       }
       .call-to-action {
         color: $dark-blue;
+        text-align: left;
         h3 {
           font-size: 1.5em;
         }
