@@ -1,81 +1,96 @@
 <template>
   <div>
-    <h1>Showing {{ dataModel | underscoresAreSpaces }} with id {{ $route.params.id }}</h1>
+    <h1>Viewing job</h1>
     <br/>
-    <v-card v-for="(section, title) in items" v-bind:key="title">
-      <v-card-text>
-        <v-list two-line>
-          <template v-for="(item, key, index) in section">
-            <v-list-tile v-bind:key="index">
-              <v-list-tile-content>
 
-                <v-list-tile-title v-html="$options.filters.snakeCaseFix(key)"></v-list-tile-title>
+    <div class="job-card">
 
-                <!-- Format dates -->
-                <v-list-tile-sub-title
-                  v-if="
-                    key === 'created_at' ||
-                    key === 'updated_at' ||
-                    key === 'confirmed_time' ||
-                    key === 'time_work_started' ||
-                    key === 'time_work_completed'
-                  "
-                  v-html="$options.filters.moment(item)"
-                ></v-list-tile-sub-title>
-
-                <!-- Format phone numbers -->
-                <v-list-tile-sub-title
-                  v-else-if="
-                    key === 'phone_number' ||
-                    key === 'guest_phone_number'
-                  "
-                  v-html="$options.filters.phone(item)"
-                ></v-list-tile-sub-title>
-
-                <!-- Display all other data normally -->
-                <v-list-tile-sub-title
-                  v-else
-                  v-html="item"
-                ></v-list-tile-sub-title>
-
-              </v-list-tile-content>
-
-              <!-- Put buttons on certain properties -->
-              <v-btn
-                v-if="key === 'bill_amount'"
-                small
-                depressed
-                dark
-                color="orange"
-                @click="showEditModal"
-              >Edit</v-btn>
-
-            </v-list-tile>
-          </template>
-        </v-list>
-
-        <!-- Send bill button / 'bill has been sent' text -->
-        <div class="billing-section">
-          <div v-if="isSendBillButtonVisible && !items.job.bill_amount">
-            You can send the bill once you've entered an amount.
-          </div>
-          <v-btn
-            v-else-if="isSendBillButtonVisible"
-            color="primary"
-            dark
-            large
-            @click="showBillModal"
-          >
-            Send bill to customer's email
-          </v-btn>
-          <div v-else-if="items.job.bill_sent">
-            Bill has been sent to customer.
-          </div>
+      <div class="top-bar">
+        <div>
+          Job #{{ jobData.id }}
         </div>
 
-      </v-card-text>
+        <div>
+          Status: ________
+        </div>
+      </div>
 
-    </v-card>
+      <div class="row">
+        <div class="label">
+          Scheduled time
+        </div>
+        <div class="value">
+          {{  }}
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="label">
+          Label
+        </div>
+        <div class="value">
+          {{  }}
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="label">
+          Label
+        </div>
+        <div class="value">
+          {{  }}
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="label">
+          Label
+        </div>
+        <div class="value">
+          {{  }}
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="label">
+          Label
+        </div>
+        <div class="value">
+          {{  }}
+        </div>
+      </div>
+
+      <!-- Put buttons on certain properties -->
+      <v-btn
+        class="edit-btn"
+        small
+        depressed
+        dark
+        color="orange"
+        @click="showEditModal"
+      >Edit</v-btn>
+
+
+      <!-- Send bill button / 'bill has been sent' text -->
+      <div class="billing-section">
+        <div v-if="isSendBillButtonVisible && !jobData.bill_amount">
+          You can send the bill once you've entered an amount.
+        </div>
+        <v-btn
+          v-else-if="isSendBillButtonVisible"
+          color="primary"
+          dark
+          large
+          @click="showBillModal"
+        >
+          Send bill to customer's email
+        </v-btn>
+        <div v-else-if="jobData.bill_sent">
+          Bill has been sent to customer.
+        </div>
+      </div>
+
+    </div>
 
 
 
@@ -107,7 +122,7 @@
     <div class="outer-modal" v-if="isBillModalVisible">
       <div class="inner-modal">
         <div class="close-button" @click="closeModal">[X]</div>
-        Send bill for {{ items.job.bill_amount }} to {{ items.job.customer_first_name }} {{ items.job.customer_last_name }} ?
+        Send bill for {{ jobData.bill_amount }} to {{ jobData.customer_first_name }} {{ jobData.customer_last_name }} ?
         <div class="buttons">
           <div class="btn btn-no" @click="closeModal">
             Cancel
@@ -137,7 +152,7 @@ export default {
 
   data() {
     return {
-      items: [],
+      jobData: {},
       isBillModalVisible: false,
       isEditModalVisible: false,
       billAmount: '',
@@ -155,7 +170,8 @@ export default {
 
       const [error, response] = await to(request)
       if (error) console.log(error)
-      this.items = response.data
+      console.log("***", response.data.job)
+      this.jobData = response.data.job
     },
 
     async setBillAmount() {
@@ -183,7 +199,7 @@ export default {
     },
 
     showBillModal() {
-      if (!this.items.job.bill_amount) return alert("Bill amount can't be zero")
+      if (!this.jobData.bill_amount) return alert("Bill amount can't be zero")
       this.isBillModalVisible = true
     },
 
@@ -199,10 +215,10 @@ export default {
 
   computed: {
     isSendBillButtonVisible: function() {
-      const { time_work_completed: workComplete, bill_sent: billSent } = this.items.job
+      const { time_work_completed: workComplete, bill_sent: billSent } = this.jobData
       if (workComplete && !billSent) return true
     },
-  },
+  }
 }
 </script>
 
@@ -211,13 +227,36 @@ h2 {
   padding: 2em;
 }
 
-.card {
+.job-card {
   margin-top: 2em;
+  padding: 1em;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+
+  .top-bar {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .row {
+    display: flex;
+
+    .label {
+      font-weight: bold;
+      text-align: right;
+    }
+
+    .value {
+      text-align: left;
+    }
+  }
+
+  .edit-btn {
+    width: min-content;
+  }
 }
 
-li {
-  border-bottom: 1px solid silver;
-}
 
 .billing-section {
   margin-top: 4em;
