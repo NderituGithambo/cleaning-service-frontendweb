@@ -63,6 +63,10 @@
         padding-right: $pad-h;
         padding-left: $pad-h;
 
+        &:hover {
+          filter: brightness(104%);
+        }
+
         .day-num-header {
           position: absolute;
           display: inline-block;
