@@ -192,7 +192,6 @@ nav {
 
   z-index: 2;
 
-  width: 12vw;
   min-width: 120px;
   height: 100vh;
 
@@ -252,7 +251,7 @@ nav {
 }
 
 main {
-  padding-left: 12vw;
+  padding-left: 120px;
 
   a {
     color: $blue;
