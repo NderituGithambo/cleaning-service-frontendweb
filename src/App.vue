@@ -1,9 +1,9 @@
 <template>
   <v-app>
-    <div id="app">
+    <div id="app" :class="appClass">
       <app-header v-if="showHeader()"></app-header>
       <router-view/>
-      <!-- <app-footer></app-footer> -->
+      <app-footer></app-footer>
     </div>
   </v-app>
 </template>
@@ -25,7 +25,7 @@ export default {
 
   computed: {
     appClass: function() {
-      return this.showHeader() ? 'bg-sunflower' : 'bg-gradient'
+      return this.showHeader() ? '' : 'bg-gradient'
     },
   },
 
@@ -60,16 +60,8 @@ export default {
   position: relative;
 }
 
-.bg-sunflower {
-  background-image: url("assets/clouds.jpeg");
-}
-
 .bg-gradient {
-  background: linear-gradient(to bottom, white, white);
-}
-
-.bg-white {
-  background: white;
+  background: linear-gradient(to bottom, white, gainsboro);
 }
 
 main {

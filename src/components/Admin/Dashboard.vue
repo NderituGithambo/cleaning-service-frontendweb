@@ -45,11 +45,11 @@
         </div>
       </router-link>
 
-      <router-link to="/admin/employees">
+      <!-- <router-link to="/admin/employees">
         <div class="nav-btn">
           Employees
         </div>
-      </router-link>
+      </router-link> -->
 
       <div class="horiz-line"/>
 
