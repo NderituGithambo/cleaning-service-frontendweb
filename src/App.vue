@@ -3,7 +3,7 @@
     <div id="app" :class="appClass">
       <app-header v-if="showHeader()"></app-header>
       <router-view/>
-      <app-footer></app-footer>
+      <!-- <app-footer></app-footer> -->
     </div>
   </v-app>
 </template>
@@ -64,7 +64,11 @@ export default {
 }
 
 .bg-gradient {
-  background: linear-gradient(to bottom right, white, $blue);
+  background: linear-gradient(to bottom, white, gainsboro);
+}
+
+.bg-white {
+  background: white;
 }
 
 main {
@@ -81,5 +85,17 @@ main {
         -ms-user-select: none; /* Internet Explorer/Edge */
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
+}
+
+.custom-btn {
+  width: min-content;
+  margin-left: 1em;
+  padding: 0 1em;
+  cursor: pointer;
+  border-radius: 4px;
+
+  &:hover {
+    filter: brightness(102.5%);
+  }
 }
 </style>

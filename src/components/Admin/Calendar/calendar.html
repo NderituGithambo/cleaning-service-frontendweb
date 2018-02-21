@@ -5,11 +5,11 @@
     <h1 class="month-year">{{ MONTH_NAMES[currentMonth] }} {{ currentYear }}</h1>
 
     <div class="date-nav">
-      <span class="date-nav-btn" v-on:click="() => navMonth(-1)">
-        [  < ]
+      <span class="date-nav-btn arrow-left" v-on:click="() => navMonth(-1)">
+        <v-icon>arrow_back</v-icon>
       </span>
-      <span class="date-nav-btn" v-on:click="() => navMonth(1)">
-        [ >  ]
+      <span class="date-nav-btn arrow-right" v-on:click="() => navMonth(1)">
+        <v-icon>arrow_forward</v-icon>
       </span>
     </div>
   </div>

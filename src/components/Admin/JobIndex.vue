@@ -152,6 +152,7 @@ export default {
       return numPages
     },
 
+    // To expose helper functions to html template
     getEventColorClassFromStatus: getEventColorClassFromStatus,
     getJobStatusFromJobData: getJobStatusFromJobData,
   },

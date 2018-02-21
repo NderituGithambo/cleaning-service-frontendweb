@@ -1,83 +1,100 @@
 <template>
   <div>
-    <h1>Showing {{ dataModel | underscoresAreSpaces }} with id {{ $route.params.id }}</h1>
+    <h1>Viewing job request</h1>
     <br/>
-    <v-card v-for="(section, title) in items" v-bind:key="title">
-      <v-card-text>
-        <v-list two-line>
-          <template v-for="(item, key, index) in section">
-            <v-list-tile v-bind:key="index">
-              <v-list-tile-content>
+    <div class="job-card">
 
-                <v-list-tile-title v-html="$options.filters.snakeCaseFix(key)"></v-list-tile-title>
+      <div class="top-bar">
+        <div>
+          Job Request #{{ jobRequestData.id }}
+        </div>
 
-                <v-list-tile-sub-title
-                  v-if="
-                    key === 'created_at' ||
-                    key === 'updated_at' ||
-                    key === 'confirmed_time' ||
-                    key === 'time_work_started' ||
-                    key === 'time_work_completed'
-                  "
-                  v-html="$options.filters.moment(item)"
-                ></v-list-tile-sub-title>
+        <div>
+          Status:
+          <span :class="getStatusColumnClass(jobRequestData.is_active)">
+            {{ getStatusDisplayText(jobRequestData.is_active) }}
+          </span>
+        </div>
+      </div>
 
-                <v-list-tile-sub-title
-                  v-else-if="
-                    key === 'phone_number' ||
-                    key === 'guest_phone_number'
-                  "
-                  v-html="$options.filters.phone(item)"
-                ></v-list-tile-sub-title>
+      <div class="table">
 
-                <v-list-tile-sub-title
-                  v-else
-                  v-html="item"
-                ></v-list-tile-sub-title>
+        <div class="row">
+          <div class="col label">
+            Address
+          </div>
+          <div class="col value">
+            {{ jobRequestData.address }}
+          </div>
+        </div>
 
-              </v-list-tile-content>
+        <div class="row">
+          <div class="col label">
+            Description
+          </div>
+          <div class="col value">
+            {{ jobRequestData.description }}
+          </div>
+        </div>
 
-              <v-btn
-                v-if="
-                  key === 'confirmed_time' ||
-                  key === 'time_work_started' ||
-                  key === 'time_work_completed' ||
-                  key === 'admin_notes' ||
-                  key === 'is_paid'
-                "
-                fab
-                small
-                dark
-                color="orange"
-              ><v-icon dark>edit</v-icon></v-btn>
+        <div class="row">
+          <div class="col label">
+            Name
+          </div>
+          <div class="col value">
+            {{ jobRequestData.guest_first_name }} {{ jobRequestData.guest_last_name }} 
+          </div>
+        </div>
 
-            </v-list-tile>
-          </template>
-        </v-list>
-      </v-card-text>
+        <div class="row">
+          <div class="col label">
+            E-mail
+          </div>
+          <div class="col value">
+            {{ jobRequestData.guest_email }}
+          </div>
+        </div>
 
-      <v-btn
-        v-if="items.job_request.is_active"
-        color="primary"
-        dark
-        large
-        v-on:click="showModal"
-      >
-        Make this a job
-      </v-btn>
+        <div class="row">
+          <div class="col label">
+            Phone number
+          </div>
+          <div class="col value">
+            {{ jobRequestData.guest_phone_number }}
+          </div>
+        </div>
 
-    </v-card>
+        <div class="row">
+          <div class="col label">
+            Date created
+          </div>
+          <div class="col value">
+            {{ jobRequestData.created_at | moment }}
+          </div>
+        </div>
+
+      </div>
+
+      <div class="bottom-section">
+        <div class="custom-btn make-into-job-btn" @click="showModal">
+          Make this a job
+        </div>
+      </div>
+
+    </div>
 
     <div class="outer-modal" v-if="isModalVisible">
       <div class="inner-modal">
-        <div class="close-button" v-on:click="closeModal">[X]</div>
-        Going to make this into a job...<br/><br/>
-        Would you like to set this job request as inactive?
+        <div class="close-button" @click="closeModal"><v-icon>close</v-icon></div>
+        <div class="modal-top">
+          Going to make this into a job...<br/><br/>
+          Would you like to set this job request as inactive?
+        </div>
         <div class="buttons">
-          <div class="btn btn-no" v-on:click="makeJobRequestAJob">
+          <div class="btn btn-no" @click="makeJobRequestAJob">
             No
           </div>
-          <div class="btn btn-yes" v-on:click="onPressYesToMakeInactive">
+          <div class="btn btn-yes" @click="onPressYesToMakeInactive">
             Yes
           </div>
         </div>
@@ -101,7 +118,7 @@ export default {
 
   data() {
     return {
-      items: [],
+      jobRequestData: {},
       isModalVisible: false,
     }
   },
@@ -118,7 +135,7 @@ export default {
         }
         const request = axios.get(`http://localhost:3000/admin/${this.dataModel}s/${this.$route.params.id}`, config)
         const response = await request
-        this.items = response.data
+        this.jobRequestData = response.data.job_request
 
         console.log(response)
 
@@ -130,7 +147,7 @@ export default {
     makeJobRequestAJob() {
       // Sends the jobRequest data to JobCreate, which then passes it all the way down to the calendar pop-up
       // (Could refactor this to use an external store, maybe Vuex)
-      this.$router.push({ name: 'adminJobCreate', params: { jobRequest: this.items.job_request }})
+      this.$router.push({ name: 'adminJobCreate', params: { jobRequest: this.jobRequestData }})
     },
 
     onPressYesToMakeInactive() {
@@ -163,23 +180,116 @@ export default {
     closeModal() {
       this.isModalVisible = false
     },
+
+    getStatusColumnClass(status) {
+      return status ? 'status-active' : 'status-inactive'
+    },
+
+    getStatusDisplayText(status) {
+      return status ? 'Active' : 'Inactive'
+    },
   }
 }
 </script>
 
 <style lang="scss" scoped>
+@import "../../colors.scss";
+
+$light-gainsboro: rgb(235, 235, 235);
+
 h2 {
   padding: 2em;
 }
 
-.card {
+.job-card {
   margin-top: 2em;
-  padding-bottom: 2em;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 4px;
+
+  .top-bar {
+    padding: 1em;
+    display: flex;
+    justify-content: space-between;
+    background-color: $light-gainsboro;
+    width: 100%;
+
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+
+
+    .status-active {
+      color: green;
+    }
+
+    .status-inactive {
+      color: grey;
+    }
+  }
+
+  .table {
+    margin: 1em;
+    width: 100%;
+
+    .row {
+      display: flex;
+
+      .col {
+        padding: 1em;
+      }
+
+      .label {
+        font-weight: bold;
+        width: 20%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+      }
+
+      .value {
+        width: 80%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+      }
+    }
+
+    .border-bottom {
+      border-bottom: 1px solid $light-gainsboro;
+    }
+  }
+
+  .edit-btn {
+    background: orange;
+  }
 }
 
-li {
-  border-bottom: 1px solid silver;
+.bottom-section {
+  margin-top: 4em;
+  margin-bottom: 2em;
 }
+
+
+.custom-btn {
+  width: min-content;
+  margin-left: 1em;
+  padding: 0 1em;
+  cursor: pointer;
+  border-radius: 4px;
+
+  &:hover {
+    filter: brightness(102.5%);
+  }
+}
+
+.make-into-job-btn {
+  background: $light-gainsboro;
+  width: fit-content;
+  padding: 1em;
+}
+
 
 .outer-modal {
   position: fixed;
@@ -203,10 +313,20 @@ li {
     justify-content: center;
     align-items: center;
     background-color: white;
-    padding: 64px;
+    padding: 1em;
+
+    .modal-top {
+      height: 100%;
+      display: flex;
+      align-items: center;
+
+      .inner-modal-top {
+        height: min-content;
+      }
+    }
 
     .buttons {
-      margin-top: 32px;
+      margin-top: auto;
       display: flex;
       min-width: fit-content;
       min-height: fit-content;
@@ -218,7 +338,6 @@ li {
       top: 0;
       right: 0;
       font-family: 'Ubuntu Mono'
-
     }
   }
 }

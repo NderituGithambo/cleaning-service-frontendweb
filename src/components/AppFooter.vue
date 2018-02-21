@@ -8,7 +8,7 @@
 export default {
   data() {
     return {
-      msg: '© 2018 Jon Gaspar',
+      msg: '',
     }
   },
 };
