@@ -86,6 +86,11 @@ main {
   padding: 0 1em;
   cursor: pointer;
   border-radius: 4px;
+  background-color: gainsboro;
+  height: fit-content;
+  padding: 0.5em 1em;
+  width: 6em;
+  cursor: pointer;
 
   &:hover {
     filter: brightness(102.5%);

@@ -7,6 +7,8 @@ export function getJobStatusFromJobData(jobData) {
     is_paid: isPaid,
   } = jobData
 
+  console.log(jobData)
+
   if (!workStarted && !workCompleted && !billSent && !isPaid) return 'NEW'
   if (workStarted && !workCompleted && !billSent && !isPaid) return 'IN_PROGRESS'
   if (workStarted && workCompleted && !billSent && !isPaid) return 'NEEDS_BILLING'

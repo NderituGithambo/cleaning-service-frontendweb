@@ -31,7 +31,7 @@
                 {{ data.item.last_name }}, {{ data.item.first_name }}
               </template>
             </v-select>
-            <div class="custom-btn ok-btn"
+            <div class="custom-btn save-btn"
               @click="showModal"
               :disabled="!eventData || !employeeIdSelected"
             >Ok</div>
@@ -132,7 +132,7 @@
                 <div class="custom-btn submit-btn"
                   @click="submit"
                   :disabled="isSubmitDisabled"
-                >Submit</div>
+                >Save</div>
               </div>
             </div>
           </div>
@@ -408,7 +408,7 @@ export default {
   }
 }
 
-.ok-btn {
+.save-btn {
   background-color: gainsboro;
   height: fit-content;
   padding: 0.5em 1em;

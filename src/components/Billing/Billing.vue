@@ -123,7 +123,8 @@ article {
   flex-direction: column;
 
   .table {
-    // border: 1px solid lime;
+    border: 1px solid gainsboro;
+    border-radius: 8px;
     width: 60%;
     min-width: 500px;
     background-color: white;

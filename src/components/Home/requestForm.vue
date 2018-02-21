@@ -33,7 +33,7 @@
         box
       ></v-text-field>
       <v-text-field
-        label="Address of location to be cleaned"
+        label="Address"
         v-model="address"
         :error-messages="addressErrors"
         @input="$v.address.$touch()"
@@ -43,7 +43,7 @@
       ></v-text-field>
       <v-text-field
         class="work-description"
-        label="Description of work, location information, etc."
+        label="Description of work"
         v-model="workDescription"
         :error-messages="workDescriptionErrors"
         @input="$v.workDescription.$touch()"
@@ -108,11 +108,11 @@
 
     data () {
       return {
-        firstName: 'Fake',
-        lastName: 'Person',
-        email: 'fake@person.com',
-        address: '123 Fake St.',
-        workDescription: 'sadasdasdsadasd',
+        firstName: '',
+        lastName: '',
+        email: '',
+        address: '',
+        workDescription: '',
 
         isLoading: false,
         isSubmitDisabled: false,

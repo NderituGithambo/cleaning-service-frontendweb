@@ -62,7 +62,7 @@
         </div>
 
         <!-- Submit button displayed when creating new events -->
-        <v-btn color="primary" v-if="!eventData.content" v-on:click="handleClickOkay">OK</v-btn>
+        <div class="custom-btn ok-btn" v-if="!eventData.content" v-on:click="handleClickOkay">Ok</div>
       </div>
 
     </div>
@@ -341,7 +341,12 @@ $border-radius: 4px;
   }
 }
 
-button {
+.ok-btn {
+  background-color: gainsboro;
+  height: fit-content;
+  padding: 0.5em 1em;
+  width: 6em;
+  cursor: pointer;
   float: right;
 }
 </style>
