@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <div id="app" :class="appClass">
+    <div id="app">
       <app-header v-if="showHeader()"></app-header>
       <router-view/>
       <!-- <app-footer></app-footer> -->
@@ -50,6 +50,7 @@ export default {
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
+  background-color: white;
 
   margin: 0;
 
@@ -60,11 +61,11 @@ export default {
 }
 
 .bg-sunflower {
-  background-image: url("assets/jazflower4_med.jpg");
+  background-image: url("assets/clouds.jpeg");
 }
 
 .bg-gradient {
-  background: linear-gradient(to bottom, white, gainsboro);
+  background: linear-gradient(to bottom, white, white);
 }
 
 .bg-white {

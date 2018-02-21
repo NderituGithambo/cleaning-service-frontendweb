@@ -1,17 +1,24 @@
 <template>
-  <main>
-    <section>
-      <article>
-        <pre>{{ dummyText }}</pre>
-      </article>
-      <aside>
-        <request-form v-if="!isRequestSent" :indicateRequestReceived="indicateRequestReceived"/>
-        <transition name="fade">
-          <request-received v-if="isRequestSent"/>
-        </transition>
-      </aside>
-    </section>
-  </main>
+  <div>
+    <div class="image">
+      <div class="gradient-cover"/>
+    </div>
+    <div>
+      <main>
+        <section>
+          <article>
+            <pre>{{ dummyText }}</pre>
+          </article>
+          <aside>
+            <request-form v-if="!isRequestSent" :indicateRequestReceived="indicateRequestReceived"/>
+            <transition name="fade">
+              <request-received v-if="isRequestSent"/>
+            </transition>
+          </aside>
+        </section>
+      </main>
+    </div>
+  </div>
 </template>
 
 
@@ -70,6 +77,19 @@ article {
     white-space: pre-wrap;
     word-wrap: break-word;
     font-family: inherit;
+  }
+}
+
+div.image {
+  width: 100%;
+  height: 600px;
+  background-image: url("../../assets/clouds.jpeg");
+  background-size: 100%;
+
+  .gradient-cover {
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(to bottom, transparent 80%, white);
   }
 }
 
