@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="image">
+      <h2>Clean space, happy life</h2>
       <div class="gradient-cover"/>
     </div>
     <div>
@@ -56,7 +57,6 @@ section {
   display: grid;
   grid-template-columns: [col] 60% [col] 40%;
   grid-template-rows: [row] auto;
-
 }
 
 article {
@@ -85,11 +85,22 @@ div.image {
   height: 600px;
   background-image: url("../../assets/clouds.jpeg");
   background-size: 100%;
+  position: relative;
 
   .gradient-cover {
+    position: absolute;
+    top: 0;
+    left: 0;
     height: 100%;
     width: 100%;
     background: linear-gradient(to bottom, transparent 80%, white);
+  }
+
+  h2 {
+    position: absolute;
+    top: 50%;
+    left: 30%;
+    color: white;
   }
 }
 

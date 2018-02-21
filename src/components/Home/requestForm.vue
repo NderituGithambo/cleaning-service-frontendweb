@@ -49,7 +49,6 @@
         @input="$v.workDescription.$touch()"
         @blur="$v.workDescription.$touch()"
         required
-        multi-line
         box
       ></v-text-field>
 
@@ -211,6 +210,8 @@
   padding: 1em;
   background-color: $zero-opacity;
   width: 100%;
+  border: 1px solid gainsboro;
+  border-radius: 8px;
 
   h2 {
     text-align: left;
