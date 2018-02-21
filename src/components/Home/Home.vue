@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="image">
-      <h2>Clean space, happy life</h2>
+      <h2>Clean house, happy life</h2>
       <div class="gradient-cover"/>
     </div>
     <div>
@@ -99,8 +99,9 @@ div.image {
   h2 {
     position: absolute;
     top: 50%;
-    left: 30%;
+    left: 20%;
     color: white;
+    font-size: 2em;
   }
 }
 

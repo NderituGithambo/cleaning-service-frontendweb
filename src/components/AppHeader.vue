@@ -7,7 +7,7 @@
     <div class="headlines">
       <div class="call-to-action">
         <h3>Call 604.899.8955</h3>
-        <h4>Or click below to request online!</h4>
+        <h4>Or request online now!</h4>
       </div>
     </div>
 
