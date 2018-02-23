@@ -82,7 +82,7 @@
 <script>
 import axios from 'axios'
 import ActionCable from 'actioncable'
-const cable = ActionCable.createConsumer('ws://192.168.1.69:3000/cable')
+const cable = ActionCable.createConsumer('ws://localhost:3000/cable')
 import EventBus from './EventBus'
 // Wrapper for promise to avoid try/catch blocks
 import to from '../../to.js'
