@@ -1,4 +1,6 @@
-![Landing page](https://github.com/jong86/cleaning-service-frontendweb/blob/master/docs/vancleaninganimated.gif)
+![Landing page](https://github.com/jong86/cleaning-service-frontendweb/blob/master/docs/frontpage.jpg)
+![Landing page](https://github.com/jong86/cleaning-service-frontendweb/blob/master/docs/admincalendar.jpg)
+![Landing page](https://github.com/jong86/cleaning-service-frontendweb/blob/master/docs/adminindex.jpg)
 
 ### To use
 1. `npm i`
