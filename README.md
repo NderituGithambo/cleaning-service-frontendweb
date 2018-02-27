@@ -1,4 +1,4 @@
-![Landing page](https://github.com/jong86/cleaning-service-frontendweb/blob/master/docs/frontpage.jpg)
+![Landing page](https://github.com/jong86/cleaning-service-frontendweb/blob/master/docs/landingpage.jpg)
 ![Landing page](https://github.com/jong86/cleaning-service-frontendweb/blob/master/docs/admincalendar.jpg)
 ![Landing page](https://github.com/jong86/cleaning-service-frontendweb/blob/master/docs/adminindex.jpg)
 
