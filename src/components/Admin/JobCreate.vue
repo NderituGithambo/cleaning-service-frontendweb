@@ -147,7 +147,7 @@
 
 <script>
 import axios from 'axios'
-import calendar from './Calendar/calendar.vue'
+import calendar from './Calendar/Calendar.vue'
 import EventBus from './EventBus'
 
 export default {
